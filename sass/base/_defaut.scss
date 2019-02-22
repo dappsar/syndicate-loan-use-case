@@ -1,0 +1,25 @@
+body{
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 14px;
+    line-height: 19px;
+}
+.no-padding{
+    padding: 0;
+}
+.pad-lt-4{
+    padding-left: 4px;
+}
+.pad-rt-4{
+    padding-right: 4px;
+}
+.error_text{
+    @include font-size(11); 
+    color: $Danger;
+    line-height: 15px;
+    padding-top: 5px;
+    padding-left: 23px;
+    display: inline-block;    
+}
+.form-label-group{
+    margin-bottom: 16px;
+}

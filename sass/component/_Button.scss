@@ -1,0 +1,63 @@
+.cbtn{
+    @include font-size(12);
+    @include border-radius(27.5px);
+    font-weight: 600;	
+    line-height: 16px;
+    padding: 20px 75px;
+    text-transform: uppercase;
+    outline: none;
+}
+.dbtn{
+    @extend .cbtn;
+    border: none;
+    color: $white;
+    background: rgb(0,102,179); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(0,102,179,1) 0%, rgba(63,152,212,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,102,179,1) 0%,rgba(63,152,212,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,102,179,1) 0%,rgba(63,152,212,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0066b3', endColorstr='#3f98d4',GradientType=0 ); /* IE6-9 */
+}
+.primary_btn{
+    @extend .dbtn;    
+    &:hover{
+        background: $Shakespeare;
+        box-shadow: 0 2px 4px 0 rgba(0,116,203,0.36);
+        cursor: pointer;
+    }
+    &:focus{
+        // box-shadow: 0 2px 4px 0 rgba(0,116,203,0.36);
+        background: $Shakespeare;
+        outline: none;
+    }    
+}
+
+.disable_btn{
+    @extend .dbtn;
+    @include opacity(.5);
+    &:focus{
+        outline: none;
+    }
+}
+
+.ghost_btn{
+    @extend .cbtn;
+    border: 2px solid $Blaze_Orange;
+    background: transparent;
+    &:hover{
+        border: 2px solid $Amber;
+        cursor: pointer;
+    }
+    &:focus{
+        border: 2px solid $Amber;
+        outline: none;
+    }
+}
+.gdisable_btn{
+    @extend .cbtn;
+    border: 2px solid $Blaze_Orange;
+    background: transparent;
+    @include opacity(.5);
+    &:focus{
+        outline: none;
+    }
+}
