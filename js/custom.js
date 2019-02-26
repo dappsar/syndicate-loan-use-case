@@ -1,7 +1,7 @@
 var select_arr = ['Loan Taker', 'Seller', 'Confidant']
 $(document).ready(function(){
     function createDropdown(){
-        var drop = $('#customDropdown');
+        var drop = $('.customDropdown');
         var i;
         var htmlString = '<div class="dropContainer">';
         for( i=0; i < select_arr.length; i +=1){
@@ -12,20 +12,17 @@ $(document).ready(function(){
     }
     createDropdown();
 
-    $('#customDropdown').on('click', function(event){
-        var container = $(this).find('.dropContainer');
-        var target = $('#customDropdown');
-        var target = $(event.target);
+    $('.customDropdown').on('click', function(event){
 
-        if(target.hasClass('valueHolder') || target.hasClass('valueHolder1') || target.attr('id')=== 'customDropdown'){
-            container.show();
-            $('#customDropdown').addClass('select_border');
-        }else if(target.hasClass('dropOption')){     
-            $('#customDropdown').removeClass('select_border');               
+        var container = $(this).children('div.dropContainer');
+        var target = $(event.target);
+        
+        container.toggle();
+        $(this).toggleClass('select_border');
+        if(target.hasClass('dropOption')){     
             $(this).find('span.valueHolder1').text(target.text());
-            $('.valueHolder').addClass('float-label');
-            container.hide();
-        }
+            $(this).children('span.valueHolder').addClass('float-label')
+        }        
     })
 
     /* ----------Input floating label js------------- */
@@ -44,13 +41,18 @@ $(document).ready(function(){
                 
             }
        })
-    /* ----------End Input floating label js------------- */    
+    /* ----------End Input floating label js------------- */ 
 
+    /* ---------Appliaction tab js------- */
+    
+    $('.appplication_section ul li').click(function() {
+        $('.appplication_section ul li.active').removeClass('active');
+        $(this).closest('li').addClass('active');
+    });
 
 });
 
 /* ----storing input data on browser------ */
-
 
 function myFunction(){
     const fname = document.getElementById("inputFname").value;

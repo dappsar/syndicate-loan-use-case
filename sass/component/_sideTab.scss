@@ -2,21 +2,30 @@
     position: relative;
     overflow: hidden;
     padding-top: 23.5px;
-    padding-bottom: 23.5px;
-    background: rgb(0,102,179); /* Old browsers */
-    background: -moz-linear-gradient(top, rgba(0,102,179,1) 0%, rgba(63,152,212,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, rgba(0,102,179,1) 0%,rgba(63,152,212,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, rgba(0,102,179,1) 0%,rgba(63,152,212,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0066b3', endColorstr='#3f98d4',GradientType=0 ); /* IE6-9 */
+    // background: rgb(0,102,179); /* Old browsers */
+    // background: -moz-linear-gradient(top, rgba(0,102,179,1) 0%, rgba(63,152,212,1) 100%); /* FF3.6-15 */
+    // background: -webkit-linear-gradient(top, rgba(0,102,179,1) 0%,rgba(63,152,212,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    // background: linear-gradient(to bottom, rgba(0,102,179,1) 0%,rgba(63,152,212,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0066b3', endColorstr='#3f98d4',GradientType=0 ); /* IE6-9 */
+    background: linear-gradient(0deg, #0066B3 0%, #3F98D4 100%);
 }
 .add_applications{
     position: relative;
     z-index: 9;
     @include flex;
     @include align-items(center);
+    &:hover{
+        .outer{
+            box-shadow: 0 1px 10px 0 rgba(133,202,255, .99);
+            border: 1px solid rgba(255,255,255, .4);
+        }
+        .outer_inn{
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+    }
     .outer{
-        box-shadow: 0 1px 10px 0 rgba(133,202,255,0.99);
-        border: 1px solid rgba(255,255,255, .5);        
+        box-shadow: 0 1px 10px 0 rgba(133,202,255, .2);
+        border: 1px solid rgba(255,255,255, .2);        
         width: 57px;
         height: 57px;
         @include border-radius(50%);
@@ -24,7 +33,9 @@
         @include justify-content(center);
         @include align-items(center);
         cursor: pointer;
+        @include transition(all,.2s,ease);
         .outer_inn{
+            @include transition(all,.2s,ease);
             border: 1px solid rgba(255,255,255,0.5);
             width: 51px;
             height: 51px;
@@ -63,11 +74,18 @@
 .appplication_section{
     padding-top: 18px;    
     padding-bottom: 35px;
+    .head{
+        margin-bottom: 18px;
+    }
     ul {
         padding-left: 0;
         li{
             list-style: none;
             padding: 15px 23px 12px 42px;
+            @include transition(all,.2s,ease);
+            @include minTablet{
+                padding: 15px 8px 12px 24px;
+            }
             .lists{
                 h4{
                     margin-bottom: 0;
@@ -114,7 +132,7 @@
             &.in_review{
                 .status{
                     &::before{
-                        background: url("../images/gray-point.svg");
+                        background: url("../images/yellow-point.svg");
                     }
                 }
             }
@@ -170,7 +188,7 @@
 }
 
 .head{
-    @include font-size(14px);	
+    @include font-size(14);	
     font-weight: 800;	
     letter-spacing: 0.4px;	
     line-height: 19px;

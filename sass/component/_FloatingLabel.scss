@@ -13,7 +13,7 @@
             @include font-size(11);
 
         }
-        input{
+        input, textarea{
             padding-top: 34px;
         }
     }
@@ -29,7 +29,7 @@
 
 /* --------Select box floating label------ */
 
-#customDropdown  {
+.customDropdown  {
     position: relative;
     cursor: pointer;
     @include border-radius(4px);
@@ -79,6 +79,7 @@ span{
    background-color: #fff;
    display: none;
    text-align: left; 
+   z-index: 1;
 }
 .dropOption {
     height: 56px;
@@ -98,14 +99,14 @@ span{
     }
 }
 
-#customDropdown{
+.customDropdown{
     &.select_border {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
 }
 
-#customDropdown {
+.customDropdown {
     &:before{
     content: "";
     border: solid $Danger;

@@ -22,6 +22,16 @@ header {
                 right: 0;
                 background: $Catskill_Whitev2;
             }
+            .navbar-brand{
+                img{
+                    @include belowDesktop{
+                        max-width: 215px;
+                    }
+                    @include minTablet{
+                        max-width: 154px;
+                    }
+                }
+            }
         }
         .header_content{
             @include flex;
@@ -32,6 +42,9 @@ header {
                 padding-left: 43px;
                 h2{
                     margin-bottom: 0;
+                    @include minTablet{
+                        font-size: 18px;
+                    }
                     a{
                         color: $Outer_Space;
                         text-decoration: none;
@@ -61,6 +74,34 @@ header {
                     height: 72px;
                     background: $Catskill_Whitev2;
                     @include abs-pos(0px,auto, auto, 0px );
+                }
+            }
+            .header_mid{
+                width: 100%;
+                @include flex;
+                @include justify-content(space-between);
+                @include align-items(center);
+                .user_profile{
+                    padding-right: 38px;
+                    @include flex;
+                    &:hover{
+                        cursor: pointer;
+                    }                    
+                    .user{
+                        width: 22px;
+                        height: 22px;
+                        display: inline-block;
+                        background: url(../images/profile.png);
+                        background-size: cover;
+                        margin-right: 9px;
+                    }
+                    .user_text{ 
+                        color: $Blaze_Orange;
+                        @include font-size(16);
+                        text-decoration: none;
+                        font-weight: 600;
+                        line-height: 22px;
+                    }
                 }
             }
         }

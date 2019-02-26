@@ -1,7 +1,7 @@
 .approval_check{
     .form-group {
         display: block;
-        margin-bottom: 15px;
+        margin-bottom: 0px;
         input {
             padding: 0;
             height: initial;
@@ -13,6 +13,10 @@
           label {
             position: relative;
             cursor: pointer;
+            @include font-size(16);
+            color:$Waterloo;
+            line-height: 22px;
+            margin-bottom: 0;
             &:before {
                 content:'';
                 -webkit-appearance: none;
@@ -24,8 +28,9 @@
                 position: relative;
                 vertical-align: middle;
                 cursor: pointer;
-                margin-right: 5px;
-                @include border-radius(4px);                
+                margin-right: 7px;
+                @include border-radius(4px);
+                top: -1px;                
             }
           }
       }
@@ -36,13 +41,19 @@
       @include justify-content(center);
     .form-group {
         padding-right: 50px;
+        @include belowDesktop{
+            padding-right: 24px;
+        }
+        @include minTablet{
+            padding-right: 12px;
+        }
         input{
             &:checked {
                 & + label{
                     &:after {
                         content: '';
                         display: block;
-                        @include abs-pos(4px, auto, auto, 6px);                        
+                        @include abs-pos(5px, auto, auto, 6px);                        
                         width: 5px;
                         height: 9px;
                         border: solid $white;

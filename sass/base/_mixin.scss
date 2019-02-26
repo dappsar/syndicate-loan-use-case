@@ -219,6 +219,23 @@ border-bottom-left-radius: $radius;
 
 /* ------Responsive Mixin-------- */
 
+@mixin ExlgDevice() {
+    @media only screen and (min-width: 1440px) {
+        @content;
+    }
+}
+@mixin lgDevice() {
+    @media only screen and (min-width: 1367px) {
+        @content;
+    }
+}
+
+@mixin belowDesktop(){
+    @media only screen and (max-width: 1199px) {
+        @content;
+    }
+}
+
 @mixin tablet() {
     @media only screen and (max-width: 1024px) {
         @content;

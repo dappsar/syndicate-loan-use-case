@@ -19,7 +19,7 @@ h4{
 
 /* ---------Input typography-------- */
 
-input{
+input, textarea{
     &.form-control{
         height: 56px;
         @include border-radius(4px);
@@ -39,6 +39,16 @@ input{
         &+label{
             @include font-size(14);
             pointer-events: none;
-        }
+            span{
+                color: $Dodger_Blue;
+            }
+        }        
     }
+}
+.euro{
+    @include abs-pos(20px, 23px, auto, auto);
+    @include font-size(16);  
+    line-height: 22px;
+    font-weight: 600;
+    color: $Shuttle_Gray;
 }

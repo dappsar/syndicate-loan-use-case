@@ -1,0 +1,351 @@
+.History_pannel{
+    box-shadow: 4px 0 8px 0 rgba(13,49,76,0.05) inset;
+    padding-bottom: 112px;
+    position: relative;
+    &:before{
+        content: "";
+        position: absolute;
+        background: url(../images/history-bg.png);
+        width: 100%;
+        height: 100%;
+        background-repeat: repeat;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+    }
+    
+    h3{
+        text-align: center;
+        padding-top: 48px;
+        padding-bottom: 20px;
+    }
+    ul{
+        padding-left: 64px;
+        padding-right: 48px;
+        position: relative;
+        @include belowDesktop{
+            padding-left: 36px;
+            padding-right: 22px
+        }
+        li{
+            list-style: none;
+            box-shadow: 0 8px 24px 0 rgba(43,102,146,0.1);
+            border: 1px solid $Mystic;
+            margin-bottom: 16px;
+            padding: 18px 16px 18px 24px;
+            position: relative;
+            @include border-radius(4px);
+            background: $white;
+            &:before{
+                content: "";
+                @include abs-pos(21px, auto, auto, -7px);
+                width: 12px;
+                height: 12px;
+                background: url(../images/left-arrow.png);                    
+                background-repeat: no-repeat;
+            }
+            &:last-child {
+                .histroy_detail{
+                    &:before{
+                        content: "";
+                        width: 1px;
+                        height: 100%;
+                        background: #fefefe;
+                        @include abs-pos(32px, auto, auto, -17px);                    
+                    }
+                }
+            }
+            &:after{
+                content: "";
+                height: 11px;
+                width: 11px;
+                @include border-radius(50%);
+                border: 1px solid $PeriwinkleGray;
+                @include abs-pos(22px, auto, auto, -22px);
+                background: $white;
+            }
+            .histroy_detail{
+                .banks{
+                    font-weight: 600;
+                    @include font-size(14);
+                    line-height: 19px;
+                    color: $Outer_Space;
+                    margin-bottom: 0;
+                }
+                .status{
+                    margin-top: 13px;
+                    .status_point{
+                        color: $Outer_Space;
+                        @include font-size(14);
+                        font-weight: 600;
+                        margin-bottom: 5px;
+                    }                   
+                }
+                .banks_application{
+                    line-height: 19px;
+                    font-weight: 700;
+                    color: $Outer_Space;
+                    margin-bottom: 0;
+                }
+                .change_loan{
+                    margin: 0 -16px 0 -24px;
+                    box-shadow: 0 -2px 4px 0 rgba(13,49,76,0.05) inset;
+                    margin-top: 10px;
+                    .change-amt-head{
+                        margin-bottom: 0;
+                        position: relative;
+                        color: $Waterloo;
+                        @include font-size(12);
+                        font-weight: 600;
+                        line-height: 16px;
+                        padding-left: 24px;
+                        overflow: hidden;
+                        &:before{
+                            content: "";
+                            background: $Catskill_Whitev2;                            
+                            width: 100%;
+                            @include abs-pos(8px, auto, auto, 151px);
+                            height: 1px; 
+                        }
+                        &:after{
+                            content: "";
+                            background: $Catskill_Whitev2;                            
+                            width: 16px;
+                            height: 1px;
+                            @include abs-pos(8px, auto, auto, 0px);
+                        }
+                    }
+                    .change_amount{
+                        padding: 11px 24px 19px 24px;
+                        p{
+                            @include font-size(13);
+                            font-weight: 700;
+                            line-height: 16px;
+                            color: $Outer_Space;
+                            margin-bottom: 0;
+                            @include tablet{
+                                @include flex;
+                                @include flex-direction(column);
+                            }
+                            .changed_date{
+                                color: $Waterloo;
+                                @include font-size(12);
+                                font-weight:600;
+                                line-height: 16px;
+                                padding-left: 10px;
+                                padding-right: 20px;
+                                position: relative;
+                                @include tablet{
+                                    width: 98px;
+                                    margin: 6px 0;
+                                    padding-left: 0;
+                                }
+                                &:before{
+                                    content: "";
+                                    border: solid $Blaze_Orange;
+                                    border-width: 0 2px 2px 0;
+                                    display: inline-block;
+                                    padding: 2.5px;
+                                    @include abs-pos(5px, 12px, auto, auto);                                    
+                                    transform: rotate(45deg);
+                                    -webkit-transform: rotate(-46deg);                                    
+                                    pointer-events: none;
+                                }
+                            }
+                        }
+                    }                    
+                }
+                .top_section{
+                    .date{
+                        @include font-size(14);
+                        color: $Waterloo;
+                        margin-bottom: 13px;
+                        span{
+                            @include font-size(12);
+                            padding-left: 10px;
+                        }
+                    }
+                }
+            }
+            .comments_feild{
+                border: 1px solid $Catskill_Whitev2;
+                @include border-radius(6px);
+                position: relative;
+                border-bottom-left-radius: 0;
+                margin-top: 8px;
+                padding: 12px 16px 0;
+                margin-bottom: 8px;
+                p{
+                    margin-bottom: 12px;
+                }
+                &:before{
+                    content: "";
+                    width:15px;
+                    height: 8px;
+                    background: url("../images/cmt-arrow.png");
+                    @include abs-pos(auto, auto, -8px, -1px);                 
+                    background-repeat: no-repeat;
+                }
+            }
+            .comment_section{
+                position: relative;
+                padding-left: 26px;
+                p{
+                    @include flex;
+                    @include flex-direction(column);
+                    margin-bottom: 0;
+                    .cmt_from{
+                        color:$Waterloo;
+                        @include font-size(9);
+                        line-height: 12px;
+                        font-weight: 600;
+                    }
+                    .comment_by{
+                        color: $Outer_Space;
+                        @include font-size(12);
+                        font-weight: 700;
+                        line-height: 16px;
+                    }
+                }
+                &:before{
+                    content: "";
+                    width: 22px;
+                    height: 20px;
+                    background: url(../images/comment--arrow.png);
+                    @include abs-pos(5px, auto, auto, 0px );                    
+                    background-repeat: no-repeat;
+                }
+            }
+        }
+        &:before{
+            content: "";
+            width:1px;
+            height: 100%;;
+            background: $PeriwinkleGray;
+            @include abs-pos(32px, auto, auto, 48px);
+            @include belowDesktop{
+                @include abs-pos(32px, auto, auto, 20px);
+            }
+        }
+    }
+}
+.History_pannel{
+    ul{
+        li{
+            &.active{
+                position: relative;
+                &:before{
+                    content: "";
+                    @include abs-pos(21px, auto, auto, -6px);
+                    width: 12px;
+                    height: 12px;
+                    background: url(../images/active-arrow.png);                    
+                    background-repeat: no-repeat;
+                }
+                background: rgb(0,102,179); /* Old browsers */
+                background: -moz-linear-gradient(top, rgba(0,102,179,1) 0%, rgba(63,152,212,1) 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top, rgba(0,102,179,1) 0%,rgba(63,152,212,1) 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom, rgba(0,102,179,1) 0%,rgba(63,152,212,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0066b3', endColorstr='#3f98d4',GradientType=0 ); /* IE6-9 */
+                &:after{
+                    content: "";
+                    height: 11px;
+                    width: 11px;
+                    @include border-radius(50%);
+                    border: 1px solid $PeriwinkleGray;
+                    @include abs-pos(22px, auto, auto, -22px);
+                    background: $Denim;
+                }
+                .histroy_detail{
+                    .banks{
+                        font-weight: 600;
+                        @include font-size(14);
+                        line-height: 19px;
+                        color: $white;
+                        margin-bottom: 0;
+                    }
+                    .top_section{
+                        @include flex;
+                        @include justify-content(space-between);
+                        @include belowDesktop{
+                            @include flex-direction(column-reverse);
+                        }
+                        p{
+                            color:$Onahau;
+                            @include font-size(14);
+                            line-height: 16px;
+                            margin-bottom: 0;
+                            span{
+                                @include font-size(12);
+                            }
+                            .time{
+                                padding-left: 10px;
+                            }
+
+                        }
+                        .explorer {
+                            border: 2px solid #fff;
+                            border-radius: 2px;
+                            padding: 4px 9px;
+                            font-size: 12px;
+                            color: #fff;
+                            font-weight: 700;
+                            line-height: 16px;
+                            margin-top: -6px;
+                            text-align: center;  
+                            max-height: 44px;   
+                            @include belowDesktop{
+                                max-width: 130px;
+                                margin-bottom: 10px;    
+                            }                      
+                            &:hover{
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                    .status{                        
+                        .status_point{
+                            color: $white;
+                            @include font-size(14);
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.status{
+    position: relative;
+    margin-left: 19px;
+    &:before{
+        content: "";
+        width: 34px;
+        height: 34px;        
+        @include abs-pos(-5px, auto, auto, -29px);
+        background: url(../images/yellow-point.svg);
+    }
+    p{
+        color:$Outer_Space;
+        font-weight: 600;
+        @include font-size(14);
+        line-height: 19px;
+        margin-bottom: 5px;
+    }
+    .status_point{
+        color: $white;
+        @include font-size(14);
+        font-weight: 600;
+    }
+    &.waiting{
+        &:before{
+            content: "";
+            width: 34px;
+            height: 34px;        
+            @include abs-pos(-5px, auto, auto, -29px);
+            background: url(../images/gray-point.svg);
+        }        
+    }
+}

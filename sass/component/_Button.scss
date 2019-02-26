@@ -6,6 +6,12 @@
     padding: 20px 75px;
     text-transform: uppercase;
     outline: none;
+    @include belowDesktop{
+        padding: 15px 50px;
+    }
+    @include minTablet{
+        padding: 12px 40px;
+    }
 }
 .dbtn{
     @extend .cbtn;
