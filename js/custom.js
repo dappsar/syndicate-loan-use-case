@@ -74,6 +74,7 @@ var submitFormData = () => {
 
 
 
+
 /* ----Setter Getter for local storage------ */
 getLocalStorage = (key) => {
     return JSON.parse(localStorage.getItem(key));
@@ -89,8 +90,8 @@ setLocalStorage = (key, value) => {
 formValueSetter = (data) => {
     let formData = document.getElementsByClassName("form-control")
     for (i = 0; i < formData.length; i++) {
-        formData[i].value = data[formData[i].name] ? data[formData[i].name] : '';
-        formData[i].parentElement.className = "form-label-group float-lab input_float_lbl"
+        formData[i].value = data[formData[i].name] ? data[formData[i].name] : '';//value binding
+        formData[i].parentElement.className = "form-label-group float-lab input_float_lbl"//class binding
     }
 }
 
@@ -99,20 +100,32 @@ formValueSetter = (data) => {
 /* ----storing pre defined data on browser------ */
 var keyData = (tab) => {
     let keyDataObject = getLocalStorage(tab)
-    if (keyDataObject) {
-        let dropDownData = document.getElementsByClassName("valueHolder1")
-        for (i = 0; i < dropDownData.length; i++) {
-            dropDownData[i].textContent = keyDataObject[dropDownData[i].previousElementSibling.innerHTML] ? keyDataObject[dropDownData[i].previousElementSibling.innerHTML] : '';
-            dropDownData[i].parentElement.className = "customDropdown"
-            dropDownData[i].previousElementSibling.className = "valueHolder float-label"
-        }
-    }
+    if (keyDataObject)
+        settingUpDropDown(keyDataObject);
     else {
         //defining key data 
         keyDataObject = setUpEnv(tab);
+        settingUpDropDown(keyDataObject);
         //storing data in localstorage
+        formValueSetter(keyDataObject);
         setLocalStorage(tab, keyDataObject)
     }
+}
+
+settingUpDropDown = (keyDataObject) => {
+    let dropDownData = document.getElementsByClassName("valueHolder1")
+    for (i = 0; i < dropDownData.length; i++) {
+        dropDownData[i].textContent = keyDataObject[dropDownData[i].previousElementSibling.innerHTML] ? keyDataObject[dropDownData[i].previousElementSibling.innerHTML] : '';
+        dropDownData[i].parentElement.className = "customDropdown"
+        dropDownData[i].previousElementSibling.className = "valueHolder float-label"
+    }
+}
+
+
+//load amount calculation
+calculateTotalAmount = () => {
+    let total = parseInt(document.getElementById("loanAmount").value) + parseInt(document.getElementById("bank1").value) + parseInt(document.getElementById("bank2").value)
+    document.getElementById("Total_value").textContent = total + ' €';
 }
 
 var manageTab = (tab) => {
@@ -127,22 +140,31 @@ var manageTab = (tab) => {
         formValueSetter(DetailsObject);
         //storing data in localstorage
         setLocalStorage(tab, DetailsObject)
-
     }
+    if (tab == 'loanDetails')
+        calculateTotalAmount();
 
 }
-/* ----end storing pre defined data on browser------ */
 
-/* ----managing modal for tab------ */
+
+
 let modal = ''//variable to store modal tab
 modalValue = (tabName) => modal = tabName;
+
 
 //comment saved locally
 storeComment = () => {
     let comment = document.getElementById('comment').value;
-    //getting current user
-    let user = JSON.parse(sessionStorage.getItem('user'))
-    setLocalStorage(user + 'Comment', { 'tab': modal, 'comment': comment })
+    let commentedData = getLocalStorage('comment')
+    let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
+    user = `${user}-${modal}`
+
+    if (commentedData) {
+        commentedData = Object.assign(commentedData, { [user]: { 'comment': comment } })
+        setLocalStorage('comment', commentedData)
+    }
+    else
+        setLocalStorage('comment', { [user]: { 'comment': comment } })
 }
 
 //manage predefined data structure 

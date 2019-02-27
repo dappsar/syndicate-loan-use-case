@@ -30,7 +30,7 @@
     </script>
 </head>
 
-<body>
+<body onload="manageTab('loanDetails');">
     <div class="container-fluid">
         <header>
             <nav>
@@ -142,8 +142,7 @@
                         <h3>Application Details</h3>
                         <ul id="tabs" class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab"
-                                    onclick="keyData('keyData');">Key
+                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab" onclick="keyData('keyData');">Key
                                     Data</a>
                             </li>
                             <li class="nav-item">
@@ -155,7 +154,8 @@
                                     Details</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab-D" href="#pane-D" class="nav-link active" data-toggle="tab" role="tab" onclick="manageTab('loanDetails')">Loan
+                                <a id="tab-D" href="#pane-D" class="nav-link active" data-toggle="tab" role="tab"
+                                    onclick="manageTab('loanDetails')">Loan
                                     Details</a>
                             </li>
                             <li class="nav-item">
@@ -163,7 +163,8 @@
                             </li>
                         </ul>
                         <!-- Tab panes -->
-                        <div id="content" class="tab-content" role="tablist">
+                        <div id="
+                                    content" class="tab-content" role="tablist">
                             <div id="pane-A" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-A">
                                 <div class="card-header" role="tab" id="heading-A">
                                     <h5 class="mb-0">
@@ -340,7 +341,7 @@
                                             </div>
                                             <div class="Total">
                                                 <span>Total</span>
-                                                <span class="Total_value">3,900,000 €</span>
+                                                <span class="Total_value" id="Total_value"> €</span>
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank2" name="Interest Rate" class="form-control"
@@ -539,8 +540,8 @@
                     <h3>Are you sure you want to reject the application?</h3>
                 </div>
                 <div class="group_btns">
-                    <button type="button" data-dismiss="modal" class="primary_btn">Yes</button>
-                    <button type="button" data-dismiss="modal" class="ghost_btn">No</button>
+                    <button type="button" class="primary_btn" aria-label="Close">Yes</button>
+                    <button type="button" class="ghost_btn" aria-label="Close">No</button>
                 </div>
             </div>
         </div>
