@@ -138,11 +138,11 @@ var manageTab = (tab) => {
     else {
         DetailsObject = setUpEnv(tab)
         formValueSetter(DetailsObject);
+        calculateTotalAmount();
         //storing data in localstorage
         setLocalStorage(tab, DetailsObject)
     }
-    if (tab == 'loanDetails')
-        calculateTotalAmount();
+        
 
 }
 
