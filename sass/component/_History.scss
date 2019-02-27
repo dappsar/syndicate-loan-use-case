@@ -50,9 +50,9 @@
                     &:before{
                         content: "";
                         width: 1px;
-                        height: 100%;
-                        background: #fefefe;
-                        @include abs-pos(32px, auto, auto, -17px);                    
+                        height: 100%;                        
+                        @include abs-pos(32px, auto, auto, -17px); 
+                        background: url(../images/history-bg.png);                   
                     }
                 }
             }
