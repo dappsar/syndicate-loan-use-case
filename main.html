@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Syndicated Loan Blockchain Application</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <!-- Custom css file -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Custom js file -->
+    <script src="js/custom.js"></script>
+    <script>
+
+    </script>
+</head>
+
+<body onload="manageTab('loanDetails');">
+    <div class="container-fluid">
+        <header>
+            <nav>
+                <div class="header_logo float-left">
+                    <a class="navbar-brand" href="">
+                        <img src="images/logotype.png" alt="logo">
+                    </a>
+                </div>
+                <div class="header_content">
+                    <div class="header_mid">
+                        <div class="header_heading">
+                            <h2><a href="#">Housing Development</a></h2>
+                        </div>
+                        <div class="user_profile">
+                            <div class="user"></div>
+                            <div class="user_text">My Profile</div>
+                        </div>
+                    </div>
+                    <div class="header_logout">
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+
+            </nav>
+        </header>
+        <main>
+            <div class="row">
+                <div class="col-sm-3 no-padding">
+                    <div class="left_pannel">
+                        <span class="effect1"></span>
+                        <span class="effect2"></span>
+                        <span class="effect3"></span>
+                        <span class="effect4"></span>
+                        <span class="effect5"></span>
+                        <div class="add_applications">
+                            <span class="outer">
+                                <span class="outer_inn">
+                                    <span>+</span>
+                                </span>
+                            </span>
+                            <h4>Add new loan application</h4>
+                        </div>
+                        <div class="appplication_section">
+                            <p class="head">applications</p>
+                            <ul>
+                                <li class="in_review active">
+                                    <div class="lists">
+                                        <h4>Housing Development</h4>
+                                        <div class="status">
+                                            <p>In review</p>
+                                        </div>
+                                        <span class="date">1 March 2019</span>
+                                    </div>
+                                </li>
+                                <li class="wating_for_review">
+                                    <div class="lists">
+                                        <h4>Sale of an appartment complex</h4>
+                                        <div class="status">
+                                            <span class="radio_check">
+                                                <span class="radio_check_in">
+                                                    <span></span>
+                                                </span>
+                                            </span>
+                                            <p>Waiting for review</p>
+                                        </div>
+                                        <span class="date">6 March 2019</span>
+                                    </div>
+                                </li>
+                                <li class="approved">
+                                    <div class="lists">
+                                        <h4>Housing Development Leipartstr</h4>
+                                        <div class="status">
+                                            <p>Approved</p>
+                                        </div>
+                                        <span class="date">1 Jan 2019</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="token_section">
+                            <p class="head">ACTIVE TOKENIZED LOANS</p>
+                            <ul>
+                                <li>
+                                    <div class="active_token">
+                                        <h4>Housing Complex Wilmersdorf</h4>
+                                        <div class="token_detail">
+                                            <p>Loan amount: <span>27,000,000 €</span></p>
+                                            <p>Outstanding tokens: <span>27,000,000</span></p>
+                                            <p>Owned Tokens: <span>2,323,329 (x %)</span></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="active_token">
+                                        <h4>Appartment Eppendorf</h4>
+                                        <div class="token_detail">
+                                            <p>Loan amount: <span>1,440,000 €</span></p>
+                                            <p>Outstanding tokens: <span>1,440,000</span></p>
+                                            <p>Owned Tokens: <span>1,223,329 (x %)</span></p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5 no-padding">
+                    <div class="main_application">
+                        <h3>Application Details</h3>
+                        <ul id="tabs" class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab" onclick="keyData('keyData');">Key
+                                    Data</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab" onclick="manageTab('involvedParties')">Involved
+                                    Parties</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="tab-C" href="#pane-C" class="nav-link" data-toggle="tab" role="tab" onclick="manageTab('objectDetails')">Object
+                                    Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="tab-D" href="#pane-D" class="nav-link active" data-toggle="tab" role="tab"
+                                    onclick="manageTab('loanDetails')">Loan
+                                    Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="tab-E" href="#pane-E" class="nav-link" data-toggle="tab" role="tab" onclick="manageTab('documentDetails')">Documents</a>
+                            </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div id="
+                                    content" class="tab-content" role="tablist">
+                            <div id="pane-A" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-A">
+                                <div class="card-header" role="tab" id="heading-A">
+                                    <h5 class="mb-0">
+                                        <!-- Note: `data-parent` removed from here -->
+                                        <a data-toggle="collapse" href="#collapse-A" aria-expanded="true" aria-controls="collapse-A">
+                                            Key Data
+                                        </a>
+                                    </h5>
+                                </div>
+
+                                <!-- Note: New place of `data-parent` -->
+                                <div id="collapse-A" class="collapse show" data-parent="#content" role="tabpanel"
+                                    aria-labelledby="heading-A">
+                                    <div class="loan_detail">
+                                        <form>
+                                            <div class="form-label-group">
+                                                <div class="customDropdown">
+                                                    <span class="valueHolder">Name Of Loan</span>
+                                                    <span class="valueHolder1" name="Name Of Loan"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-label-group">
+                                                <div class="customDropdown">
+                                                    <span class="valueHolder">Purpose Of Loan</span>
+                                                    <span class="valueHolder1" name="Purpose Of Loan"></span>
+                                                </div>
+                                            </div>
+                                            <div class="group_btns">
+                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                    onclick="modalValue('keyData')">Update</button>
+                                                <button type="button" class="ghost_btn">Approve</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="reject_btn status_reject">
+                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                            application</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="pane-B" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-B">
+                                <div class="card-header" role="tab" id="heading-B">
+                                    <h5 class="mb-0">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapse-B" aria-expanded="false"
+                                            aria-controls="collapse-B">
+                                            Involved Parties
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapse-B" class="collapse" data-parent="#content" role="tabpanel"
+                                    aria-labelledby="heading-B">
+                                    <div class="loan_detail">
+                                        <form>
+                                            <div class="form-label-group">
+                                                <div class="customDropdown">
+                                                    <span class="valueHolder">Role</span>
+                                                    <span class="valueHolder1" name="Role"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="InName" name="Name" class="form-control"
+                                                    required>
+                                                <label for="InName">Name</label>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="InAddress" name="address" class="form-control"
+                                                    required>
+                                                <label for="InAddress">Address</label>
+                                            </div>
+                                            <div class="group_btns">
+                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                    onclick="modalValue('involvedParties')">Update</button>
+                                                <button type="button" class="ghost_btn">Approve</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="reject_btn status_reject">
+                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                            application</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="pane-C" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-C">
+                                <div class="card-header" role="tab" id="heading-C">
+                                    <h5 class="mb-0">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapse-C" aria-expanded="false"
+                                            aria-controls="collapse-C">
+                                            Object Details
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapse-C" class="collapse" role="tabpanel" data-parent="#content"
+                                    aria-labelledby="heading-C">
+                                    <div class="loan_detail">
+                                        <form>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="Description" class="form-control" name="Description"
+                                                    required>
+                                                <label for="Description">Description</label>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="area" class="form-control" name="Total Area Outdoor+Indoor"
+                                                    required>
+                                                <label for="area">Total area Outdoor+Indoor</label>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="usablearea" name="Usable Area Net Floor Space"
+                                                    class="form-control" required>
+                                                <label for="usablearea">Usable area (net floor space)</label>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="Outdoor" class="form-control" name="Total Area Outdoor"
+                                                    required>
+                                                <label for="Outdoor">Total area Outdoor</label>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="Purchase" class="form-control" name="Purchase Price"
+                                                    required>
+                                                <label for="Purchase">Purchase Price</label>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="meter" class="form-control" name="Price Per Sqaure Meter"
+                                                    required>
+                                                <label for="meter">Price per Square meter</label>
+                                            </div>
+                                            <div class="group_btns">
+                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                    onclick="modalValue('objectDetails')">Update</button>
+                                                <button type="button" class="ghost_btn">Approve</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="reject_btn status_reject">
+                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                            application</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pane-D" class="card tab-pane fade show active" role="tabpanel" aria-labelledby="tab-D">
+                                <div class="card-header" role="tab" id="heading-D">
+                                    <h5 class="mb-0">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapse-D" aria-expanded="false"
+                                            aria-controls="collapse-D">
+                                            Loan Details
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapse-D" class="collapse" role="tabpanel" data-parent="#content"
+                                    aria-labelledby="heading-D">
+                                    <div class="loan_detail">
+                                        <form>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="loanAmount" class="form-control" name="Client"
+                                                    required>
+                                                <label for="loanAmount"><span>Client</span>: Loan amount</label>
+                                                <span class="euro">€</span>
+                                                <!-- <span class="error_text">Text Error</span> -->
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="bank1" class="form-control" name="Bank#1"
+                                                    required>
+                                                <label for="bank1"><span>Bank #1</span>: Loan amount </label>
+                                                <span class="euro">€</span>
+                                                <!-- <span class="error_text">Text Error</span> -->
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="bank2" class="form-control" name="Bank#2"
+                                                    required>
+                                                <label for="bank2"><span>Bank #2</span>: Loan amount </label>
+                                                <span class="euro">€</span>
+                                                <!-- <span class="error_text">Text Error</span> -->
+                                            </div>
+                                            <div class="Total">
+                                                <span>Total</span>
+                                                <span class="Total_value" id="Total_value"> €</span>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="bank2" name="Interest Rate" class="form-control"
+                                                    required>
+                                                <label for="bank2">Interest rate</label>
+                                                <!-- <span class="error_text">Text Error</span> -->
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="bank2" name="Loan Payout Structure" class="form-control"
+                                                    required>
+                                                <label for="bank2">Loan Payout Structure</label>
+                                                <!-- <span class="error_text">Text Error</span> -->
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="bank2" class="form-control" name="Load Repayment Structure"
+                                                    required>
+                                                <label for="bank2">Loan Repayment Structure</label>
+                                                <!-- <span class="error_text">Text Error</span> -->
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="bank2" class="form-control" name="Loan Start"
+                                                    required>
+                                                <label for="bank2">Loan Start</label>
+                                                <!-- <span class="error_text">Text Error</span> -->
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="bank2" class="form-control" name="Loan Duration"
+                                                    required>
+                                                <label for="bank2">Loan Duration</label>
+                                                <!-- <span class="error_text">Text Error</span> -->
+                                            </div>
+                                            <div class="group_btns">
+                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                    onclick="modalValue('loanDetails')">Update</button>
+                                                <button type="button" class="ghost_btn">Approve</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="reject_btn status_reject">
+                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                            application</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pane-E" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-E">
+                                <div class="card-header" role="tab" id="heading-E">
+                                    <h5 class="mb-0">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapse-E" aria-expanded="false"
+                                            aria-controls="collapse-E">
+                                            Documents
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapse-E" class="collapse" role="tabpanel" data-parent="#content"
+                                    aria-labelledby="heading-E">
+                                    <div class="loan_detail">
+                                        <form>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="Expose" class="form-control" name="Expose"
+                                                    required>
+                                                <label for="Expose">Expose</label>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="Termsheet" class="form-control" name="Time Sheet"
+                                                    required>
+                                                <label for="Termsheet">Term Sheet</label>
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="addocuments" class="form-control" name="Additional document"
+                                                    required>
+                                                <label for="addocuments">Additional documents</label>
+                                            </div>
+                                            <div class="group_btns">
+                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                    onclick="modalValue('documentDetails')">Update</button>
+                                                <button type="button" class="ghost_btn">Approve</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="reject_btn status_reject">
+                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                            application</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end -->
+                    </div>
+                </div>
+                <div class="col-sm-4 no-padding">
+                    <div class="approval">
+                        <h3>Approval</h3>
+
+                        <div class="approval_parent">
+                            <div class="approval_check">
+                                <div class="form-group">
+                                    <input type="checkbox" id="Client">
+                                    <label for="Client">Client</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" id="Bank1">
+                                    <label for="Bank1">Bank#1</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" id="Bank2">
+                                    <label for="Bank2">Bank#2</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="History_pannel">
+                        <h3>History</h3>
+                        <ul>
+                            <li class="histroy_list active">
+                                <div class="histroy_detail">
+                                    <div class="top_section">
+                                        <p class="date">6 March 2019<span class="time">5:01 PM</span></p>
+                                        <span class="explorer">View on Explorer</span>
+                                    </div>
+                                    <div class="status">
+                                        <p class="status_point"> In review</p>
+                                    </div>
+                                    <p class="banks"><span>Bank#1.</span> <span>Application approved.</span></p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="histroy_detail">
+                                    <div class="top_section">
+                                        <p class="date">6 March 2019<span class="time">5:01 PM</span></p>
+                                    </div>
+                                    <div class="status">
+                                        <p> In review</p>
+                                    </div>
+                                    <p class="banks_application">Change loan application</p>
+                                    <div class="change_loan">
+                                        <p class="change-amt-head">Change Loan Amount </p>
+                                        <div class="change_amount">
+                                            <p>
+                                                <span class="amount">500,000 €</span>
+                                                <span class="changed_date">Changed data </span>
+                                                <span class="amount">450,000 €</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="comments_feild">
+                                        <p>Due to low creditworthiness of the borrower, we must lower the amount to
+                                            400,000 €.</p>
+                                    </div>
+                                    <div class="comment_section">
+                                        <p>
+                                            <span class="cmt_from">Comment from</span>
+                                            <span class="comment_by">Michael Brown</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="histroy_detail">
+                                    <div class="top_section">
+                                        <p class="date">3 March 2019<span class="time">2:01 PM</span></p>
+                                    </div>
+                                    <div class="status">
+                                        <p> In review</p>
+                                    </div>
+                                    <p class="banks_application"> Application viewed</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="histroy_detail">
+                                    <div class="top_section">
+                                        <p class="date">1 March 2019<span class="time">2:01 PM</span></p>
+                                    </div>
+                                    <div class="status waiting">
+                                        <p> Waiting for review</p>
+                                    </div>
+                                    <p class="banks_application"> Application submitted</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal_para">
+                    <h3>Are you sure you want to reject the application?</h3>
+                </div>
+                <div class="group_btns">
+                    <button type="button" class="primary_btn" aria-label="Close">Yes</button>
+                    <button type="button" class="ghost_btn" aria-label="Close">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--- update modal-->
+    <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal_para">
+                    <h3>Comment on changes</h3>
+                </div>
+                <div class="form-label-group float-lab">
+                    <textarea type="text" id="comment" class="form-control" placeholder="Add comments (optional)"
+                        required></textarea>
+                    <!-- <label for="comment">Term Sheet</label> -->
+                </div>
+                <div class="update_btn"><button type="button" data-dismiss="modal" class="primary_btn" onclick="storeComment();">Update</button></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

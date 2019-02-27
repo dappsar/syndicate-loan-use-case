@@ -1,0 +1,106 @@
+.main_application{
+    h3{
+        text-align: center;
+        padding-top: 37px;
+        padding-bottom: 20px;
+    }
+    .nav-tabs{
+        border-bottom: 1px solid $Catskill_Whitev2;
+        padding-left: 30px;
+        white-space: nowrap;
+        display: block!important;
+        flex-wrap: nowrap;
+        -webkit-flex-wrap: nowrap;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        .nav-item{
+            padding:0px 8px;
+            display: inline-block;
+            @include ExlgDevice{
+                padding:0px 10px;
+            }
+            a{
+                padding-bottom: 24px;
+                border: none;
+                @include font-size(14);
+                color: $Waterloo;
+                line-height: 22px;
+                padding:0 0 24px 0;
+                @include lgDevice{
+                    @include font-size(16);
+                }  
+                &:before{
+                    content: "";
+                    width: 0;
+                    height: 4px;
+                    @include abs-pos(auto, 0, 0, 0);
+                    background: $Crusta;
+                    transition: all .4s ease;
+                    }              
+                &:hover{
+                    border: none;
+                    color: $Outer_Space;
+                }
+                &.active{
+                    position: relative;
+                    color: $Outer_Space;
+                    &:before{
+                    content: "";
+                    width: 100%;
+                    height: 4px;
+                    @include abs-pos(auto, 0, 0, 0);
+                    background: $Crusta;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.main_application{
+    .tab-content{
+        padding: 0;
+        .loan_detail{
+            padding: 55px 36px 39px;
+            border-bottom: 1px solid $Catskill_Whitev2;
+            @include minTablet{
+                padding: 35px 20px 35px;
+            }
+        }
+    }
+}
+.Total{
+    box-shadow: 0 4px 16px 0 rgba(43,102,146,0.1);
+    @include border-radius(4px);
+    height: 56px;
+    color: $Waterloo;
+    @include font-size(14);
+    line-height: 19px;
+    @include flex;
+    @include align-items(center);
+    @include justify-content(space-between);
+    padding: 0 24px;
+    margin-bottom: 16px;
+    .Total_value{
+        @include font-size(15);
+        font-weight: 700;
+        color: $Outer_Space;
+    }
+}
+.group_btns{
+    @include flex;
+    @include justify-content(space-between);
+    margin-top: 32px;
+}
+
+.status_reject{
+    text-align: center;
+    margin-top: 18px;
+    &:before{
+        content: "x";
+        font-size: 16px;
+        color: $Danger;
+    }
+}
