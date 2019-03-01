@@ -23,8 +23,7 @@
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Custom js file -->
-    <script src="js/custom.js"></script>
+    
     <script>
 
     </script>
@@ -65,7 +64,7 @@
                         <span class="effect3"></span>
                         <span class="effect4"></span>
                         <span class="effect5"></span>
-                        <div class="add_applications">
+                        <div class="add_applications" data-toggle="modal" data-target="#application">
                             <span class="outer">
                                 <span class="outer_inn">
                                     <span>+</span>
@@ -87,7 +86,7 @@
                                 </li>
                                 <li class="wating_for_review">
                                     <div class="lists">
-                                        <h4>Sale of an appartment complex</h4>
+                                        <h4 id="loan_title"></h4>
                                         <div class="status">
                                             <span class="radio_check">
                                                 <span class="radio_check_in">
@@ -195,7 +194,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('keyData')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('keyData');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -238,7 +237,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('involvedParties')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('involvedParties');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -295,7 +294,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('objectDetails')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('objectDetails');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -376,7 +375,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('loanDetails')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('loanDetails');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -417,7 +416,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('documentDetails')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('documentDetails');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -486,16 +485,18 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="comments_feild">
-                                        <p>Due to low creditworthiness of the borrower, we must lower the amount to
-                                            400,000 €.</p>
-                                    </div>
-                                    <div class="comment_section">
-                                        <p>
-                                            <span class="cmt_from">Comment from</span>
-                                            <span class="comment_by">Michael Brown</span>
-                                        </p>
-                                    </div>
+                                    <div id="commentSection">
+                                        <div class="comments_feild">
+                                            <p>Due to low creditworthiness of the borrower, we must lower the amount to
+                                                400,000 €.</p>
+                                        </div>
+                                        <div class="comment_section">
+                                            <p>
+                                                <span class="cmt_from">Comment from</span>
+                                                <span class="comment_by">Michael Brown</span>
+                                            </p>
+                                        </div>
+                                    </div>  
                                 </div>
                             </li>
                             <li>
@@ -566,7 +567,29 @@
             </div>
         </div>
     </div>
+    <!--- Loan application modal-->
+    <div class="modal fade" id="application" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal_para">
+                    <h3>Add new loan application</h3>
+                </div>
+                <div class="form-label-group float-lab">
+                    <textarea type="text" id="add_loan_applications" class="form-control" placeholder="Loan Allication type"
+                        required></textarea>
+                    <!-- <label for="comment">Term Sheet</label> -->
+                </div>
+                <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal" class="primary_btn" onclick="storeComment();">Add</button></div>
+            </div>
+        </div>
     </div>
+    </div>
+    <!-- Custom js file -->
+    <script src="js/custom.js"></script>
 </body>
 
 </html>

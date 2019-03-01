@@ -45,7 +45,7 @@ $(document).ready(function () {
 
     /* ---------Appliaction tab js------- */
 
-    $('.appplication_section ul li').click(function () {
+    $("body").on("click", ".appplication_section ul li", function () {
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');
     });
@@ -80,7 +80,6 @@ getLocalStorage = (key) => {
     return JSON.parse(localStorage.getItem(key));
 }
 setLocalStorage = (key, value) => {
-    console.log('setter:: ', key, typeof value, value)
     return JSON.parse(localStorage.setItem(key, JSON.stringify(value)));
 }
 
@@ -93,6 +92,7 @@ formValueSetter = (data) => {
         formData[i].value = data[formData[i].name] ? data[formData[i].name] : '';//value binding
         formData[i].parentElement.className = "form-label-group float-lab input_float_lbl"//class binding
     }
+    calculateTotalAmount();
 }
 
 
@@ -142,7 +142,7 @@ var manageTab = (tab) => {
         //storing data in localstorage
         setLocalStorage(tab, DetailsObject)
     }
-        
+
 
 }
 
@@ -158,7 +158,7 @@ storeComment = () => {
     let commentedData = getLocalStorage('comment')
     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
     user = `${user}-${modal}`
-
+    appendComment(comment, user);
     if (commentedData) {
         commentedData = Object.assign(commentedData, { [user]: { 'comment': comment } })
         setLocalStorage('comment', commentedData)
@@ -209,3 +209,68 @@ setUpEnv = (tab) => {
             }
     }
 }
+
+
+//getting updated data
+updatedData = (tab) => {
+    let localDb = getLocalStorage(tab)
+    let formData = document.getElementsByClassName("form-control")
+    for (i = 0; i < formData.length; i++) {
+        localDb[formData[i].name] ? (localDb[formData[i].name] = formData[i].value) : ''
+    }
+    calculateTotalAmount();
+    setLocalStorage(tab, localDb)
+}
+
+//append comment
+appendComment = (comment, user) => {
+    $('#commentSection').append(`<div class="comments_feild">
+    <p>${comment}</p>
+</div>
+    <div class="comment_section">
+        <p>
+            <span class="cmt_from">Comment from</span>
+            <span class="comment_by">${user}</span>
+        </p>
+    </div>`)
+}
+
+//predefined Comment from local storage
+(() => {
+    let comments = getLocalStorage('comment');
+    for (comment in comments) {
+        appendComment(comments[comment].comment, comment)
+    }
+})()
+
+/* ---------Storing loan application list data ---------*/
+
+let Appliaction_data = [
+    {'loanApplication':'Housing Development', 'status':'In review', 'time': '1 March 2019'},
+    {'loanApplication':'Sale of an appartment complex', 'status':'Waiting for review', 'time': '6 March 2019'},
+    {'loanApplication':'Housing Development Leipartstr', 'status':'Approved', 'time': '1 Jan 2019'}
+]
+
+let text_value;
+
+addItem=()=>   { 
+    text_value = document.getElementById("add_loan_applications").value;
+    if (!text_value){
+        return false;
+    }
+    else{        
+        $(".appplication_section ul").append('<li><div class="lists"><h4>'+text_value+'</h4><div class="status"><p>Waiting for review</p></div><span class="date">'+new Date()+'</span></div></li>');
+        Appliaction_data.push({'loanApplication':text_value, status:'Waiting for review', time: new Date()});
+        setLocalStorage('loanType', Appliaction_data);
+    }
+}
+
+/* ---------Application loan list -----------*/
+(()=>{
+    let application_list = getLocalStorage('loanType');
+    for(i=3; i<application_list.length; i++){
+        $(".appplication_section ul").append('<li><div class="lists"><h4>'+application_list[i].loanApplication+'</h4><div class="status"><p>'+application_list[i].status+'</p></div><span class="date">'+application_list[i].time+'</span></div></li>');        
+        Appliaction_data = application_list;
+    }
+
+})()
