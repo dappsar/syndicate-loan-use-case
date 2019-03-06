@@ -23,10 +23,9 @@
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
 
+    <!-- Favicon icon -->
+    <link rel="icon" href="images/fab_icon.png" type="image/png" sizes="16x16">
     
-    <script>
-
-    </script>
 </head>
 
 <body onload="manageTab('loanDetails');">
@@ -49,7 +48,7 @@
                         </div>
                     </div>
                     <div class="header_logout">
-                        <a href="#">Logout</a>
+                        <a href="#" onclick="Logout()">Logout</a>
                     </div>
                 </div>
 
@@ -74,7 +73,7 @@
                         </div>
                         <div class="appplication_section">
                             <p class="head">applications</p>
-                            <ul>
+                            <ul class="nicescroll-box">
                                 <li class="in_review active">
                                     <div class="lists">
                                         <h4>Housing Development</h4>
@@ -589,6 +588,16 @@
     </div>
     </div>
     <!-- Custom js file -->
+    <script>
+            $(function() {  
+                $(".nicescroll-box").niceScroll({
+                    scrollspeed: 40                    
+                    //A smaller value increases the scroll speed. A larger value makes the scroll speed slower.
+                    
+                });
+            });      
+        </script>
+    <script src="js/jquery.nicescroll.js"></script>
     <script src="js/custom.js"></script>
 </body>
 

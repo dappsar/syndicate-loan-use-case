@@ -1,4 +1,3 @@
-
 let applicationType = 'Housing Development'
 let currentTab = 'loanDetails'
 var select_arr = ['Loan Taker', 'Seller', 'Confidant']
@@ -53,18 +52,14 @@ $(document).ready(function () {
         $(this).closest('li').addClass('active');
         let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];
         document.getElementById("heading_text").innerHTML= loan_heading;
-        console.log(applicationType = $(this).closest('li')[0].innerText.split("\n")[0])
+        applicationType = $(this).closest('li')[0].innerText.split("\n")[0]
         manageTab(currentTab);
         restoreComment();
         approvals();
+        keyData(currentTab);
     });
 
 });
-
-
-validate = () => {
-$('#myFormData')[0].reset();
-}
 
 /* ----storing signup input data on browser------ */
 var submitFormData = () => {
@@ -74,7 +69,7 @@ var submitFormData = () => {
     //getting drop down values from class
     let dropDownData = document.getElementsByClassName("valueHolder1")
     //managing current user
-    console.log(sessionStorage.setItem('user', JSON.stringify(formData[0].value)))
+    sessionStorage.setItem('user', JSON.stringify(formData[0].value))
     sessionStorage.setItem('role', JSON.stringify(dropDownData[0].textContent))
     //getting values from form
     for (i = 0; i < formData.length; i++)
@@ -114,6 +109,7 @@ formValueSetter = (data) => {
 
 /* ----storing pre defined data on browser------ */
 var keyData = (tab) => {
+    currentTab = tab;
     let keyDataObject = getLocalStorage(applicationType)
     if (keyDataObject && keyDataObject[tab])
         settingUpDropDown(keyDataObject[tab]);
@@ -169,7 +165,6 @@ var manageTab = (tab) => {
             formValueSetter(DetailsObject);
             calculateTotalAmount();
             //storing data in localstorage
-            console.log(applicationType, data)
             setLocalStorage(applicationType, data)
         }
         else {
@@ -177,7 +172,6 @@ var manageTab = (tab) => {
             formValueSetter(DetailsObject[tab]);
             calculateTotalAmount();
             //storing data in localstorage
-            console.log(applicationType, DetailsObject)
             setLocalStorage(applicationType, DetailsObject)
 
         }
@@ -197,7 +191,7 @@ storeComment = () => {
     let comment = document.getElementById('comment').value;
     let commentedData = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : ''
     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
-    user = `${user}-${modal}`
+    //user = `${user}-${modal}`
     appendComment(comment, user);
     if (commentedData && commentedData['comment']) {
         commentedData['comment'][user] = { 'comment': comment }
@@ -259,9 +253,11 @@ setUpEnv = (tab) => {
 updatedData = (tab) => {
     let localDb = getLocalStorage(applicationType)
     let formData = document.getElementsByClassName("form-control")
-    for (i = 0; i < formData.length; i++) {
+    for (i = 0; i < formData.length; i++)
         localDb[tab][formData[i].name] ? (localDb[tab][formData[i].name] = formData[i].value) : ''
-    }
+    let dropData = document.getElementsByClassName("valueHolder1")
+    for (i = 0; i < dropData.length; i++)
+        localDb[tab][dropData[i].previousElementSibling.innerHTML] = dropData[i].textContent;
     calculateTotalAmount();
     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
     if (localDb['approvals']) {
@@ -275,9 +271,9 @@ updatedData = (tab) => {
 }
 
 //get check box value
+
 approvals = () => {
     let users = getLocalStorage(applicationType)['approvals'];
-    console.log(users)
     if (users) {
         if (users.includes('Bank#1'))
             document.getElementById("Bank1").checked = true;
@@ -297,7 +293,7 @@ approvals = () => {
         document.getElementById("Bank1").checked = false;
         document.getElementById("Client").checked = false;
     }
-}
+} 
 approvals();
 //append comment
 appendComment = (comment, user) => {
@@ -316,7 +312,6 @@ appendComment = (comment, user) => {
 restoreComment = () => {
     $("#commentSection").empty();
     let comments = getLocalStorage(applicationType)['comment'];
-    console.log(comments)
     for (comment in comments) {
         appendComment(comments[comment].comment, comment)
     }
@@ -355,3 +350,13 @@ addItem = () => {
         }
 
 })()
+
+/* ------Redirect to Logout---------*/ 
+Logout = () =>{
+    window.location.href = "Signup.html";
+}
+
+
+
+
+
