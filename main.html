@@ -23,11 +23,9 @@
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Custom js file -->
-    <script src="js/custom.js"></script>
-    <script>
-
-    </script>
+    <!-- Favicon icon -->
+    <link rel="icon" href="images/fab_icon.png" type="image/png" sizes="16x16">
+    
 </head>
 
 <body onload="manageTab('loanDetails');">
@@ -42,7 +40,7 @@
                 <div class="header_content">
                     <div class="header_mid">
                         <div class="header_heading">
-                            <h2><a href="#">Housing Development</a></h2>
+                            <h2><a href="#" id="heading_text">Housing Development</a></h2>
                         </div>
                         <div class="user_profile">
                             <div class="user"></div>
@@ -50,7 +48,7 @@
                         </div>
                     </div>
                     <div class="header_logout">
-                        <a href="#">Logout</a>
+                        <a href="#" onclick="Logout()">Logout</a>
                     </div>
                 </div>
 
@@ -65,7 +63,7 @@
                         <span class="effect3"></span>
                         <span class="effect4"></span>
                         <span class="effect5"></span>
-                        <div class="add_applications">
+                        <div class="add_applications" data-toggle="modal" data-target="#application">
                             <span class="outer">
                                 <span class="outer_inn">
                                     <span>+</span>
@@ -75,7 +73,7 @@
                         </div>
                         <div class="appplication_section">
                             <p class="head">applications</p>
-                            <ul>
+                            <ul class="nicescroll-box">
                                 <li class="in_review active">
                                     <div class="lists">
                                         <h4>Housing Development</h4>
@@ -195,7 +193,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('keyData')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('keyData');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -238,7 +236,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('involvedParties')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('involvedParties');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -295,7 +293,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('objectDetails')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('objectDetails');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -376,7 +374,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('loanDetails')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('loanDetails');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -417,7 +415,7 @@
                                             <div class="group_btns">
                                                 <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
                                                     onclick="modalValue('documentDetails')">Update</button>
-                                                <button type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="updatedData('documentDetails');" type="button" class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -486,16 +484,18 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="comments_feild">
-                                        <p>Due to low creditworthiness of the borrower, we must lower the amount to
-                                            400,000 €.</p>
-                                    </div>
-                                    <div class="comment_section">
-                                        <p>
-                                            <span class="cmt_from">Comment from</span>
-                                            <span class="comment_by">Michael Brown</span>
-                                        </p>
-                                    </div>
+                                    <div id="commentSection">
+                                        <div class="comments_feild">
+                                            <p>Due to low creditworthiness of the borrower, we must lower the amount to
+                                                400,000 €.</p>
+                                        </div>
+                                        <div class="comment_section">
+                                            <p>
+                                                <span class="cmt_from">Comment from</span>
+                                                <span class="comment_by">Michael Brown</span>
+                                            </p>
+                                        </div>
+                                    </div>  
                                 </div>
                             </li>
                             <li>
@@ -566,7 +566,39 @@
             </div>
         </div>
     </div>
+    <!--- Loan application modal-->
+    <div class="modal fade" id="application" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal_para">
+                    <h3>Add new loan application</h3>
+                </div>
+                <div class="form-label-group float-lab">
+                    <textarea type="text" id="add_loan_applications" class="form-control" placeholder="Loan Allication type"
+                        required></textarea>
+                    <!-- <label for="comment">Term Sheet</label> -->
+                </div>
+                <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal" class="primary_btn" onclick="storeComment();">Add</button></div>
+            </div>
+        </div>
     </div>
+    </div>
+    <!-- Custom js file -->
+    <script>
+            $(function() {  
+                $(".nicescroll-box").niceScroll({
+                    scrollspeed: 40                    
+                    //A smaller value increases the scroll speed. A larger value makes the scroll speed slower.
+                    
+                });
+            });      
+        </script>
+    <script src="js/jquery.nicescroll.js"></script>
+    <script src="js/custom.js"></script>
 </body>
 
 </html>

@@ -31,14 +31,14 @@ body{
   box-shadow: 0 16px 10px -17px rgba(0, 0, 0, 0.5);
     &:after {
         content: "";
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background: #999;
-  transform: rotate(45deg);
-  top: 25px;
-  left: 25px;
-  box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background: #999;
+        transform: rotate(45deg);
+        top: 25px;
+        left: 25px;
+        box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
       }
 }
 .reject_btn{
@@ -97,7 +97,7 @@ body{
         }
     }
 }
-#update {
+#update, #application { 
     .form-label-group{        
         margin: 36px 40px 40px 40px;
     }
@@ -140,4 +140,12 @@ body{
         display: block !important;
         opacity: 1;
     }
+}
+
+.nicescroll-box{
+    height: 270px;
+}
+.nicescroll-cursors{
+    border: 1px solid #0066b3 !important;
+    background-color: #0066b3 !important; 
 }

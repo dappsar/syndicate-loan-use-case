@@ -1,4 +1,5 @@
-
+let applicationType = 'Housing Development'
+let currentTab = 'loanDetails'
 var select_arr = ['Loan Taker', 'Seller', 'Confidant']
 $(document).ready(function () {
     function createDropdown() {
@@ -46,9 +47,16 @@ $(document).ready(function () {
 
     /* ---------Appliaction tab js------- */
 
-    $('.appplication_section ul li').click(function () {
+    $("body").on("click", ".appplication_section ul li", function () {
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');
+        let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];
+        document.getElementById("heading_text").innerHTML= loan_heading;
+        applicationType = $(this).closest('li')[0].innerText.split("\n")[0]
+        manageTab(currentTab);
+        restoreComment();
+        approvals();
+        keyData(currentTab);
     });
 
 });
@@ -61,7 +69,8 @@ var submitFormData = () => {
     //getting drop down values from class
     let dropDownData = document.getElementsByClassName("valueHolder1")
     //managing current user
-    console.log(sessionStorage.setItem('user', JSON.stringify(formData[0].value)))
+    sessionStorage.setItem('user', JSON.stringify(formData[0].value))
+    sessionStorage.setItem('role', JSON.stringify(dropDownData[0].textContent))
     //getting values from form
     for (i = 0; i < formData.length; i++)
         //creating new key pair of tag and value from input
@@ -82,8 +91,7 @@ getLocalStorage = (key) => {
     return JSON.parse(localStorage.getItem(key));
 }
 setLocalStorage = (key, value) => {
-    console.log('setter:: ', key, typeof value, value)
-    return JSON.parse(localStorage.setItem(key, JSON.stringify(value)));
+    localStorage.setItem(key, JSON.stringify(value));
 }
 
 
@@ -95,22 +103,34 @@ formValueSetter = (data) => {
         formData[i].value = data[formData[i].name] ? data[formData[i].name] : '';//value binding
         formData[i].parentElement.className = "form-label-group float-lab input_float_lbl"//class binding
     }
+    calculateTotalAmount();
 }
 
 
 
 /* ----storing pre defined data on browser------ */
 var keyData = (tab) => {
-    let keyDataObject = getLocalStorage(tab)
-    if (keyDataObject)
-        settingUpDropDown(keyDataObject);
+    currentTab = tab;
+    let keyDataObject = getLocalStorage(applicationType)
+    if (keyDataObject && keyDataObject[tab])
+        settingUpDropDown(keyDataObject[tab]);
     else {
-        //defining key data 
-        keyDataObject = setUpEnv(tab);
-        settingUpDropDown(keyDataObject);
-        //storing data in localstorage
-        formValueSetter(keyDataObject);
-        setLocalStorage(tab, keyDataObject)
+        if (!keyDataObject) {
+            //defining key data 
+            keyDataObject = setUpEnv(tab);
+            settingUpDropDown(keyDataObject);
+            //storing data in localstorage
+            formValueSetter(keyDataObject);
+            setLocalStorage(applicationType, keyDataObject)
+        }
+        else {
+            keyDataObject[tab] = setUpEnv(tab);
+            settingUpDropDown(keyDataObject[tab]);
+            //storing data in localstorage
+            formValueSetter(keyDataObject[tab]);
+            setLocalStorage(applicationType, keyDataObject)
+        }
+
     }
 }
 
@@ -131,20 +151,33 @@ calculateTotalAmount = () => {
 }
 
 var manageTab = (tab) => {
+    currentTab = tab;
     if (tab == 'involvedParties')
         keyData('involvedParties')
 
-    let DetailsObject = getLocalStorage(tab)
-    if (DetailsObject)
-        formValueSetter(DetailsObject);
+    let DetailsObject = getLocalStorage(applicationType)
+    if (DetailsObject && DetailsObject[tab])
+        formValueSetter(DetailsObject[tab]);
     else {
-        DetailsObject = setUpEnv(tab)
-        formValueSetter(DetailsObject);
-        calculateTotalAmount();
-        //storing data in localstorage
-        setLocalStorage(tab, DetailsObject)
+        if (!DetailsObject) {
+            DetailsObject = setUpEnv(tab)
+            let data = {}
+            data[tab] = DetailsObject
+            formValueSetter(DetailsObject);
+            calculateTotalAmount();
+            //storing data in localstorage
+            setLocalStorage(applicationType, data)
+        }
+        else {
+            DetailsObject[tab] = setUpEnv(tab)
+            formValueSetter(DetailsObject[tab]);
+            calculateTotalAmount();
+            //storing data in localstorage
+            setLocalStorage(applicationType, DetailsObject)
+
+        }
     }
-        
+
 
 }
 
@@ -157,16 +190,18 @@ modalValue = (tabName) => modal = tabName;
 //comment saved locally
 storeComment = () => {
     let comment = document.getElementById('comment').value;
-    let commentedData = getLocalStorage('comment')
+    let commentedData = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : ''
     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
-    user = `${user}-${modal}`
-
-    if (commentedData) {
-        commentedData = Object.assign(commentedData, { [user]: { 'comment': comment } })
-        setLocalStorage('comment', commentedData)
+    //user = `${user}-${modal}`
+    appendComment(comment, user);
+    if (commentedData && commentedData['comment']) {
+        commentedData['comment'][user] = { 'comment': comment }
+        setLocalStorage(applicationType, commentedData)
     }
-    else
-        setLocalStorage('comment', { [user]: { 'comment': comment } })
+    else {
+        let data = Object.assign(commentedData, { 'comment': { [user]: { 'comment': comment } } })
+        setLocalStorage(applicationType, data)
+    }
 }
 
 //manage predefined data structure 
@@ -211,3 +246,118 @@ setUpEnv = (tab) => {
             }
     }
 }
+
+
+
+
+//getting updated data
+updatedData = (tab) => {
+    let localDb = getLocalStorage(applicationType)
+    let formData = document.getElementsByClassName("form-control")
+    for (i = 0; i < formData.length; i++)
+        localDb[tab][formData[i].name] ? (localDb[tab][formData[i].name] = formData[i].value) : ''
+    let dropData = document.getElementsByClassName("valueHolder1")
+    for (i = 0; i < dropData.length; i++)
+        localDb[tab][dropData[i].previousElementSibling.innerHTML] = dropData[i].textContent;
+    calculateTotalAmount();
+    let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
+    if (localDb['approvals']) {
+        if (!localDb['approvals'].includes(user))
+            localDb['approvals'].push(user)
+    }
+    else
+        localDb['approvals'] = [user]
+    setLocalStorage(applicationType, localDb);
+    approvals();
+}
+
+//get check box value
+
+approvals = () => {
+    let users = getLocalStorage(applicationType)['approvals'];
+    if (users) {
+        if (users.includes('Bank#1'))
+            document.getElementById("Bank1").checked = true;
+        else
+            document.getElementById("Bank1").checked = false;
+        if (users.includes('Bank#2'))
+            document.getElementById("Bank2").checked = true;
+        else
+            document.getElementById("Bank2").checked = false;
+        if (users.includes('Client'))
+            document.getElementById("Client").checked = true;
+        else
+            document.getElementById("Client").checked = false;
+    }
+    else {
+        document.getElementById("Bank2").checked = false;
+        document.getElementById("Bank1").checked = false;
+        document.getElementById("Client").checked = false;
+    }
+} 
+approvals();
+//append comment
+appendComment = (comment, user) => {
+    $('#commentSection').append(`<div class="comments_feild">
+    <p>${comment}</p>
+</div>
+    <div class="comment_section">
+        <p>
+            <span class="cmt_from">Comment from</span>
+            <span class="comment_by">${user}</span>
+        </p>
+    </div>`)
+}
+
+//predefined Comment from local storage
+restoreComment = () => {
+    $("#commentSection").empty();
+    let comments = getLocalStorage(applicationType)['comment'];
+    for (comment in comments) {
+        appendComment(comments[comment].comment, comment)
+    }
+}
+restoreComment();
+
+/* ---------Storing loan application list data ---------*/
+
+let Appliaction_data = [
+    { 'loanApplication': 'Housing Development', 'status': 'In review', 'time': '1 March 2019' },
+    { 'loanApplication': 'Sale of an appartment complex', 'status': 'Waiting for review', 'time': '6 March 2019' },
+    { 'loanApplication': 'Housing Development Leipartstr', 'status': 'Approved', 'time': '1 Jan 2019' }
+]
+
+let text_value;
+
+addItem = () => {
+    text_value = document.getElementById("add_loan_applications").value;
+    if (!text_value) {
+        return false;
+    }
+    else {
+        $(".appplication_section ul").append('<li><div class="lists"><h4>' + text_value + '</h4><div class="status"><p>Waiting for review</p></div><span class="date">' + new Date() + '</span></div></li>');
+        Appliaction_data.push({ 'loanApplication': text_value, status: 'Waiting for review', time: new Date() });
+        setLocalStorage('loanType', Appliaction_data);
+    }
+}
+
+/* ---------Application loan list -----------*/
+(() => {
+    let application_list = getLocalStorage('loanType');
+    if (application_list)
+        for (i = 3; i < application_list.length; i++) {
+            $(".appplication_section ul").append('<li><div class="lists"><h4>' + application_list[i].loanApplication + '</h4><div class="status"><p>' + application_list[i].status + '</p></div><span class="date">' + application_list[i].time + '</span></div></li>');
+            Appliaction_data = application_list;
+        }
+
+})()
+
+/* ------Redirect to Logout---------*/ 
+Logout = () =>{
+    window.location.href = "Signup.html";
+}
+
+
+
+
+
