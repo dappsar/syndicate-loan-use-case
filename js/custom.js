@@ -1,3 +1,27 @@
+
+function loadWeb3() {
+    alert('ok');
+
+    if (typeof web3 !== 'undefined') {
+        console.log("injected provider found")
+        web3 = new Web3(web3.currentProvider);
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+    } else {
+        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        console.log('web3 was undefined, local Provider used');
+
+    }
+    console.log(web3);
+    web3.eth.defaultAccount = web3.eth.accounts[0];   
+
+    
+}
+
+
+function writeToBlockchain() {
+    //
+}
+
 var select_arr = ['Loan Taker', 'Seller', 'Confidant']
 $(document).ready(function () {
     function createDropdown() {
@@ -69,6 +93,7 @@ var submitFormData = () => {
     signupData.Role = dropDownData[0].textContent
     //storing data in localstorage
     setLocalStorage(new Date(), signupData)
+    //writeToBlockchain("userdata",signupData)
 }
 /* ----end of storing input data on browser------ */
 
