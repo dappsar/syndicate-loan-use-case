@@ -1,6 +1,8 @@
 let applicationType = 'Housing Development'
 let currentTab = 'loanDetails'
 var select_arr = ['Loan Taker', 'Seller', 'Confidant']
+
+
 $(document).ready(function () {
     function createDropdown() {
         var drop = $('.customDropdown');
