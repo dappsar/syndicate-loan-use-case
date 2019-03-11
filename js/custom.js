@@ -282,7 +282,18 @@ setUpEnv = (tab) => {
 }
 
 
-
+updatedData = (tab) => {  
+    let localDb = getLocalStorage(applicationType)  
+    let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
+    if (localDb['approvals']) {
+        if (!localDb['approvals'].includes(user))
+            localDb['approvals'].push(user)
+    }
+    else
+        localDb['approvals'] = [user]
+    setLocalStorage(applicationType, localDb);
+    approvals();
+}
 
 //getting updated data
 modalValue = (tab) => {
@@ -293,16 +304,7 @@ modalValue = (tab) => {
     let dropData = document.getElementsByClassName("valueHolder1")
     for (i = 0; i < dropData.length; i++)
         localDb[tab][dropData[i].previousElementSibling.innerHTML] = dropData[i].textContent;
-    calculateTotalAmount();
-    let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
-    if (localDb['approvals']) {
-        if (!localDb['approvals'].includes(user))
-            localDb['approvals'].push(user)
-    }
-    else
-        localDb['approvals'] = [user]
-    setLocalStorage(applicationType, localDb);
-    approvals();
+    calculateTotalAmount();    
 }
 
 //get check box value
