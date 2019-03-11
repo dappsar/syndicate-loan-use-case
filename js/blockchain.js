@@ -2,20 +2,31 @@
 
 
 function loadWeb3() {
-    alert('loadWeb3 called');
+    alert(window.web3);
    
 
     // web3 = new Web3(web3.currentProvider);
     // console.log(web3);
     // const Web3 = require('web3');
-
+    
     console.log(window.ethereum);
     console.log(window.web3);
-    console.log('Hello');
+    var a = window.web3;
+
+    web3.eth.defaultAccount = web3.eth.accounts[0];
+    console.log(web3.eth.defaultAccount);
+
+    window.web3 = new Web3(web3.currentProvider);
+    console.log(window.web3);
+    var b = window.web3;
+
     
+
     window.addEventListener('load', async () => {
+    console.log('Event Listener load triggered');
     // Modern dapp browsers...
     if (window.ethereum) {
+        console.log('Window.ethereum == true');
         window.web3 = new Web3(ethereum);
         try {
             // Request account access if needed
@@ -28,6 +39,7 @@ function loadWeb3() {
     }
     // Legacy dapp browsers...
     else if (window.web3) {
+        console.log('Window.web3 == true');
         window.web3 = new Web3(web3.currentProvider);
         // Acccounts always exposed
         web3.eth.sendTransaction({/* ... */});
@@ -38,7 +50,6 @@ function loadWeb3() {
     }
     });
 }
-
 
 
     function writeToBlockchain() {

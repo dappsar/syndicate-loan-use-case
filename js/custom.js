@@ -212,11 +212,11 @@ setUpEnv = (tab) => {
         case "keyData":
             return {
                 'Name Of Loan': 'Seller',
-                'Purpose Of Loan': 'Confidant'
+                'Purpose Of Loan': 'Confident'
             };
         case "involvedParties":
             return {
-                'Role': 'Loan Takker',
+                'Role': 'Borrower',
                 'Name': 'testing',
                 'address': 'This is 37/1 testing address, gurgaon'
             };
