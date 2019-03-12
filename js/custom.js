@@ -61,8 +61,43 @@ $(document).ready(function () {
         keyData(currentTab);
     });
 
-});
+    $('.date_picker').datepicker({
+        autoclose: true
+    });
 
+});
+/* ---------Storing loan application list data ---------*/
+
+let Appliaction_data = [
+    { 'loanApplication': 'Housing Development', 'status': 'In review', 'time': '1 March 2019' },
+    { 'loanApplication': 'Sale of an appartment complex', 'status': 'Waiting for review', 'time': '6 March 2019' },
+    { 'loanApplication': 'Housing Development Leipartstr', 'status': 'Approved', 'time': '1 Jan 2019' }
+]
+
+let text_value;
+
+addItem = () => {
+    text_value = document.getElementById("add_loan_applications").value;
+    /*---date formate ----- */
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+    ];
+    var today = new Date();
+    var dd = today.getDate();
+    var yyyy = today.getFullYear()
+    var month = monthNames[today.getMonth()]
+    today = dd + ' ' + month + ' ' + yyyy;
+    /*---nd of Edate formate ----- */
+
+    if (!text_value) {
+        return false;
+    }
+    else {
+        $(".appplication_section ul").append('<li><div class="lists"><h4>' + text_value + '</h4><div class="status"><p>Waiting for review</p></div><span class="date">' + today + '</span></div></li>');
+        Appliaction_data.push({ 'loanApplication': text_value, status: 'Waiting for review', time: today });
+        setLocalStorage('loanType', Appliaction_data);
+    }
+}
 /* ----storing signup input data on browser------ */
 var submitFormData = () => {
     let signupData = {};
@@ -237,7 +272,7 @@ setUpEnv = (tab) => {
                 'Interest Rate': 18,
                 'Loan Payout Structure': 'testing Cumulative',
                 'Load Repayment Structure': 'testing structure',
-                'Loan Start': 'testing loan start on 26 feb 2019',
+                'Loan Start': 'Select loan start date',
                 'Loan Duration': 'testing duration 12 months'
             }
         case "documentDetails":
@@ -250,18 +285,8 @@ setUpEnv = (tab) => {
 }
 
 
-
-
-//getting updated data
-updatedData = (tab) => {
-    let localDb = getLocalStorage(applicationType)
-    let formData = document.getElementsByClassName("form-control")
-    for (i = 0; i < formData.length; i++)
-        localDb[tab][formData[i].name] ? (localDb[tab][formData[i].name] = formData[i].value) : ''
-    let dropData = document.getElementsByClassName("valueHolder1")
-    for (i = 0; i < dropData.length; i++)
-        localDb[tab][dropData[i].previousElementSibling.innerHTML] = dropData[i].textContent;
-    calculateTotalAmount();
+updatedData = (tab) => {  
+    let localDb = getLocalStorage(applicationType)  
     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
     if (localDb['approvals']) {
         if (!localDb['approvals'].includes(user))
@@ -271,6 +296,18 @@ updatedData = (tab) => {
         localDb['approvals'] = [user]
     setLocalStorage(applicationType, localDb);
     approvals();
+}
+
+//getting updated data
+modalValue = (tab) => {
+    let localDb = getLocalStorage(applicationType)
+    let formData = document.getElementsByClassName("form-control")
+    for (i = 0; i < formData.length; i++)
+        localDb[tab][formData[i].name] ? (localDb[tab][formData[i].name] = formData[i].value) : ''
+    let dropData = document.getElementsByClassName("valueHolder1")
+    for (i = 0; i < dropData.length; i++)
+        localDb[tab][dropData[i].previousElementSibling.innerHTML] = dropData[i].textContent;
+    calculateTotalAmount();    
 }
 
 //get check box value
@@ -321,27 +358,7 @@ restoreComment = () => {
 }
 restoreComment();
 
-/* ---------Storing loan application list data ---------*/
 
-let Appliaction_data = [
-    { 'loanApplication': 'Housing Development', 'status': 'In review', 'time': '1 March 2019' },
-    { 'loanApplication': 'Sale of an appartment complex', 'status': 'Waiting for review', 'time': '6 March 2019' },
-    { 'loanApplication': 'Housing Development Leipartstr', 'status': 'Approved', 'time': '1 Jan 2019' }
-]
-
-let text_value;
-
-addItem = () => {
-    text_value = document.getElementById("add_loan_applications").value;
-    if (!text_value) {
-        return false;
-    }
-    else {
-        $(".appplication_section ul").append('<li><div class="lists"><h4>' + text_value + '</h4><div class="status"><p>Waiting for review</p></div><span class="date">' + new Date() + '</span></div></li>');
-        Appliaction_data.push({ 'loanApplication': text_value, status: 'Waiting for review', time: new Date() });
-        setLocalStorage('loanType', Appliaction_data);
-    }
-}
 
 /* ---------Application loan list -----------*/
 (() => {
