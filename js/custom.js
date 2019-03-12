@@ -61,9 +61,10 @@ $(document).ready(function () {
         keyData(currentTab);
     });
 
-    $('.date_picker').datepicker({
-        autoclose: true
-    });
+    // Commented: caused error: undefined
+    // $('.date_picker').datepicker({
+    //     autoclose: true
+    // });
 
 });
 /* ---------Storing loan application list data ---------*/

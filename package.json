@@ -1,0 +1,21 @@
+{
+  "name": "lition-loan-ui",
+  "version": "1.0.0",
+  "description": "Banking MVP",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Jackisch@bitbucket.org/lition/lition-loan-ui.git"
+  },
+  "keywords": [
+    "banking"
+  ],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/lition/lition-loan-ui#readme"
+}

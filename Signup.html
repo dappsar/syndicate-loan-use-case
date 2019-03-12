@@ -30,9 +30,7 @@
     <script src="js/blockchain.js"></script>
 
     <!-- Web3 js file -->
-    <script src="js/web3.js"></script>
-
-
+    <script src="js/web3.min.js"></script>
 
     <!-- Favicon icon -->
     <link rel="icon" href="images/fab_icon.png" type="image/png" sizes="16x16">
@@ -93,8 +91,9 @@
                                         <span class="valueHolder1"></span>
                                     </div>
                                 </div>
-                                <button onclick="submitFormData()" type="submit" id="submit_btn" class="primary_btn">Create
+                                <button onclick="submitFormData()" title="Submit Data" type="submit" id="submit_btn" class="primary_btn">Create
                                     Account</button>
+                                    <p id="errMsg" style="padding: 10px;"></p>
                             </form>
                         </div>
                     </div>
@@ -103,28 +102,25 @@
         </div>
     </div>
 
+
 <script>
-    // window.onload = loadWeb3;
-        window.alert();
-        console.log(window.ethereum);
-        console.log(window.web3);
-        console.log('Hello');
-
-
         window.addEventListener('load', async () => {
-        
-            // Modern dapp browsers...
+
+        // Modern dapp browsers...
         if (window.ethereum) {
+
             window.web3 = new Web3(ethereum);
-            console.log('window.ethereum found: '+ window.ethereum);
             try {
                 // Request account access if needed
                 await ethereum.enable();
                 // Acccounts now exposed
-                // web3.eth.sendTransaction({/* ... */});
+
+                web3.eth.net.getNetworkType()
+                .then(console.log);
             } catch (error) {
                 console.log('Access denied');
                 console.log(error);
+                $('#errMsg').html("You need to connect metamask to use this Application");     
             }
         }
         // Legacy dapp browsers...
@@ -137,9 +133,14 @@
         // Non-dapp browsers...
         else {
             console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+            $('#errMsg').html("Non-Ethereum browser detected. You should consider trying MetaMask!");
         }
         });
 
+        console.log('Status After Prompt:');
+        console.log(web3.version.network);
+        console.log(window.ethereum);
+        console.log(window.web3);
     
 </script>
 
