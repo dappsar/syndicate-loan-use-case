@@ -30,7 +30,11 @@
     <script src="js/blockchain.js"></script>
 
     <!-- Web3 js file -->
-    <script src="js/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
+    <!-- <script src="js/Web3.1.0.0-beta.48.js"></script> -->
+    
+    <!-- Web3 min js file beta.37 -->
+    <!-- <script src="js/web3.min.js"></script> -->
 
     <!-- Favicon icon -->
     <link rel="icon" href="images/fab_icon.png" type="image/png" sizes="16x16">
@@ -104,7 +108,19 @@
 
 
 <script>
-        window.addEventListener('load', async () => {
+
+// var cAddress = '0xA7fCD6Ce262633429547022E5ddbCBF15aba2070';
+
+        console.log('window.ethereum:')
+        console.log(window.ethereum);
+        
+        console.log('window.web3:')
+        console.log(window.web3);                                            // ########## what is the difference?
+
+        console.log(window.web3.currentProvider);
+
+        
+        window.addEventListener('load', async () => {   
 
         // Modern dapp browsers...
         if (window.ethereum) {
@@ -114,9 +130,35 @@
                 // Request account access if needed
                 await ethereum.enable();
                 // Acccounts now exposed
+                // "0x4371932c3fb6ace91c19a384315fed7c49f17ef3"
+                web3.eth.net.getNetworkType().then(console.log);
 
-                web3.eth.net.getNetworkType()
-                .then(console.log);
+                const defAcc = async () => {
+                try {
+                const myAccounts = await web3.eth.getAccounts();
+                return myAccounts[0];
+                    
+                var default = web3.eth.accounts[0];
+
+                } catch (err) {
+                console.log(err);
+                }
+                }
+                // var account = web3.eth.accounts[0];
+                var defaultAccount = defAcc();
+
+                console.log(defaultAccount);
+                                                          // ########## Do I write all my code in here??
+
+                // web3.eth.sendTransaction({
+                // from: defAcc,
+                //     to: cAddress,
+                //     value: '10000000000'
+                // })
+                // .then(function(receipt){
+                //     console.log('transaction sent');
+                // });
+                
             } catch (error) {
                 console.log('Access denied');
                 console.log(error);
@@ -133,15 +175,12 @@
         // Non-dapp browsers...
         else {
             console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-            $('#errMsg').html("Non-Ethereum browser detected. You should consider trying MetaMask!");
+            $('#errMsg').html("<b>Non-Ethereum browser detected.</b> You should consider trying MetaMask!");
         }
         });
 
-        console.log('Status After Prompt:');
-        console.log(web3.version.network);
-        console.log(window.ethereum);
-        console.log(window.web3);
-    
+
+
 </script>
 
 </body>

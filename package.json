@@ -1,9 +1,11 @@
 {
   "name": "lition-loan-ui",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Banking MVP",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "web3": "^1.0.0-beta.37"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
