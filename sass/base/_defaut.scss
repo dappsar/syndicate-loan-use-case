@@ -53,6 +53,18 @@ body{
     }
 }
 
+/* ------custom file upload css --------*/
+.file-upload{display:block;text-align:center;font-family: Helvetica, Arial, sans-serif;font-size: 12px;}
+.file-upload .file-select{display:block;border: 1px solid #DEE8F2;color: #34495e;cursor:pointer;height:56px;line-height:56px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative; border-radius: 4px; margin-bottom: 16px;}
+.file-upload .file-select .file-select-button{background:#DEE8F2;padding:0 23px;display:inline-block;height:56px;line-height:56px;}
+.file-upload .file-select .file-select-name{line-height:40px;display:inline-block;padding:0 10px;}
+.file-upload .file-select:hover{box-shadow: 0 0 4px 0 rgba(5,148,255,0.3);border-color:#B1C8D9;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+.file-upload .file-select:hover .file-select-button{background:#DEE8F2;color:#34495e;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+.file-upload.active .file-select{box-shadow: 0 0 4px 0 rgba(5,148,255,0.3);border-color:#B1C8D9;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+.file-upload.active .file-select .file-select-button{background:linear-gradient(to bottom, #0066b3 0%, #3f98d4 100%);color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+.file-upload .file-select input[type=file]{z-index:100;cursor:pointer;position:absolute;height:100%;width:100%;top:0;left:0;opacity:0;filter:alpha(opacity=0);}
+.file-upload .file-select.file-select-disabled{opacity:0.65;}
+
 /* ------Modal css --------*/
 .modal-backdrop {
     background-color: $Outer_Space;
@@ -143,7 +155,8 @@ body{
 }
 
 .nicescroll-box{
-    height: 270px;
+    // height: 270px; // to custom scroll
+    height: auto;
 }
 .nicescroll-cursors{
     border: 1px solid #0066b3 !important;
