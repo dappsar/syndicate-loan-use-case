@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Syndicated Loan Blockchain Application</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,600,600i,700,700i,800"
+        rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 
@@ -26,7 +27,7 @@
 
     <!-- Favicon icon -->
     <link rel="icon" href="images/fab_icon.png" type="image/png" sizes="16x16">
-    
+
 </head>
 
 <body onload="manageTab('loanDetails');">
@@ -43,9 +44,15 @@
                         <div class="header_heading">
                             <h2><a href="#" id="heading_text">Housing Development</a></h2>
                         </div>
-                        <div class="user_profile">
-                            <div class="user"></div>
-                            <div class="user_text">My Profile</div>
+                        <div class="dropdown">
+                            <div class="user_profile dropdown-toggle" data-toggle="dropdown">
+                                <div class="user"></div>
+                                <div class="user_text">My Profile</div>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Address</a>
+                                <a class="dropdown-item" href="#">Edit</a>
+                            </div>
                         </div>
                     </div>
                     <div class="header_logout">
@@ -81,7 +88,7 @@
                                         <div class="status">
                                             <p>In review</p>
                                         </div>
-                                        <span class="date">1 March 2019</span>
+                                        <span class="date">12 March 2019</span>
                                     </div>
                                 </li>
                                 <li class="wating_for_review">
@@ -141,15 +148,18 @@
                         <h3>Application Details</h3>
                         <ul id="tabs" class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab" onclick="keyData('keyData');">Key
+                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab"
+                                    onclick="keyData('keyData');">Key
                                     Data</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab" onclick="manageTab('involvedParties')">Involved
+                                <a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab"
+                                    onclick="manageTab('involvedParties')">Involved
                                     Parties</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab-C" href="#pane-C" class="nav-link" data-toggle="tab" role="tab" onclick="manageTab('objectDetails')">Object
+                                <a id="tab-C" href="#pane-C" class="nav-link" data-toggle="tab" role="tab"
+                                    onclick="manageTab('objectDetails')">Object
                                     Details</a>
                             </li>
                             <li class="nav-item">
@@ -158,7 +168,8 @@
                                     Details</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab-E" href="#pane-E" class="nav-link" data-toggle="tab" role="tab" onclick="manageTab('documentDetails')">Documents</a>
+                                <a id="tab-E" href="#pane-E" class="nav-link" data-toggle="tab" role="tab"
+                                    onclick="manageTab('documentDetails')">Documents</a>
                             </li>
                         </ul>
                         <!-- Tab panes -->
@@ -168,7 +179,8 @@
                                 <div class="card-header" role="tab" id="heading-A">
                                     <h5 class="mb-0">
                                         <!-- Note: `data-parent` removed from here -->
-                                        <a data-toggle="collapse" href="#collapse-A" aria-expanded="true" aria-controls="collapse-A">
+                                        <a data-toggle="collapse" href="#collapse-A" aria-expanded="true"
+                                            aria-controls="collapse-A">
                                             Key Data
                                         </a>
                                     </h5>
@@ -192,9 +204,10 @@
                                                 </div>
                                             </div>
                                             <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
-                                                    onclick="modalValue('keyData')">Update</button>
-                                                <button onclick="updatedData('keyData');" type="button" class="ghost_btn">Approve</button>
+                                                <button data-toggle="modal" data-target="#update" type="button"
+                                                    class="primary_btn" onclick="modalValue('keyData')">Update</button>
+                                                <button onclick="modalValue('keyData');" type="button"
+                                                    class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -208,8 +221,8 @@
                             <div id="pane-B" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-B">
                                 <div class="card-header" role="tab" id="heading-B">
                                     <h5 class="mb-0">
-                                        <a class="collapsed" data-toggle="collapse" href="#collapse-B" aria-expanded="false"
-                                            aria-controls="collapse-B">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapse-B"
+                                            aria-expanded="false" aria-controls="collapse-B">
                                             Involved Parties
                                         </a>
                                     </h5>
@@ -218,6 +231,12 @@
                                     aria-labelledby="heading-B">
                                     <div class="loan_detail">
                                         <form>
+                                            <div class="form-label-group">
+                                                <div class="customDropdown dd_role">
+                                                    <span class="valueHolder">Role Type</span>
+                                                    <span class="valueHolder1" name="RoleType"></span>
+                                                </div>
+                                            </div>
                                             <div class="form-label-group">
                                                 <div class="customDropdown">
                                                     <span class="valueHolder">Role</span>
@@ -235,9 +254,11 @@
                                                 <label for="InAddress">Address</label>
                                             </div>
                                             <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                <button data-toggle="modal" data-target="#update" type="button"
+                                                    class="primary_btn"
                                                     onclick="modalValue('involvedParties')">Update</button>
-                                                <button onclick="updatedData('involvedParties');" type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="modalValue('involvedParties');" type="button"
+                                                    class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -251,8 +272,8 @@
                             <div id="pane-C" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-C">
                                 <div class="card-header" role="tab" id="heading-C">
                                     <h5 class="mb-0">
-                                        <a class="collapsed" data-toggle="collapse" href="#collapse-C" aria-expanded="false"
-                                            aria-controls="collapse-C">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapse-C"
+                                            aria-expanded="false" aria-controls="collapse-C">
                                             Object Details
                                         </a>
                                     </h5>
@@ -262,13 +283,13 @@
                                     <div class="loan_detail">
                                         <form>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="Description" class="form-control" name="Description"
-                                                    required>
+                                                <input type="text" id="Description" class="form-control"
+                                                    name="Description" required>
                                                 <label for="Description">Description</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="area" class="form-control" name="Total Area Outdoor+Indoor"
-                                                    required>
+                                                <input type="text" id="area" class="form-control"
+                                                    name="Total Area Outdoor+Indoor" required>
                                                 <label for="area">Total area Outdoor+Indoor</label>
                                             </div>
                                             <div class="form-label-group float-lab">
@@ -277,24 +298,26 @@
                                                 <label for="usablearea">Usable area (net floor space)</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="Outdoor" class="form-control" name="Total Area Outdoor"
-                                                    required>
+                                                <input type="text" id="Outdoor" class="form-control"
+                                                    name="Total Area Outdoor" required>
                                                 <label for="Outdoor">Total area Outdoor</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="Purchase" class="form-control" name="Purchase Price"
-                                                    required>
+                                                <input type="text" id="Purchase" class="form-control"
+                                                    name="Purchase Price" required>
                                                 <label for="Purchase">Purchase Price</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="meter" class="form-control" name="Price Per Sqaure Meter"
-                                                    required>
+                                                <input type="text" id="meter" class="form-control"
+                                                    name="Price Per Sqaure Meter" required>
                                                 <label for="meter">Price per Square meter</label>
                                             </div>
                                             <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                <button data-toggle="modal" data-target="#update" type="button"
+                                                    class="primary_btn"
                                                     onclick="modalValue('objectDetails')">Update</button>
-                                                <button onclick="updatedData('objectDetails');" type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="modalValue('objectDetails');" type="button"
+                                                    class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -304,11 +327,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="pane-D" class="card tab-pane fade show active" role="tabpanel" aria-labelledby="tab-D">
+                            <div id="pane-D" class="card tab-pane fade show active" role="tabpanel"
+                                aria-labelledby="tab-D">
                                 <div class="card-header" role="tab" id="heading-D">
                                     <h5 class="mb-0">
-                                        <a class="collapsed" data-toggle="collapse" href="#collapse-D" aria-expanded="false"
-                                            aria-controls="collapse-D">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapse-D"
+                                            aria-expanded="false" aria-controls="collapse-D">
                                             Loan Details
                                         </a>
                                     </h5>
@@ -346,23 +370,24 @@
                                                 <input type="text" id="bank2" name="Interest Rate" class="form-control"
                                                     required>
                                                 <label for="bank2">Interest rate</label>
+                                                <span class="euro">%</span>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" name="Loan Payout Structure" class="form-control"
-                                                    required>
+                                                <input type="text" id="bank2" name="Loan Payout Structure"
+                                                    class="form-control" required>
                                                 <label for="bank2">Loan Payout Structure</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" class="form-control" name="Load Repayment Structure"
-                                                    required>
+                                                <input type="text" id="bank2" class="form-control"
+                                                    name="Load Repayment Structure" required>
                                                 <label for="bank2">Loan Repayment Structure</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" class="form-control date_picker" name="Loan Start"
-                                                    required>
+                                                <input type="text" id="bank2" class="form-control date_picker"
+                                                    name="Loan Start" required>
                                                 <label for="bank2">Loan Start</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
@@ -373,9 +398,11 @@
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                <button data-toggle="modal" data-target="#update" type="button"
+                                                    class="primary_btn"
                                                     onclick="modalValue('loanDetails')">Update</button>
-                                                <button onclick="updatedData('loanDetails');" type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="modalValue('loanDetails');" type="button"
+                                                    class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -388,8 +415,8 @@
                             <div id="pane-E" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-E">
                                 <div class="card-header" role="tab" id="heading-E">
                                     <h5 class="mb-0">
-                                        <a class="collapsed" data-toggle="collapse" href="#collapse-E" aria-expanded="false"
-                                            aria-controls="collapse-E">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapse-E"
+                                            aria-expanded="false" aria-controls="collapse-E">
                                             Documents
                                         </a>
                                     </h5>
@@ -403,20 +430,29 @@
                                                     required>
                                                 <label for="Expose">Expose</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="file-upload">
+                                                <div class="file-select">
+                                                    <div class="file-select-button" id="fileName">Upload Term Sheet</div>
+                                                    <div class="file-select-name" id="noFile">No file chosen...</div> 
+                                                    <input type="file" name="Time Sheet" id="chooseFile">
+                                                </div>
+                                            </div>
+                                            <!-- <div class="form-label-group float-lab">
                                                 <input type="text" id="Termsheet" class="form-control" name="Time Sheet"
                                                     required>
                                                 <label for="Termsheet">Term Sheet</label>
-                                            </div>
+                                            </div> -->
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="addocuments" class="form-control" name="Additional document"
-                                                    required>
+                                                <input type="text" id="addocuments" class="form-control"
+                                                    name="Additional document" required>
                                                 <label for="addocuments">Additional documents</label>
                                             </div>
                                             <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button" class="primary_btn"
+                                                <button data-toggle="modal" data-target="#update" type="button"
+                                                    class="primary_btn"
                                                     onclick="modalValue('documentDetails')">Update</button>
-                                                <button onclick="updatedData('documentDetails');" type="button" class="ghost_btn">Approve</button>
+                                                <button onclick="modalValue('documentDetails');" type="button"
+                                                    class="ghost_btn">Approve</button>
                                             </div>
                                         </form>
                                     </div>
@@ -496,7 +532,7 @@
                                                 <span class="comment_by">Michael Brown</span>
                                             </p>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                             </li>
                             <li>
@@ -529,8 +565,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -563,7 +599,8 @@
                         required></textarea>
                     <!-- <label for="comment">Term Sheet</label> -->
                 </div>
-                <div class="update_btn"><button type="button" data-dismiss="modal" class="primary_btn" onclick="storeComment();">Update</button></div>
+                <div class="update_btn"><button type="button" data-dismiss="modal" class="primary_btn"
+                        onclick="storeComment();">Update</button></div>
             </div>
         </div>
     </div>
@@ -579,25 +616,26 @@
                     <h3>Add new loan application</h3>
                 </div>
                 <div class="form-label-group float-lab">
-                    <textarea type="text" id="add_loan_applications" class="form-control" placeholder="Loan Allication type"
-                        required></textarea>
+                    <textarea type="text" id="add_loan_applications" class="form-control"
+                        placeholder="Loan Allication type" required></textarea>
                     <!-- <label for="comment">Term Sheet</label> -->
                 </div>
-                <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal" class="primary_btn" onclick="storeComment();">Add</button></div>
+                <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal"
+                        class="primary_btn" onclick="storeComment();">Add</button></div>
             </div>
         </div>
     </div>
     </div>
     <!-- Custom js file -->
     <script>
-            $(function() {  
-                $(".nicescroll-box").niceScroll({
-                    scrollspeed: 40                    
-                    //A smaller value increases the scroll speed. A larger value makes the scroll speed slower.
-                    
-                });
-            });      
-        </script>
+        $(function () {
+            $(".nicescroll-box").niceScroll({
+                scrollspeed: 40
+                //A smaller value increases the scroll speed. A larger value makes the scroll speed slower.
+
+            });
+        });      
+    </script>
     <script src="js/jquery.nicescroll.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
