@@ -140,7 +140,6 @@ var submitFormData = () => {
 
 
 
-}
 
 // Setter Getter for local storage
 getLocalStorage = (key) => {

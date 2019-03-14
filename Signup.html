@@ -84,8 +84,8 @@
                                     <!-- <span class="error_text">Text Error</span> -->
                                 </div>
 
-                                <div class="form-label-group float-lab">
-                                    <input type="text" id="inputPublic" name="publicBlockId" class="form-control"
+                                <div class="form-label-group float-lab input_float_lbl">
+                                    <input type="text" id="inputPublic" name="publicBlockId" class="form-control" value="0x..."
                                         required>
                                     <label for="inputPassword">Public Blockchain ID</label>
                                 </div>
@@ -107,82 +107,72 @@
     </div>
 
 
-<script>
+    <script>
+            console.log('window.ethereum:')
+            console.log(window.ethereum);
 
-// var cAddress = '0xA7fCD6Ce262633429547022E5ddbCBF15aba2070';
-
-        console.log('window.ethereum:')
-        console.log(window.ethereum);
-        
-        console.log('window.web3:')
-        console.log(window.web3);                                            // ########## what is the difference?
-
-        console.log(window.web3.currentProvider);
-
-        
-        window.addEventListener('load', async () => {   
-
-        // Modern dapp browsers...
-        if (window.ethereum) {
-
-            window.web3 = new Web3(ethereum);
-            try {
-                // Request account access if needed
-                await ethereum.enable();
-                // Acccounts now exposed
-                // "0x4371932c3fb6ace91c19a384315fed7c49f17ef3"
-                web3.eth.net.getNetworkType().then(console.log);
-
-                const defAcc = async () => {
+            
+            window.addEventListener('load', async () => {   
+            // Modern dapp browsers...
+            if (window.ethereum) {
+                window.web3 = new Web3(ethereum);
                 try {
-                const myAccounts = await web3.eth.getAccounts();
-                return myAccounts[0];
+                    // Request account access if needed
+                    await ethereum.enable();
+                    // Acccounts now exposed
+                    // "0x4371932c3fb6ace91c19a384315fed7c49f17ef3"
+                    web3.eth.net.getNetworkType().then(console.log);
+                    // web3.eth.getAccounts(console.log);
+
+                    // Function that returns default account and sends Tx
+                    const fn = async () => {
+                        try {
+                            const myAccounts = await web3.eth.getAccounts();
+                            $('#inputPublic').val(myAccounts[0]);
+                            console.log(myAccounts[0]);
+                            
+                            // // Tx sending function to random account from MetaMasks def. Account
+                            // await web3.eth.sendTransaction({
+                            //     from: myAccounts[0],
+                            //     to: '0xCd626bc764E1d553e0D75a42f5c4156B91a63F23',
+                            //     value: '10000000000000000'
+                            // })
+                            // .then(function(receipt){
+                            //     console.log('transaction sent');
+                            // });
+                            return myAccounts[0];
+                        } 
+                        catch (err) {
+                            console.log(err);
+                        }
+                    }
+                    // var account = web3.eth.accounts[0];
+                    var defaultAccount = fn();
+                    // console.log(defaultAccount);s
+                                                                            
                     
-                var default = web3.eth.accounts[0];
-
-                } catch (err) {
-                console.log(err);
+                } catch (error) {
+                    console.log('Access denied');
+                    console.log(error);
+                    $('#errMsg').html("You need to connect metamask to use this Application");     
                 }
-                }
-                // var account = web3.eth.accounts[0];
-                var defaultAccount = defAcc();
-
-                console.log(defaultAccount);
-                                                          // ########## Do I write all my code in here??
-
-                // web3.eth.sendTransaction({
-                // from: defAcc,
-                //     to: cAddress,
-                //     value: '10000000000'
-                // })
-                // .then(function(receipt){
-                //     console.log('transaction sent');
-                // });
-                
-            } catch (error) {
-                console.log('Access denied');
-                console.log(error);
-                $('#errMsg').html("You need to connect metamask to use this Application");     
             }
-        }
-        // Legacy dapp browsers...
-        else if (window.web3) {
-            window.web3 = new Web3(web3.currentProvider);
-            // Acccounts always exposed
-            web3.eth.sendTransaction({/* ... */});
-        }
+            // Legacy dapp browsers...
+            else if (window.web3) {
+                window.web3 = new Web3(web3.currentProvider);
+                // Acccounts always exposed
+                web3.eth.sendTransaction({/* ... */});
+            }
 
-        // Non-dapp browsers...
-        else {
-            console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-            $('#errMsg').html("<b>Non-Ethereum browser detected.</b> You should consider trying MetaMask!");
-        }
-        });
-
+            // Non-dapp browsers...
+            else {
+                console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+                $('#errMsg').html("<b>Non-Ethereum browser detected.</b> You should consider trying MetaMask!");
+            }
+            });
 
 
-</script>
 
-</body>
-
+        </script>
+    </body>
 </html>
