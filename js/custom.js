@@ -12,6 +12,7 @@ let Appliaction_data = [
     { 'loanApplication': 'Sale of an appartment complex', 'status': 'Waiting for review', 'time': '6 March 2019' },
     { 'loanApplication': 'Housing Development Leipartstr', 'status': 'Approved', 'time': '1 Jan 2019' }
 ]
+let DefaultType = ['Housing Development', 'Sale of an appartment complex', 'Housing Development Leipartstr'];
 
 $(document).ready(function () {
     function createDropdown() {
@@ -81,6 +82,12 @@ $(document).ready(function () {
         restoreComment();                                           //to show comment acc. to the application
         approvals();                                                //to show check box acc. to application
         keyData(currentTab);                                        //to manage drop down
+        console.log(applicationType, getLocalStorage(applicationType));
+        if (!getLocalStorage(applicationType)) {
+            console.log("111", getLocalStorage(applicationType))
+            ResetForm();
+        }
+
     });
 
     $('.date_picker').datepicker({
@@ -91,6 +98,32 @@ $(document).ready(function () {
     })
 
 });
+
+//append comment
+let appendComment = (comment, user) => {
+    $('.History_pannel ul').prepend(`<li>
+    <div class="histroy_detail">
+        <div class="top_section">
+            <p class="date">${getDateInFormate()}</p>
+        </div>
+        <div class="status waiting">
+            <p> In review</p>
+        </div>
+        <p class="banks_application">Change loan application</p>
+        
+        <div id="commentSection"><div class="comments_feild">
+        <p>${comment}</p>
+        </div>
+        <div class="comment_section">
+        <p>
+        <span class="cmt_from">Comment from</span>
+        <span class="comment_by">${user}</span>
+        </p>
+        </div>
+        </div>
+            </div>
+        </li>`)
+}
 
 //defining predefined 3 application for initial state of application 
 addItem = () => {
@@ -117,7 +150,7 @@ getDateInFormate = () => {
 
 // storing signup input data on browser
 var submitFormData = () => {
-    
+
     let signupData = {};
     //get form object having input fields values
     let formData = document.getElementsByClassName("form-control")
@@ -149,6 +182,22 @@ setLocalStorage = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
 }
 
+//set fields empty
+ResetForm = () => {
+    let formData = document.getElementsByClassName("form-control")
+    for (i = 0; i < formData.length; i++) {
+        formData[i].value = '';//value binding
+        // formData[i].parentElement.className = "form-label-group float-lab input_float_lbl"//class binding
+    }
+    calculateTotalAmount();
+    let dropDownData = document.getElementsByClassName("valueHolder1")
+    for (i = 0; i < dropDownData.length; i++) {
+        dropDownData[i].textContent = '';
+        // dropDownData[i].parentElement.className = "customDropdown"
+        // dropDownData[i].previousElementSibling.className = "valueHolder float-label"
+    }
+}
+
 // setting up the values of fields
 formValueSetter = (data) => {
     let formData = document.getElementsByClassName("form-control")
@@ -167,12 +216,14 @@ var keyData = (tab) => {                                // only in the case of d
         settingUpDropDown(keyDataObject[tab]);
     else {
         if (!keyDataObject) {
-            //defining key data 
-            keyDataObject = setUpEnv(tab);              //getting data from predefined json
-            settingUpDropDown(keyDataObject);           //binding drop down value on UI
-            //storing data in localstorage
-            formValueSetter(keyDataObject);             //setting up text field values
-            setLocalStorage(applicationType, keyDataObject)// set localstrage with data
+            if (applicationType == 'Housing Development' || applicationType == 'Sale of an appartment complex' || applicationType == 'Housing Development Leipartstr') {
+                //defining key data 
+                keyDataObject = setUpEnv(tab);              //getting data from predefined json
+                settingUpDropDown(keyDataObject);           //binding drop down value on UI
+                //storing data in localstorage
+                formValueSetter(keyDataObject);             //setting up text field values
+                setLocalStorage(applicationType, keyDataObject)// set localstrage with data
+            }
         }
         else {                                          //in case when user don't have application data in localstorage
             keyDataObject[tab] = setUpEnv(tab);         //getting from predefined 
@@ -211,15 +262,19 @@ var manageTab = (tab) => {                                      //tab=name of cu
     if (DetailsObject && DetailsObject[tab])                    //checking if value exsist
         formValueSetter(DetailsObject[tab]);                    //function which set the text field values
     else {
-        if (!DetailsObject) {                                   //when you didn't find application in local storage                                 
-            DetailsObject = setUpEnv(tab)                       //get the predefined value from switch case function
-            let data = {}
-            data[tab] = DetailsObject                           //set up value acc. to tab
-            formValueSetter(DetailsObject);                     //function which set the text field values
-            calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
-            setLocalStorage(applicationType, data)              //storing data in localstorage
+        if (!DetailsObject) {                                   //when you didn't find application in local storage   
+            if (DefaultType.indexOf(applicationType) > -1) {
+                console.log("22222222222222", DetailsObject, applicationType)
+                DetailsObject = setUpEnv(tab)                       //get the predefined value from switch case function
+                let data = {}
+                data[tab] = DetailsObject                           //set up value acc. to tab
+                formValueSetter(DetailsObject);                     //function which set the text field values
+                calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
+                setLocalStorage(applicationType, data)              //storing data in localstorage
+            }
         }
         else {                                                  //when you find applicatioin in local storage but without tab info
+            console.log("11111111111111111111111", DetailsObject, applicationType)
             DetailsObject[tab] = setUpEnv(tab)                  //set up predefined value
             formValueSetter(DetailsObject[tab]);                //function which set the text field values
             calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
@@ -233,7 +288,6 @@ var manageTab = (tab) => {                                      //tab=name of cu
 
 // //setting up the tab name when you click on uppdate button
 // modalValue = (tabName) => modal = tabName;                      //No more needed
-
 
 //comment saved locally
 storeComment = () => {
@@ -251,7 +305,6 @@ storeComment = () => {
         setLocalStorage(applicationType, data)                  //set local storage with updated data
     }
 }
-
 //manage predefined data structure 
 setUpEnv = (tab) => {
     switch (tab) {
@@ -298,8 +351,9 @@ setUpEnv = (tab) => {
 
 //when to click on update button
 modalValue = (tab) => {
-    let localDb = getLocalStorage(applicationType)                                                  //getting data of current application from local storage
+    let localDb = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : { [tab]: {} };                                                  //getting data of current application from local storage
     let formData = document.getElementsByClassName("form-control")                                  //getting form data from UI
+    localDb[tab] = setUpEnv(tab)
     for (i = 0; i < formData.length; i++)
         localDb[tab][formData[i].name] ? (localDb[tab][formData[i].name] = formData[i].value) : ''  //updating the editted data in object get from local storage
     let dropData = document.getElementsByClassName("valueHolder1")                                  //getting drop down from UI                            
@@ -319,7 +373,7 @@ modalValue = (tab) => {
 
 //when click on approval
 approvals = () => {
-    let users = getLocalStorage(applicationType)['approvals'];
+    let users = getLocalStorage(applicationType) ? getLocalStorage(applicationType)['approvals'] : [];
     if (users) {
         if (users.includes('Bank#1'))
             document.getElementById("Bank1").checked = true;
@@ -342,36 +396,22 @@ approvals = () => {
 }
 
 approvals();
-//append comment
-appendComment = (comment, user) => {
-    $('#commentSection').append(`<div class="comments_feild">
-    <p>${comment}</p>
-</div>
-    <div class="comment_section">
-        <p>
-            <span class="cmt_from">Comment from</span>
-            <span class="comment_by">${user}</span>
-        </p>
-    </div>`)
-}
 
 //predefined Comment from local storage
-restoreComment = () => {
+var restoreComment = () => {
     $("#commentSection").empty();
-    let comments = getLocalStorage(applicationType)['comment'];
+    let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)['comment'] : {};
     for (comment in comments) {
         appendComment(comments[comment].comment, comment)
     }
 }
 restoreComment();
 
-
-
 //Application loan list
 (() => {
     let application_list = getLocalStorage('loanType');
     if (application_list)
-        for (i = 0; i < application_list.length-3; i++) {
+        for (i = 0; i < application_list.length - 3; i++) {
             $(".appplication_section ul").prepend('<li><div class="lists"><h4>' + application_list[i].loanApplication + '</h4><div class="status"><p>' + application_list[i].status + '</p></div><span class="date">' + application_list[i].time + '</span></div></li>');
             Appliaction_data = application_list;
         }
@@ -382,14 +422,14 @@ restoreComment();
 $('#chooseFile').bind('change', function () {
     var filename = $("#chooseFile").val();
     if (/^\s*$/.test(filename)) {
-      $(".file-upload").removeClass('active');
-      $("#noFile").text("No file chosen..."); 
+        $(".file-upload").removeClass('active');
+        $("#noFile").text("No file chosen...");
     }
     else {
-      $(".file-upload").addClass('active');
-      $("#noFile").text(filename.replace("C:\\fakepath\\", "")); 
+        $(".file-upload").addClass('active');
+        $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
     }
-  });
+});
 
 /* ------Redirect to Logout---------*/
 Logout = () => {
