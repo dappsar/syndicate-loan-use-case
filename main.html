@@ -126,7 +126,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="token_section">
+                        <!-- <div class="token_section">
                             <p class="head">ACTIVE TOKENIZED LOANS</p>
                             <ul>
                                 <li>
@@ -150,7 +150,7 @@
                                     </div>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-sm-5 no-padding">
@@ -478,7 +478,7 @@
                 </div>
                 <div class="col-sm-4 no-padding">
                     <div class="approval">
-                        <h3>Approval</h3>
+                        <h3>Approval Status</h3>
 
                         <div class="approval_parent">
                             <div class="approval_check">
@@ -627,7 +627,7 @@
                 </div>
                 <div class="form-label-group float-lab">
                     <textarea type="text" id="add_loan_applications" class="form-control"
-                        placeholder="Loan Allication type" required></textarea>
+                        placeholder="Name of Loan" required></textarea>
                     <!-- <label for="comment">Term Sheet</label> -->
                 </div>
                 <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal"
@@ -671,9 +671,36 @@ console.log(window.web3);
                     // Request account access if needed
                     await ethereum.enable();
                     // Acccounts now exposed
-                    // "0x4371932c3fb6ace91c19a384315fed7c49f17ef3"
 
-                    web3.eth.net.getNetworkType().then($('#bc_network').html());
+                        web3.eth.net.getId().then( (netId) => {
+                            switch (netId) {
+                                case 1:
+                                console.log('This is mainnet')
+                                ($('#bc_network').html("Ethereum Mainnet"));
+                                break
+                                case 2:
+                                console.log('This is the deprecated Morden test network.')
+                                ($('#bc_network').html("Morden"));
+                                break
+                                case 3:
+                                console.log('This is the ropsten test network.')
+                                ($('#bc_network').html("Ropsten"));
+                                case 4:
+                                console.log('This is the Rinkeby test network.')
+                                ($('#bc_network').html("Rinkeby"));
+                                break
+                                case 5:
+                                console.log('This is the ropsten test network.')
+                                ($('#bc_network').html(netId));
+                                break
+                                default:
+                                console.log('This is an unknown network.')
+                                ($('#bc_network').html("Unkown"));
+                            }
+
+                            
+                            })
+
                     web3.eth.getAccounts(console.log);
 
                     // Function that returns default account

@@ -7,18 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Syndicated Loan Blockchain Application - BC_Integration</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet"> -->
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
 
     <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="js/popper.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
@@ -28,6 +28,11 @@
 
     <!-- Blockchain js file -->
     <script src="js/blockchain.js"></script>
+
+    <!-- Contract ABI js -->
+    <script language="javascript" type="text/javascript" src="js\contractABI.js"></script>
+
+    <script src="js/bootstrap-datepicker.js"></script>
 
     <!-- Web3 js file -->
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
@@ -85,9 +90,14 @@
                                 </div>
 
                                 <div class="form-label-group float-lab input_float_lbl">
-                                    <input type="text" id="inputPublic" name="publicBlockId" class="form-control" value="0x..."
+                                    <input type="text" id="inputPublic" name="publicBlockId" class="form-control" value=""
                                         required>
                                     <label for="inputPassword">Public Blockchain ID</label>
+                                </div>
+                                <div class="form-label-group float-lab">
+                                    <input type="text" id="numberStore" name="publicBlockId" class="form-control"
+                                        required>
+                                    <label for="numberStore">Store a number</label>
                                 </div>
                                 <div class="form-label-group">
                                     <div class="customDropdown">
@@ -95,84 +105,16 @@
                                         <span class="valueHolder1"></span>
                                     </div>
                                 </div>
-                                <button onclick="submitFormData()" title="Submit Data" type="submit" id="submit_btn" class="primary_btn">Create
-                                    Account</button>
+                                <button onclick="submitFormData()" title="Submit Data" type="submit" id="submit_btn" class="primary_btn">Create Account</button>
+
                                     <p id="errMsg" style="padding: 10px;"></p>
                             </form>
+                            <button onclick="setNumber($('#numberStore').val())" title="Submit Data" id="setN" class="primary_btn">Write</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <script>
-            console.log('window.ethereum:')
-            console.log(window.ethereum);
-
-            
-            window.addEventListener('load', async () => {   
-            // Modern dapp browsers...
-            if (window.ethereum) {
-                window.web3 = new Web3(ethereum);
-                try {
-                    // Request account access if needed
-                    await ethereum.enable();
-                    // Acccounts now exposed
-                    // "0x4371932c3fb6ace91c19a384315fed7c49f17ef3"
-                    web3.eth.net.getNetworkType().then(console.log);
-                    // web3.eth.getAccounts(console.log);
-
-                    // Function that returns default account and sends Tx
-                    const fn = async () => {
-                        try {
-                            const myAccounts = await web3.eth.getAccounts();
-                            $('#inputPublic').val(myAccounts[0]);
-                            console.log(myAccounts[0]);
-                            
-                            // // Tx sending function to random account from MetaMasks def. Account
-                            // await web3.eth.sendTransaction({
-                            //     from: myAccounts[0],
-                            //     to: '0xCd626bc764E1d553e0D75a42f5c4156B91a63F23',
-                            //     value: '10000000000000000'
-                            // })
-                            // .then(function(receipt){
-                            //     console.log('transaction sent');
-                            // });
-                            return myAccounts[0];
-                        } 
-                        catch (err) {
-                            console.log(err);
-                        }
-                    }
-                    // var account = web3.eth.accounts[0];
-                    var defaultAccount = fn();
-                    // console.log(defaultAccount);s
-                                                                            
-                    
-                } catch (error) {
-                    console.log('Access denied');
-                    console.log(error);
-                    $('#errMsg').html("You need to connect metamask to use this Application");     
-                }
-            }
-            // Legacy dapp browsers...
-            else if (window.web3) {
-                window.web3 = new Web3(web3.currentProvider);
-                // Acccounts always exposed
-                web3.eth.sendTransaction({/* ... */});
-            }
-
-            // Non-dapp browsers...
-            else {
-                console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-                $('#errMsg').html("<b>Non-Ethereum browser detected.</b> You should consider trying MetaMask!");
-            }
-            });
-
-
-
-        </script>
     </body>
 </html>
