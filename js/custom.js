@@ -414,6 +414,7 @@ approvals();
 var restoreComment = () => {
     $(".History_pannel ul").empty();  //$("#commentSection").empty();
     let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};
+    if(comments)
     if ('comment' in comments) {
         for (comment in comments['comment']) {
             appendComment(comments['comment'][comment].comment, comment)
@@ -432,6 +433,15 @@ restoreComment();
         }
 
 })()
+// applications = () => {
+//     let application_list = getLocalStorage('loanType');
+//     if (application_list)
+//         for (i = application_list.length - 4; i >= 0; i--) {
+//             $(".appplication_section ul").prepend('<li><div class="lists"><h4>' + application_list[i].loanApplication + '</h4><div class="status"><p>' + application_list[i].status + '</p></div><span class="date">' + application_list[i].time + '</span></div></li>');
+//             Appliaction_data = application_list;
+//         }
+// }
+// applications();
 
 // custom file upload js 
 $('#chooseFile').bind('change', function () {
