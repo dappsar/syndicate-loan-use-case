@@ -107,18 +107,18 @@ let appendComment = (comment, user) => {
             <p class="date">${getDateInFormate()}</p>
         </div>
         <div class="status waiting">
-            <p> In review</p>
+            <p> Waiting for review</p>
         </div>
-        <p class="banks_application">Change loan application</p>
+        
         
         <div id="commentSection"><div class="comments_feild">
-        <p>${comment}</p>
+            <p>${comment}</p>
         </div>
         <div class="comment_section">
-        <p>
-        <span class="cmt_from">Comment from</span>
-        <span class="comment_by">${user}</span>
-        </p>
+            <p>
+                <span class="cmt_from">Comment from</span>
+                <span class="comment_by">${user}</span>
+            </p>
         </div>
         </div>
             </div>
@@ -183,14 +183,14 @@ ResetForm = () => {
     let formData = document.getElementsByClassName("form-control")
     for (i = 0; i < formData.length; i++) {
         formData[i].value = '';//value binding
-        // formData[i].parentElement.className = "form-label-group float-lab input_float_lbl"//class binding
+        formData[i].parentElement.className = "form-label-group float-lab"//class binding
     }
     calculateTotalAmount();
     let dropDownData = document.getElementsByClassName("valueHolder1")
     for (i = 0; i < dropDownData.length; i++) {
         dropDownData[i].textContent = '';
         // dropDownData[i].parentElement.className = "customDropdown"
-        // dropDownData[i].previousElementSibling.className = "valueHolder float-label"
+        dropDownData[i].previousElementSibling.className = "valueHolder"
     }
 }
 
@@ -243,14 +243,15 @@ settingUpDropDown = (keyDataObject) => {
 }
 
 //load amount calculation
-calculateTotalAmount = () => {
-    let total = parseInt(document.getElementById("loanAmount").value) + parseInt(document.getElementById("bank1").value) + parseInt(document.getElementById("bank2").value)
+calculateTotalAmount = () => {    
+    let total = (parseFloat(document.getElementById("loanAmount").value?document.getElementById("loanAmount").value:0) + parseFloat(document.getElementById("bank1").value?document.getElementById("bank1").value:0) + parseFloat(document.getElementById("bank2").value?document.getElementById("bank2").value:0))
     document.getElementById("Total_value").textContent = total + ' €';      //bind calculated value to UI
 }
 
 //call when you switch the tab
 var manageTab = (tab) => {                                      //tab=name of current tab
     currentTab = tab;
+    restoreComment();
     if (tab == 'involvedParties')
         keyData('involvedParties')                              //just for drop down case
 
@@ -271,11 +272,12 @@ var manageTab = (tab) => {                                      //tab=name of cu
         }
         else {                                                  //when you find applicatioin in local storage but without tab info
             console.log("11111111111111111111111", DetailsObject, applicationType)
-            DetailsObject[tab] = setUpEnv(tab)                  //set up predefined value
-            formValueSetter(DetailsObject[tab]);                //function which set the text field values
-            calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
-            setLocalStorage(applicationType, DetailsObject)     //storing data in localstorage
-
+            if (DefaultType.indexOf(applicationType) > -1) {
+                DetailsObject[tab] = setUpEnv(tab)                  //set up predefined value
+                formValueSetter(DetailsObject[tab]);                //function which set the text field values
+                calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
+                setLocalStorage(applicationType, DetailsObject)     //storing data in localstorage
+            }
         }
     }
 
@@ -287,20 +289,31 @@ var manageTab = (tab) => {                                      //tab=name of cu
 
 //comment saved locally
 storeComment = () => {
-    let comment = document.getElementById('comment').value;     //get comment value from modal when you comment
+    restoreComment();
+    let comment = document.getElementById('comment').value;                                     //get comment value from modal when you comment
     let commentedData = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : ''//getting application data from localstorage
     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
     //user = `${user}-${modal}`
-    appendComment(comment, user);                               //function to bind comments in right hand side box
-    if (commentedData && commentedData['comment']) {            //check if data from localstorage give us comments 
-        commentedData['comment'][user] = { 'comment': comment } //bind the next comment with user name
-        setLocalStorage(applicationType, commentedData)         //save the updated comments in localstorage
+    appendComment(comment, user);                                                               //function to bind comments in right hand side box
+    if (commentedData && commentedData[currentTab]) {                                           //check if data from localstorage give us comments 
+    
+        if (commentedData[currentTab]['comment']) {
+            commentedData[currentTab]['comment'][user] = { 'comment': comment }                 //bind the next comment with user name
+            setLocalStorage(applicationType, commentedData)                                     //save the updated comments in localstorage
+        }
+        else {
+            commentedData[currentTab] = Object.assign(commentedData[currentTab], { 'comment': { [user]: { 'comment': comment } } })
+            setLocalStorage(applicationType, commentedData)                                     //set local storage with updated data
+        }
     }
-    else {                                                      //in case local storage given object dont have comments yet
-        let data = Object.assign(commentedData, { 'comment': { [user]: { 'comment': comment } } }) //bind comment
-        setLocalStorage(applicationType, data)                  //set local storage with updated data
-    }
+    document.getElementById('comment').value = "";
+    // else {                                                                                      //in case local storage given object dont have comments yet
+    //     alert('Please fill this tab data first')
+    //     // let data = Object.assign(commentedData, { 'comment': { [currentTab]: { [user]: { 'comment': comment } } } }) //bind comment
+    //     // setLocalStorage(applicationType, data)                                               //set local storage with updated data
+    // }
 }
+
 //manage predefined data structure 
 setUpEnv = (tab) => {
     switch (tab) {
@@ -395,10 +408,12 @@ approvals();
 
 //predefined Comment from local storage
 var restoreComment = () => {
-    $("#commentSection").empty();
-    let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)['comment'] : {};
-    for (comment in comments) {
-        appendComment(comments[comment].comment, comment)
+    $(".History_pannel ul").empty();  //$("#commentSection").empty();
+    let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};
+    if ('comment' in comments) {
+        for (comment in comments['comment']) {
+            appendComment(comments['comment'][comment].comment, comment)
+        }
     }
 }
 restoreComment();
@@ -407,7 +422,7 @@ restoreComment();
 (() => {
     let application_list = getLocalStorage('loanType');
     if (application_list)
-        for (i = 0; i < application_list.length - 3; i++) {
+        for (i = application_list.length - 4; i >= 0; i--) {
             $(".appplication_section ul").prepend('<li><div class="lists"><h4>' + application_list[i].loanApplication + '</h4><div class="status"><p>' + application_list[i].status + '</p></div><span class="date">' + application_list[i].time + '</span></div></li>');
             Appliaction_data = application_list;
         }
@@ -431,6 +446,8 @@ $('#chooseFile').bind('change', function () {
 Logout = () => {
     window.location.href = "Signup.html";
 }
+
+
 
 
 

@@ -43,6 +43,7 @@
                     <div class="header_mid">
                         <div class="header_heading">
                             <h2><a href="#" id="heading_text">Housing Development</a></h2>
+                            <h4><a href="#">Real Estate Loan Application</a></h4>
                         </div>
                         <div class="dropdown">
                             <div class="user_profile dropdown-toggle" data-toggle="dropdown">
@@ -212,7 +213,7 @@
                                         </form>
                                     </div>
                                     <div class="reject_btn status_reject">
-                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                        <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
                                             application</a>
                                     </div>
                                 </div>
@@ -231,10 +232,24 @@
                                     aria-labelledby="heading-B">
                                     <div class="loan_detail">
                                         <form>
-                                            <div class="form-label-group">
+                                            <!-- <div class="form-label-group">
                                                 <div class="customDropdown dd_role">
                                                     <span class="valueHolder">Role Type</span>
                                                     <span class="valueHolder1" name="RoleType"></span>
+                                                </div>
+                                            </div> -->
+                                            <div class="involved_selection">
+                                                <div class="form-group">
+                                                    <input type="radio" id="InClient" name="radio-group" checked>
+                                                    <label for="InClient">Client</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="radio" id="InBank1" name="radio-group">
+                                                    <label for="InBank1">Bank1</label>
+                                                </div>
+                                                <div class="form-group">                                                            
+                                                    <input type="radio" id="InBank2" name="radio-group">
+                                                    <label for="InBank2">Bank2</label>
                                                 </div>
                                             </div>
                                             <div class="form-label-group">
@@ -263,7 +278,7 @@
                                         </form>
                                     </div>
                                     <div class="reject_btn status_reject">
-                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                        <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
                                             application</a>
                                     </div>
                                 </div>
@@ -322,7 +337,7 @@
                                         </form>
                                     </div>
                                     <div class="reject_btn status_reject">
-                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                        <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
                                             application</a>
                                     </div>
                                 </div>
@@ -407,7 +422,7 @@
                                         </form>
                                     </div>
                                     <div class="reject_btn status_reject">
-                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                        <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
                                             application</a>
                                     </div>
                                 </div>
@@ -457,7 +472,7 @@
                                         </form>
                                     </div>
                                     <div class="reject_btn status_reject">
-                                        <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject
+                                        <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
                                             application</a>
                                     </div>
                                 </div>
@@ -494,7 +509,7 @@
                                 <div class="histroy_detail">
                                     <div class="top_section">
                                         <p class="date">6 March 2019<span class="time">5:01 PM</span></p>
-                                        <span class="explorer">View on Explorer</span>
+                                        <!-- <span class="explorer">View on Explorer</span> -->
                                     </div>
                                     <div class="status">
                                         <p class="status_point"> In review</p>
@@ -511,7 +526,7 @@
                                         <p> In review</p>
                                     </div>
                                     <p class="banks_application">Change loan application</p>
-                                    <div class="change_loan">
+                                    <!-- <div class="change_loan">
                                         <p class="change-amt-head">Change Loan Amount </p>
                                         <div class="change_amount">
                                             <p>
@@ -520,7 +535,7 @@
                                                 <span class="amount">450,000 €</span>
                                             </p>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div id="commentSection">
                                         <div class="comments_feild">
                                             <p>Due to low creditworthiness of the borrower, we must lower the amount to

@@ -41,6 +41,7 @@ header {
             height: 72px;
             .header_heading{
                 padding-left: 43px;
+                @include flex;
                 h2{
                     margin-bottom: 0;
                     @include minTablet{
@@ -48,6 +49,14 @@ header {
                     }
                     a{
                         color: $Outer_Space;
+                        text-decoration: none;
+                    }
+                }
+                h4{
+                    line-height: 32px;
+                    padding-left: 20px;
+                    margin: 0;
+                    a{
                         text-decoration: none;
                     }
                 }
