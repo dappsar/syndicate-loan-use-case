@@ -53,6 +53,13 @@ body{
     }
 }
 
+.involved_selection{
+    @include flex;
+    .form-group{
+        margin-right: 20px;
+    }
+}
+
 /* ------custom file upload css --------*/
 .file-upload{display:block;text-align:center;font-family: Helvetica, Arial, sans-serif;font-size: 12px;}
 .file-upload .file-select{display:block;border: 1px solid #DEE8F2;color: #34495e;cursor:pointer;height:56px;line-height:56px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative; border-radius: 4px; margin-bottom: 16px;}

@@ -2,7 +2,7 @@ pragma solidity ^0.5.2;
 
 //import "./Ownable.sol";
 
-//contract DataStorage is Ownable {
+//  contract DataStorage is Ownable {
 contract DataStorage is Ownable {
     
     uint public loanId;     // supposed to be a unique number
