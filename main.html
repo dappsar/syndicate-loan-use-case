@@ -231,51 +231,104 @@
                                 <div id="collapse-B" class="collapse" data-parent="#content" role="tabpanel"
                                     aria-labelledby="heading-B">
                                     <div class="loan_detail">
-                                        <form>
-                                            <!-- <div class="form-label-group">
-                                                <div class="customDropdown dd_role">
-                                                    <span class="valueHolder">Role Type</span>
-                                                    <span class="valueHolder1" name="RoleType"></span>
-                                                </div>
-                                            </div> -->
-                                            <div class="involved_selection">
-                                                <div class="form-group">
-                                                    <input type="radio" id="InClient" name="radio-group" checked>
-                                                    <label for="InClient">Client</label>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="radio" id="InBank1" name="radio-group">
-                                                    <label for="InBank1">Bank1</label>
-                                                </div>
-                                                <div class="form-group">                                                            
-                                                    <input type="radio" id="InBank2" name="radio-group">
-                                                    <label for="InBank2">Bank2</label>
+                                            <div class="involved_selection1">                                                
+                                                <ul class="nav nav-tabs sub-tab" role="tablist">
+                                                    <li class="nav-item">
+                                                      <a class="nav-link active" href="#Client" role="tab" data-toggle="tab">Client</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                      <a class="nav-link" href="#Bank1" role="tab" data-toggle="tab">Bank1</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                      <a class="nav-link" href="#Bank2" role="tab" data-toggle="tab">Bank2</a>
+                                                    </li>
+                                                </ul>
+                                                  <!-- Tab panes -->
+                                                <div class="tab-content">
+                                                    <div role="tabpanel" class="tab-pane fade in active show" id="Client">
+                                                        <form>
+                                                            <div class="form-label-group">
+                                                                <div class="customDropdown">
+                                                                    <span class="valueHolder">Role</span>
+                                                                    <span class="valueHolder1" name="Role"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-label-group float-lab">
+                                                                <input type="text" id="InName" name="Name" class="form-control"
+                                                                    required>
+                                                                <label for="InName">Name</label>
+                                                            </div>
+                                                            <div class="form-label-group float-lab">
+                                                                <input type="text" id="InAddress" name="address" class="form-control"
+                                                                    required>
+                                                                <label for="InAddress">Address</label>
+                                                            </div>
+                                                            <div class="group_btns">
+                                                                <button data-toggle="modal" data-target="#update" type="button"
+                                                                    class="primary_btn"
+                                                                    onclick="modalValue('involvedParties')">Update</button>
+                                                                <button onclick="modalValue('involvedParties');" type="button"
+                                                                    class="ghost_btn">Approve</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade" id="Bank1">
+                                                        <form>
+                                                            <div class="form-label-group">
+                                                                <div class="customDropdown">
+                                                                    <span class="valueHolder">Role</span>
+                                                                    <span class="valueHolder1" name="Role"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-label-group float-lab">
+                                                                <input type="text" id="InName" name="Name" class="form-control"
+                                                                    required>
+                                                                <label for="InName">Name</label>
+                                                            </div>
+                                                            <div class="form-label-group float-lab">
+                                                                <input type="text" id="InAddress" name="address" class="form-control"
+                                                                    required>
+                                                                <label for="InAddress">Address</label>
+                                                            </div>
+                                                            <div class="group_btns">
+                                                                <button data-toggle="modal" data-target="#update" type="button"
+                                                                    class="primary_btn"
+                                                                    onclick="modalValue('involvedParties')">Update</button>
+                                                                <button onclick="modalValue('involvedParties');" type="button"
+                                                                    class="ghost_btn">Approve</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade" id="Bank2">
+                                                        <form>
+                                                            <div class="form-label-group">
+                                                                <div class="customDropdown">
+                                                                    <span class="valueHolder">Role</span>
+                                                                    <span class="valueHolder1" name="Role"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-label-group float-lab">
+                                                                <input type="text" id="InName" name="Name" class="form-control"
+                                                                    required>
+                                                                <label for="InName">Name</label>
+                                                            </div>
+                                                            <div class="form-label-group float-lab">
+                                                                <input type="text" id="InAddress" name="address" class="form-control"
+                                                                    required>
+                                                                <label for="InAddress">Address</label>
+                                                            </div>
+                                                            <div class="group_btns">
+                                                                <button data-toggle="modal" data-target="#update" type="button"
+                                                                    class="primary_btn"
+                                                                    onclick="modalValue('involvedParties')">Update</button>
+                                                                <button onclick="modalValue('involvedParties');" type="button"
+                                                                    class="ghost_btn">Approve</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-label-group">
-                                                <div class="customDropdown">
-                                                    <span class="valueHolder">Role</span>
-                                                    <span class="valueHolder1" name="Role"></span>
-                                                </div>
-                                            </div>
-                                            <div class="form-label-group float-lab">
-                                                <input type="text" id="InName" name="Name" class="form-control"
-                                                    required>
-                                                <label for="InName">Name</label>
-                                            </div>
-                                            <div class="form-label-group float-lab">
-                                                <input type="text" id="InAddress" name="address" class="form-control"
-                                                    required>
-                                                <label for="InAddress">Address</label>
-                                            </div>
-                                            <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button"
-                                                    class="primary_btn"
-                                                    onclick="modalValue('involvedParties')">Update</button>
-                                                <button onclick="modalValue('involvedParties');" type="button"
-                                                    class="ghost_btn">Approve</button>
-                                            </div>
-                                        </form>
+                                            
                                     </div>
                                     <div class="reject_btn status_reject">
                                         <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
@@ -636,7 +689,25 @@
                     <!-- <label for="comment">Term Sheet</label> -->
                 </div>
                 <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal"
-                        class="primary_btn" onclick="storeComment();">Add</button></div>
+                        class="primary_btn">Add</button></div>
+            </div>
+        </div>
+    </div>
+    <!--- comment detail modal-->
+    <div class="modal fade" id="commentpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal_para">
+                    <h3>commented details</h3>
+                </div>
+                <div class="comment_list_sec nicescroll-box">
+                    <p>jkj kjhhjk kjj kjjj kjjk</p>
+                </div>
+                
             </div>
         </div>
     </div>

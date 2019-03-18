@@ -52,12 +52,23 @@ body{
         }
     }
 }
-
+.main_application {
+    .nav-tabs{
+        &.sub-tab{
+            padding-left: 0;
+        }
+    }
+}
 .involved_selection{
     @include flex;
     .form-group{
         margin-right: 20px;
     }
+}
+.comment_list_sec{
+    height: 220px !important;
+    overflow: auto;
+    padding: 12px 16px;
 }
 
 /* ------custom file upload css --------*/
