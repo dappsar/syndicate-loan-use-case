@@ -36,10 +36,12 @@ else {
 
 
 function setNumber(_num) {
-    alert(`Sending Transaction with Value ${this._num}`);
+    alert(`Sending Transaction with Value ${this._num}`); // doesnt work yet
     console.log('fn setNumber: log window.web3:');
-    console.log(window.web3);
+    console.log(window.web3);               // why this?
     window.web3 = new Web3(ethereum);
+    console.log(window.web3);               // why this?
+
     // Log Network (currently not printed to HTML)
     web3.eth.net.getId().then(netId => {
       switch (netId) {
