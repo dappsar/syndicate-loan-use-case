@@ -111,3 +111,5 @@ function printNetwork () {
         })
 
 }
+
+$('#writeToChain').on(click)

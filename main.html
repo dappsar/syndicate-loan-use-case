@@ -220,23 +220,24 @@
                                                 <label for="loanId">Loan Id</label>
                                             </div>
 
-                                            <div class="form-label-group float-lab">
-                                                <input type="text" id="regParty" class="form-control"
+                                            <div class="form-label-group float-lab input_float_lbl">
+                                                <input type="text" id="regParty" class="form-control bc_address"
                                                     name="regParty" value="" required disabled>
                                                 <label for="regParty">Registering party</label>
                                             </div>
 
                                             
-                                            <div class="form-label-group float-lab">
-                                                  <input value="test" type="text" id="regDate" class="form-control   heading_text"
-                                                      name="regDate" required>
+                                            <div class="form-label-group float-lab input_float_lbl">
+                                                  <input value="01/01/2019" type="text" id="regDate" class="form-control"
+                                                      name="regDate" required disabled>
                                                   <label for="regDate">Date of Registration</label>
                                               </div>
                                               
 
                                             <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button"
-                                                    class="primary_btn" onclick="modalValue('keyData')">Update</button>
+                                                <button data-toggle="modal" id="writeToChain" data-target="#update" type="button"
+                                                    class="primary_btn" onclick="modalValue('keyData')">Write to Blockchain</button>
+
                                                 <button onclick="modalValue('keyData');" type="button"
                                                     class="ghost_btn">Approve</button>
                                             </div>

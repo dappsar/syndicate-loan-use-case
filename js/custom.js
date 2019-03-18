@@ -85,10 +85,10 @@ $(document).ready(function () {
         approvals();                                                //to show check box acc. to application
         keyData(currentTab);                                        //to manage drop down
         console.log(applicationType, getLocalStorage(applicationType));
-        if (!getLocalStorage(applicationType)) {
-            console.log("111", getLocalStorage(applicationType))
-            ResetForm();
-        }
+        // if (!getLocalStorage(applicationType)) {
+        //     console.log("111", getLocalStorage(applicationType))
+        //     ResetForm();
+        // }
 
     });
 
@@ -321,48 +321,48 @@ storeComment = () => {
 }
 
 //manage predefined data structure 
-setUpEnv = (tab) => {
-    switch (tab) {
-        case "keyData":
-            return {
-                'Name Of Loan': 'Seller',
-                'Purpose Of Loan': 'Confident'
-            };
-        case "involvedParties":
-            return {
-                'RoleType': 'Client',
-                'Role': 'Loan Takker',
-                'Name': 'testing',
-                'address': 'This is 37/1 testing address, gurgaon'
-            };
-        case "objectDetails":
-            return {
-                'Description': 'Loan Takker',
-                'Total Area Outdoor+Indoor': '1000 yards',
-                'Usable Area Net Floor Space': '800 yards',
-                'Total Area Outdoor': '200 yards',
-                'Purchase Price': '1200000',
-                'Price Per Sqaure Meter': '1200'
-            }
-        case "loanDetails":
-            return {
-                'Client': 1200000,
-                'Bank#1': 1300000,
-                'Bank#2': 1400000,
-                'Interest Rate': 18,
-                'Loan Payout Structure': 'testing Cumulative',
-                'Load Repayment Structure': 'testing structure',
-                'Loan Start': 'Select loan start date',
-                'Loan Duration': 'testing duration 12 months'
-            }
-        case "documentDetails":
-            return {
-                'Expose': 'testing expose',
-                'Time Sheet': 'testing with time sheet',
-                'Additional document': 'tester document'
-            }
-    }
-}
+// setUpEnv = (tab) => {
+//     switch (tab) {
+//         case "keyData":
+//             return {
+//                 'Name Of Loan': 'Seller',
+//                 'Purpose Of Loan': 'Confident'
+//             };
+//         case "involvedParties":
+//             return {
+//                 'RoleType': 'Client',
+//                 'Role': 'Loan Takker',
+//                 'Name': 'testing',
+//                 'address': 'This is 37/1 testing address, gurgaon'
+//             };
+//         case "objectDetails":
+//             return {
+//                 'Description': 'Loan Takker',
+//                 'Total Area Outdoor+Indoor': '1000 yards',
+//                 'Usable Area Net Floor Space': '800 yards',
+//                 'Total Area Outdoor': '200 yards',
+//                 'Purchase Price': '1200000',
+//                 'Price Per Sqaure Meter': '1200'
+//             }
+//         case "loanDetails":
+//             return {
+//                 'Client': 1200000,
+//                 'Bank#1': 1300000,
+//                 'Bank#2': 1400000,
+//                 'Interest Rate': 18,
+//                 'Loan Payout Structure': 'testing Cumulative',
+//                 'Load Repayment Structure': 'testing structure',
+//                 'Loan Start': 'Select loan start date',
+//                 'Loan Duration': 'testing duration 12 months'
+//             }
+//         case "documentDetails":
+//             return {
+//                 'Expose': 'testing expose',
+//                 'Time Sheet': 'testing with time sheet',
+//                 'Additional document': 'tester document'
+//             }
+//     }
+// }
 
 //when to click on update button
 modalValue = (tab) => {
