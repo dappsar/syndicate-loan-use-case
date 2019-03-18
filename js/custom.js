@@ -76,7 +76,9 @@ $(document).ready(function () {
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');
         let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];
-        document.getElementById("heading_text").innerHTML = loan_heading;
+        // document.getElementById("heading_text").innerHTML = loan_heading;
+        $('.heading_text').html(loan_heading);
+        $('.heading_text').val(loan_heading);
         applicationType = $(this).closest('li')[0].innerText.split("\n")[0]
         manageTab(currentTab);                                      //to manage the state of tab in different application
         restoreComment();                                           //to show comment acc. to the application
