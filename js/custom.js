@@ -107,6 +107,7 @@ let appendComment = (comment, user) => {
     <div class="histroy_detail">
         <div class="top_section">
             <p class="date">${getDateInFormate()}</p>
+            <span class="explorer" data-toggle="modal" data-target="#commentpop">View Detail</span>
         </div>
         <div class="status waiting">
             <p> Waiting for review</p>
@@ -435,6 +436,7 @@ restoreComment();
         }
 
 })()
+
 // applications = () => {
 //     let application_list = getLocalStorage('loanType');
 //     if (application_list)
@@ -463,7 +465,21 @@ Logout = () => {
     window.location.href = "Signup.html";
 }
 
+// function rejectApplication(){   
+//     console.log(applicationType);
+//     var delete_key = ''
+//     var dlt_loan = getLocalStorage('loanType');
+//     let index = dlt_loan.findIndex(function(key, value){ 
+//        //console.log(applicationType,key['loanApplication'])
+//        return key['loanApplication']==applicationType
+//      }) 
+//     if(index)
+//       dlt_loan.splice(index>=0, 1);
 
+//     setLocalStorage('loanType',dlt_loan);
+//     applications();
+    
+// }
 
 
 

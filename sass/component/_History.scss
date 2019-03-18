@@ -350,3 +350,25 @@
         }        
     }
 }
+
+.explorer {
+    border: 2px solid $Outer_Space;
+    border-radius: 2px;
+    padding: 4px 9px;
+    font-size: 12px;
+    color: $Outer_Space;
+    font-weight: 700;
+    line-height: 16px;
+    margin-top: -6px;
+    text-align: center;  
+    max-height: 44px;   
+    top: 20px;
+    @include abs-pos(20px, 16px, auto, auto);
+    @include belowDesktop{
+        max-width: 130px;
+        margin-bottom: 10px;    
+    }                      
+    &:hover{
+        cursor: pointer;
+    } 
+}
