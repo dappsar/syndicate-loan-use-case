@@ -1,8 +1,25 @@
-var storeABI = [
+storeABI = [
     {
+    "constant": false,
+    "inputs": [{
+        "name": "_name",
+        "type": "string"
+    }, {
+        "name": "_purpose",
+        "type": "string"
+    }, {
+        "name": "_date",
+        "type": "string"
+    }],
+    "name": "createLoan",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
     "constant": true,
     "inputs": [],
-    "name": "storedData",
+    "name": "loanId",
     "outputs": [{
         "name": "",
         "type": "uint256"
@@ -11,23 +28,24 @@ var storeABI = [
     "stateMutability": "view",
     "type": "function"
 }, {
-    "constant": false,
-    "inputs": [{
-        "name": "x",
-        "type": "uint256"
-    }],
-    "name": "set",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-}, {
     "constant": true,
-    "inputs": [],
-    "name": "get",
-    "outputs": [{
+    "inputs": [{
         "name": "",
         "type": "uint256"
+    }],
+    "name": "loans",
+    "outputs": [{
+        "name": "name",
+        "type": "string"
+    }, {
+        "name": "id",
+        "type": "uint256"
+    }, {
+        "name": "purpose",
+        "type": "string"
+    }, {
+        "name": "date",
+        "type": "string"
     }],
     "payable": false,
     "stateMutability": "view",

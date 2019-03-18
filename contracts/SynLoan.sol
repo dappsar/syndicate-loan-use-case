@@ -1,9 +1,7 @@
 pragma solidity ^0.5.2;
 
-//import "./Ownable.sol";
 
-//  contract DataStorage is Ownable {
-contract DataStorage is Ownable {
+contract SynLoanData {
     
     uint public loanId;     // supposed to be a unique number
 
@@ -11,6 +9,7 @@ contract DataStorage is Ownable {
         string name;        // Name of  the Loan
         uint id;            // Loan ID
         string purpose;
+        string date;        // for now string eg. "03/15/2019"
     }
 
 
@@ -28,10 +27,22 @@ Struct participant defines key data ob participants such as banks and businesses
     LoanData[] public loans;
 
 
-    function createLoan (string memory _name, string memory _value) public {
+    function createLoan (string memory _name, string memory _purpose, string memory _date) public {
         loanId++;
-        loans.push(LoanData(_name, loanId, _value));
+        loans.push(LoanData(_name, loanId, _purpose, _date));
     }
+
+/*
+Update Loan Data
+*/
+    function updateLoan() public {}
+
+
+/*
+Retrieve stored Loan Data
+*/
+    function getLoan() public {}
+
 
 
 }

@@ -27,8 +27,17 @@
 
     <script src="js/blockchain.js"></script>
 
+    <!-- Blockchain related files -->
+    <!-- Blockchain js file, includes major blockchain functionality -->
+    <script src="js/blockchain.js"></script>
+
+    <!-- Contract ABI js -->
+    <script language="javascript" type="text/javascript" src="js\contractABI.js"></script>
+
     <!-- Web3 js file -->
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
+    <!-- <script src="js/Web3.1.0.0-beta.48.js"></script> -->
+    
 
     <!-- Favicon icon -->
     <link rel="icon" href="images/fab_icon.png" type="image/png" sizes="16x16">
@@ -87,7 +96,7 @@
                                     <span>+</span>
                                 </span>
                             </span>
-                            <h4>Propose new loan</h4>
+                            <h4>Propose New Loan</h4>
                         </div>
                         <div class="appplication_section">
                             <p class="head">applications</p>
@@ -209,7 +218,7 @@
                                             </div>
 
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="purpose" class="form-control"
+                                                <input type="text" id="loanPurpose" class="form-control"
                                                     name="Purpose" required>
                                                 <label for="purpose">Purpose</label>
                                             </div>
@@ -228,15 +237,14 @@
 
                                             
                                             <div class="form-label-group float-lab input_float_lbl">
-                                                  <input value="01/01/2019" type="text" id="regDate" class="form-control"
-                                                      name="regDate" required disabled>
-                                                  <label for="regDate">Date of Registration</label>
+                                                  <input value="01/01/2019" type="text" id="loanDate" class="form-control"
+                                                      name="loanDate" required disabled>
+                                                  <label for="loanDate">Date of Registration</label>
                                               </div>
                                               
 
                                             <div class="group_btns">
-                                                <button data-toggle="modal" id="writeToChain" data-target="#update" type="button"
-                                                    class="primary_btn" onclick="modalValue('keyData')">Write to Blockchain</button>
+
 
                                                 <button onclick="modalValue('keyData');" type="button"
                                                     class="ghost_btn">Approve</button>
@@ -369,7 +377,7 @@
                                     </div>
                                     <div class="reject_btn status_reject">
                                         <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
-                                            application</a>
+                                            application!</a>
                                     </div>
                                 </div>
                             </div>
@@ -510,6 +518,10 @@
                             </div>
                         </div>
                         <!-- end -->
+                    </div>
+                    <div class="container">
+                        <button data-toggle="modal" id="writeToChain" type="button" onclick="createLoan($('#loanName').val(), $('#loanPurpose').val(), $('#loanDate').val())"
+                        class="primary_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Write to Blockchain</button>
                     </div>
                 </div>
                 <div class="col-sm-4 no-padding">
@@ -688,7 +700,17 @@
     <script src="js/jquery.nicescroll.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
+
 </body>
+
+<!-- <script>
+
+   $('#test1').on("click", function(){
+       alert("....");
+     });
+
+
+</script> -->
 
 <script>
 // console.log(window.web3);ad

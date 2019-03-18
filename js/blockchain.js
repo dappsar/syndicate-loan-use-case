@@ -34,32 +34,27 @@ else {
 });  // End enable window
 
 
-function setNumber(_num) {
-    alert(`Sending Transaction with Value ${this._num}`); // doesnt work yet
+function createLoan(_name, _purpose, _date) {
+    alert("Sending Transaction with Value "+ _name + _purpose + _date);
     console.log('fn setNumber: log window.web3:');
-    console.log(window.web3);               // why this?
-    window.web3 = new Web3(ethereum);
-    console.log(window.web3);               // why this?
 
+    window.web3 = new Web3(ethereum);
 
 
     // Function that returns default account and sends Tx
     const fn = async () => {
         try {
             const myAccounts = await web3.eth.getAccounts();
-            // $('#inputPublic').val(myAccounts[0]);
-            // console.log(myAccounts[0]);
 
-            var storeAddress = "0x53e164d9A7c8C7EDaFfc9a52c2a8d02970475304";
+            var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of SC
             storeContract = new web3.eth.Contract(storeABI, storeAddress);  
             console.log(storeContract);
 
-            storeContract.methods.set(_num).send({from: myAccounts[0]})
+            storeContract.methods.createLoan(_name, _purpose, _date).send({from: myAccounts[0]})
             .then((receipt) => {
                 console.log(receipt);
             });
-
-            return myAccounts[0];
+            // return myAccounts[0];
         } 
         catch (err) {
             console.log(err);
@@ -112,4 +107,8 @@ function printNetwork () {
 
 }
 
-$('#writeToChain').on(click)
+
+// $('#writeToChain').on("click", setNumber(1337));
+
+// $('#writeToChain').on("click", alert("Test"));
+
