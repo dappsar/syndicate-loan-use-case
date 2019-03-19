@@ -81,11 +81,11 @@ function printNetwork () {
         switch (netId) {
             case 1:
             console.log('This is Mainnet');
-            ($('#bc_network').html("Ethereum Mainnet"));
+            ($('#bc_network').html("Ethereum Mainnet <span class=\"warning\"> - Please switch to Ropston - </span>"));
             break
             case 2:
             console.log('This is the deprecated Morden test network.');
-            ($('#bc_network').html("Morden"));
+            ($('#bc_network').html("Morden <span class=\"warning\"> - Please switch to Ropston - </span>"));
             break
             case 3:
             console.log('This is the Ropsten test network.');
@@ -93,7 +93,7 @@ function printNetwork () {
             break
             case 4:
             console.log('This is the Rinkeby test network.');
-            ($('#bc_network').html("Rinkeby"));
+            ($('#bc_network').html("Rinkeby <span class=\"warning\"> - Please switch to Ropston - </span>"));
             break
             case 5:
             console.log('This is the network with ID 5');
@@ -101,7 +101,7 @@ function printNetwork () {
             break
             default:
             console.log('This is an unknown network.');
-            ($('#bc_network').html("Unkown"));
+            ($('#bc_network').html("Unkown <span class=\"warning\"> - Please switch to Ropston - </span>"));
             }
         })
 

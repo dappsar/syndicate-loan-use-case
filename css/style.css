@@ -25,6 +25,15 @@ body {
     display: inline-block
 }
 
+
+.warning { 
+    color: #A00;
+    font-weight: bold;
+}
+
+.bold {
+    font-weight: bold;
+}
 .form-label-group {
     margin-bottom: 16px
 }
