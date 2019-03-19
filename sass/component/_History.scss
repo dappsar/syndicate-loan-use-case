@@ -372,3 +372,30 @@
         cursor: pointer;
     } 
 }
+
+.comments_feild{
+    border: 1px solid $Catskill_Whitev2;
+    @include border-radius(6px);
+    position: relative;
+    border-bottom-left-radius: 0;
+    margin-top: 8px;
+    padding: 12px 16px 0;
+    margin-bottom: 8px;
+    p{
+        margin-bottom: 12px;
+        word-break: break-all;
+    }
+    &:before{
+        content: "";
+        width:15px;
+        height: 8px;
+        background: url("../images/cmt-arrow.png");
+        @include abs-pos(auto, auto, -8px, -1px);                 
+        background-repeat: no-repeat; 
+    }
+}
+p{
+    &.comments_feild{
+        padding-bottom: 12px;
+    }
+}
