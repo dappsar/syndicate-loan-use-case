@@ -27,10 +27,14 @@ Struct participant defines key data ob participants such as banks and businesses
     LoanData[] public loans;
 
 
-    function createLoan (string memory _name, string memory _purpose, string memory _date) public {
+    function createLoan (string memory _name,
+                         string memory _purpose,
+                         string memory _date) public {
         loanId++;
         loans.push(LoanData(_name, loanId, _purpose, _date));
     }
+
+// How to add multiple loans to one mapping address?
 
 /*
 Update Loan Data
