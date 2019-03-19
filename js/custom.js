@@ -105,7 +105,7 @@ let appendComment = (comment, user) => {
     <div class="histroy_detail">
         <div class="top_section">
             <p class="date">${getDateInFormate()}</p>
-            <span class="explorer" data-toggle="modal" data-target="#commentpop">View Detail</span>
+            <span class="explorer">View Detail</span>
         </div>
         <div class="status waiting">
             <p> Waiting for review</p>
@@ -295,15 +295,15 @@ storeComment = () => {
     let commentedData = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : ''//getting application data from localstorage
     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
     //user = `${user}-${modal}`
-    appendComment(comment, user);                                                               //function to bind comments in right hand side box
+    appendComment(comment, user);                                                              //function to bind comments in right hand side box
     if (commentedData && commentedData[currentTab]) {                                           //check if data from localstorage give us comments 
     
         if (commentedData[currentTab]['comment']) {
-            commentedData[currentTab]['comment'][user] = { 'comment': comment }                 //bind the next comment with user name
+            commentedData[currentTab]['comment'][new Date().getTime()] = { [user]:{'comment': comment }}                 //bind the next comment with user name
             setLocalStorage(applicationType, commentedData)                                     //save the updated comments in localstorage
         }
         else {
-            commentedData[currentTab] = Object.assign(commentedData[currentTab], { 'comment': { [user]: { 'comment': comment } } })
+            commentedData[currentTab] = Object.assign(commentedData[currentTab], { 'comment': { [new Date().getTime()]:{[user]: { 'comment': comment } } }})
             setLocalStorage(applicationType, commentedData)                                     //set local storage with updated data
         }
     }
@@ -314,6 +314,7 @@ storeComment = () => {
     //     // setLocalStorage(applicationType, data)                                               //set local storage with updated data
     // }
 }
+
 
 //manage predefined data structure 
 setUpEnv = (tab) => {
@@ -363,7 +364,7 @@ setUpEnv = (tab) => {
 modalValue = (tab) => {
     let localDb = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : { [tab]: {} };                                                  //getting data of current application from local storage
     let formData = document.getElementsByClassName("form-control")                                  //getting form data from UI
-    localDb[tab] = setUpEnv(tab)
+    localDb[tab]?localDb[tab]:localDb[tab] = setUpEnv(tab)
     for (i = 0; i < formData.length; i++)
         localDb[tab][formData[i].name] ? (localDb[tab][formData[i].name] = formData[i].value) : ''  //updating the editted data in object get from local storage
     let dropData = document.getElementsByClassName("valueHolder1")                                  //getting drop down from UI                            
@@ -411,10 +412,15 @@ approvals();
 var restoreComment = () => {
     $(".History_pannel ul").empty();  //$("#commentSection").empty();
     let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};
+    console.log(comments)
     if(comments)
     if ('comment' in comments) {
         for (comment in comments['comment']) {
-            appendComment(comments['comment'][comment].comment, comment)
+            let data = comments['comment'][comment]
+            let key = Object.keys(data)[0]
+            let commentedText = data[Object.keys(data)[0]].comment
+            console.log(data, data[Object.keys(data)[0]].comment)
+            appendComment(commentedText, key);
         }
     }
 }
@@ -431,15 +437,6 @@ restoreComment();
 
 })()
 
-// applications = () => {
-//     let application_list = getLocalStorage('loanType');
-//     if (application_list)
-//         for (i = application_list.length - 4; i >= 0; i--) {
-//             $(".appplication_section ul").prepend('<li><div class="lists"><h4>' + application_list[i].loanApplication + '</h4><div class="status"><p>' + application_list[i].status + '</p></div><span class="date">' + application_list[i].time + '</span></div></li>');
-//             Appliaction_data = application_list;
-//         }
-// }
-// applications();
 
 // custom file upload js 
 $('#chooseFile').bind('change', function () {
@@ -458,24 +455,5 @@ $('#chooseFile').bind('change', function () {
 Logout = () => {
     window.location.href = "Signup.html";
 }
-
-// function rejectApplication(){   
-//     console.log(applicationType);
-//     var delete_key = ''
-//     var dlt_loan = getLocalStorage('loanType');
-//     let index = dlt_loan.findIndex(function(key, value){ 
-//        //console.log(applicationType,key['loanApplication'])
-//        return key['loanApplication']==applicationType
-//      }) 
-//     if(index)
-//       dlt_loan.splice(index>=0, 1);
-
-//     setLocalStorage('loanType',dlt_loan);
-//     applications();
-    
-// }
-
-
-
 
 
