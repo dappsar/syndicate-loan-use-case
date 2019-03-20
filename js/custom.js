@@ -1,5 +1,5 @@
 let applicationType = 'Housing Development'
-let currentTab = 'loanDetails'
+let currentTab = 'keyData'
 var select_arr = ['Loan Taker', 'Seller', 'Confidant']
 var select_arr2 = ['Client', 'Bank#1', 'Bank#2']
 let text_value_application;                                         //to store the application type when you create new
@@ -76,7 +76,9 @@ $(document).ready(function () {
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');
         let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];
-        document.getElementById("heading_text").innerHTML = loan_heading;
+        // document.getElementById("heading_text").innerHTML = loan_heading;
+        $('.heading_text').html(loan_heading);
+        $('.heading_text').val(loan_heading);
         applicationType = $(this).closest('li')[0].innerText.split("\n")[0]
         manageTab(currentTab);                                      //to manage the state of tab in different application
         restoreComment();                                           //to show comment acc. to the application
@@ -248,7 +250,7 @@ calculateTotalAmount = () => {
     document.getElementById("Total_value").textContent = total + ' €';      //bind calculated value to UI
 }
 
-//call when you switch the tab
+// Function for changing tabs: call when you switch the tab
 var manageTab = (tab) => {                                      //tab=name of current tab
     currentTab = tab;
     restoreComment();
