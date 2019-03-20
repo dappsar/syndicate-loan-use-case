@@ -76,19 +76,16 @@ $(document).ready(function () {
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');
         let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];
-        // document.getElementById("heading_text").innerHTML = loan_heading;
-        $('.heading_text').html(loan_heading);
-        $('.heading_text').val(loan_heading);
+        document.getElementById("heading_text").innerHTML = loan_heading;
         applicationType = $(this).closest('li')[0].innerText.split("\n")[0]
         manageTab(currentTab);                                      //to manage the state of tab in different application
         restoreComment();                                           //to show comment acc. to the application
         approvals();                                                //to show check box acc. to application
-        keyData(currentTab);                                        //to manage drop down
-        console.log(applicationType, getLocalStorage(applicationType));
-        // if (!getLocalStorage(applicationType)) {
-        //     console.log("111", getLocalStorage(applicationType))
-        //     ResetForm();
-        // }
+        keyData(currentTab);                                       //to manage drop down
+        
+        if (!getLocalStorage(applicationType)) {
+            ResetForm();
+        }
 
     });
 
@@ -107,7 +104,7 @@ let appendComment = (comment, user) => {
     <div class="histroy_detail">
         <div class="top_section">
             <p class="date">${getDateInFormate()}</p>
-            <span class="explorer">View Detail</span>
+            <span class="explorer" data-toggle="modal" data-target="#commentpop" onclick="commentList()">View Detail</span>
         </div>
         <div class="status waiting">
             <p> Waiting for review</p>
@@ -170,12 +167,8 @@ var submitFormData = () => {
     signupData.Role = dropDownData[0].textContent
     //storing data in localstorage
     setLocalStorage(new Date(), signupData)
-    //writeToBlockchain("userdata",signupData)
+
 }
-/* ----end of storing input data on browser------ */
-
-
-
 
 // Setter Getter for local storage
 getLocalStorage = (key) => {
@@ -268,7 +261,6 @@ var manageTab = (tab) => {                                      //tab=name of cu
     else {
         if (!DetailsObject) {                                   //when you didn't find application in local storage   
             if (DefaultType.indexOf(applicationType) > -1) {
-                console.log("22222222222222", DetailsObject, applicationType)
                 DetailsObject = setUpEnv(tab)                       //get the predefined value from switch case function
                 let data = {}
                 data[tab] = DetailsObject                           //set up value acc. to tab
@@ -278,7 +270,7 @@ var manageTab = (tab) => {                                      //tab=name of cu
             }
         }
         else {                                                  //when you find applicatioin in local storage but without tab info
-            console.log("11111111111111111111111", DetailsObject, applicationType)
+            
             if (DefaultType.indexOf(applicationType) > -1) {
                 DetailsObject[tab] = setUpEnv(tab)                  //set up predefined value
                 formValueSetter(DetailsObject[tab]);                //function which set the text field values
@@ -290,9 +282,6 @@ var manageTab = (tab) => {                                      //tab=name of cu
 
 
 }
-
-// //setting up the tab name when you click on uppdate button
-// modalValue = (tabName) => modal = tabName;                      //No more needed
 
 //comment saved locally
 storeComment = () => {
@@ -314,8 +303,8 @@ storeComment = () => {
         }
     }
     document.getElementById('comment').value = "";
-    // else {                                                                                      //in case local storage given object dont have comments yet
-    //     alert('Please fill this tab data first')
+    // else {                                                                                     //in case local storage given object dont have comments yet
+    
     //     // let data = Object.assign(commentedData, { 'comment': { [currentTab]: { [user]: { 'comment': comment } } } }) //bind comment
     //     // setLocalStorage(applicationType, data)                                               //set local storage with updated data
     // }
@@ -323,48 +312,48 @@ storeComment = () => {
 
 
 //manage predefined data structure 
-// setUpEnv = (tab) => {
-//     switch (tab) {
-//         case "keyData":
-//             return {
-//                 'Name Of Loan': 'Seller',
-//                 'Purpose Of Loan': 'Confident'
-//             };
-//         case "involvedParties":
-//             return {
-//                 'RoleType': 'Client',
-//                 'Role': 'Loan Takker',
-//                 'Name': 'testing',
-//                 'address': 'This is 37/1 testing address, gurgaon'
-//             };
-//         case "objectDetails":
-//             return {
-//                 'Description': 'Loan Takker',
-//                 'Total Area Outdoor+Indoor': '1000 yards',
-//                 'Usable Area Net Floor Space': '800 yards',
-//                 'Total Area Outdoor': '200 yards',
-//                 'Purchase Price': '1200000',
-//                 'Price Per Sqaure Meter': '1200'
-//             }
-//         case "loanDetails":
-//             return {
-//                 'Client': 1200000,
-//                 'Bank#1': 1300000,
-//                 'Bank#2': 1400000,
-//                 'Interest Rate': 18,
-//                 'Loan Payout Structure': 'testing Cumulative',
-//                 'Load Repayment Structure': 'testing structure',
-//                 'Loan Start': 'Select loan start date',
-//                 'Loan Duration': 'testing duration 12 months'
-//             }
-//         case "documentDetails":
-//             return {
-//                 'Expose': 'testing expose',
-//                 'Time Sheet': 'testing with time sheet',
-//                 'Additional document': 'tester document'
-//             }
-//     }
-// }
+setUpEnv = (tab) => {
+    switch (tab) {
+        case "keyData":
+            return {
+                'Name Of Loan': 'Seller',
+                'Purpose Of Loan': 'Confidant'
+            };
+        case "involvedParties":
+            return {
+                'RoleType': 'Client',
+                'Role': 'Loan Takker',
+                'Name': 'testing',
+                'address': 'This is 37/1 testing address, gurgaon'
+            };
+        case "objectDetails":
+            return {
+                'Description': 'Loan Takker',
+                'Total Area Outdoor+Indoor': '1000 yards',
+                'Usable Area Net Floor Space': '800 yards',
+                'Total Area Outdoor': '200 yards',
+                'Purchase Price': '1200000',
+                'Price Per Sqaure Meter': '1200'
+            }
+        case "loanDetails":
+            return {
+                'Client': 1200000,
+                'Bank#1': 1300000,
+                'Bank#2': 1400000,
+                'Interest Rate': 18,
+                'Loan Payout Structure': 'testing Cumulative',
+                'Load Repayment Structure': 'testing structure',
+                'Loan Start': 'Select loan start date',
+                'Loan Duration': 'testing duration 12 months'
+            }
+        case "documentDetails":
+            return {
+                'Expose': 'testing expose',
+                'Time Sheet': 'testing with time sheet',
+                'Additional document': 'tester document'
+            }
+    }
+}
 
 //when to click on update button
 modalValue = (tab) => {
@@ -391,6 +380,7 @@ modalValue = (tab) => {
 //when click on approval
 approvals = () => {
     let users = getLocalStorage(applicationType) ? getLocalStorage(applicationType)['approvals'] : [];
+    
     if (users) {
         if (users.includes('Bank#1'))
             document.getElementById("Bank1").checked = true;
@@ -417,15 +407,13 @@ approvals();
 //predefined Comment from local storage
 var restoreComment = () => {
     $(".History_pannel ul").empty();  //$("#commentSection").empty();
-    let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};
-    console.log(comments)
+    let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};    
     if(comments)
     if ('comment' in comments) {
         for (comment in comments['comment']) {
             let data = comments['comment'][comment]
             let key = Object.keys(data)[0]
-            let commentedText = data[Object.keys(data)[0]].comment
-            console.log(data, data[Object.keys(data)[0]].comment)
+            let commentedText = data[Object.keys(data)[0]].comment            
             appendComment(commentedText, key);
         }
     }
