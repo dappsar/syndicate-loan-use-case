@@ -81,10 +81,9 @@ $(document).ready(function () {
         manageTab(currentTab);                                      //to manage the state of tab in different application
         restoreComment();                                           //to show comment acc. to the application
         approvals();                                                //to show check box acc. to application
-        keyData(currentTab);                                        //to manage drop down
-        console.log(applicationType, getLocalStorage(applicationType));
+        keyData(currentTab);                                       //to manage drop down
+        
         if (!getLocalStorage(applicationType)) {
-            console.log("111", getLocalStorage(applicationType))
             ResetForm();
         }
 
@@ -105,7 +104,7 @@ let appendComment = (comment, user) => {
     <div class="histroy_detail">
         <div class="top_section">
             <p class="date">${getDateInFormate()}</p>
-            <span class="explorer">View Detail</span>
+            <span class="explorer" data-toggle="modal" data-target="#commentpop" onclick="commentList()">View Detail</span>
         </div>
         <div class="status waiting">
             <p> Waiting for review</p>
@@ -262,7 +261,6 @@ var manageTab = (tab) => {                                      //tab=name of cu
     else {
         if (!DetailsObject) {                                   //when you didn't find application in local storage   
             if (DefaultType.indexOf(applicationType) > -1) {
-                console.log("22222222222222", DetailsObject, applicationType)
                 DetailsObject = setUpEnv(tab)                       //get the predefined value from switch case function
                 let data = {}
                 data[tab] = DetailsObject                           //set up value acc. to tab
@@ -272,7 +270,7 @@ var manageTab = (tab) => {                                      //tab=name of cu
             }
         }
         else {                                                  //when you find applicatioin in local storage but without tab info
-            console.log("11111111111111111111111", DetailsObject, applicationType)
+            
             if (DefaultType.indexOf(applicationType) > -1) {
                 DetailsObject[tab] = setUpEnv(tab)                  //set up predefined value
                 formValueSetter(DetailsObject[tab]);                //function which set the text field values
@@ -284,9 +282,6 @@ var manageTab = (tab) => {                                      //tab=name of cu
 
 
 }
-
-// //setting up the tab name when you click on uppdate button
-// modalValue = (tabName) => modal = tabName;                      //No more needed
 
 //comment saved locally
 storeComment = () => {
@@ -308,8 +303,8 @@ storeComment = () => {
         }
     }
     document.getElementById('comment').value = "";
-    // else {                                                                                      //in case local storage given object dont have comments yet
-    //     alert('Please fill this tab data first')
+    // else {                                                                                     //in case local storage given object dont have comments yet
+    
     //     // let data = Object.assign(commentedData, { 'comment': { [currentTab]: { [user]: { 'comment': comment } } } }) //bind comment
     //     // setLocalStorage(applicationType, data)                                               //set local storage with updated data
     // }
@@ -385,6 +380,7 @@ modalValue = (tab) => {
 //when click on approval
 approvals = () => {
     let users = getLocalStorage(applicationType) ? getLocalStorage(applicationType)['approvals'] : [];
+    
     if (users) {
         if (users.includes('Bank#1'))
             document.getElementById("Bank1").checked = true;
@@ -411,15 +407,13 @@ approvals();
 //predefined Comment from local storage
 var restoreComment = () => {
     $(".History_pannel ul").empty();  //$("#commentSection").empty();
-    let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};
-    console.log(comments)
+    let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};    
     if(comments)
     if ('comment' in comments) {
         for (comment in comments['comment']) {
             let data = comments['comment'][comment]
             let key = Object.keys(data)[0]
-            let commentedText = data[Object.keys(data)[0]].comment
-            console.log(data, data[Object.keys(data)[0]].comment)
+            let commentedText = data[Object.keys(data)[0]].comment            
             appendComment(commentedText, key);
         }
     }
