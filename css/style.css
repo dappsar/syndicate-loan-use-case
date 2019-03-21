@@ -199,7 +199,7 @@ body {
     text-align: center
 }
 
-.modal-content .group_btns {
+/* .modal-content .group_btns {
     -webkit-justify-content: center;
     -moz-justify-content: center;
     -ms-justify-content: center;
@@ -209,7 +209,11 @@ body {
 
 .modal-content .group_btns button {
     margin-right: 8px
-}
+} */
+
+.modal-content .button {
+    width:100px !important;
+} 
 
 .modal button.close {
     top: 10px;
@@ -230,17 +234,17 @@ body {
 }
 
 #update .form-label-group,
-#application .form-label-group {
+#applicationModal .form-label-group {
     margin: 36px 40px 40px 40px
 }
 
 #update .update_btn,
-#application .update_btn {
+#applicationModal .update_btn {
     text-align: center
 }
 
 #update textarea,
-#application textarea {
+#applicationModal textarea {
     min-height: 80px;
     resize: none;
     padding-top: 30px

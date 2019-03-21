@@ -127,8 +127,9 @@ let appendComment = (comment, user) => {
         </li>`)
 }
 
-//defining predefined 3 application for initial state of application 
+// defining predefined 3 application for initial state of application 
 addItem = () => {
+    console.log('addItem() called');
     text_value_application = document.getElementById("add_loan_applications").value;
     if (!text_value_application)
         return false;
@@ -145,10 +146,11 @@ getDateInFormate = () => {
     var today = new Date();
     var dd = today.getDate();
     var yyyy = today.getFullYear()
-    var month = monthNames[today.getMonth()]
+    var month = monthNames[today.getMonth()]        // getMonth() returns number from 0...11
     today = dd + ' ' + month + ' ' + yyyy;
     return today;
 }
+
 
 // storing signup input data on browser
 var submitFormData = () => {
@@ -239,6 +241,7 @@ var keyData = (tab) => {                                // only in the case of d
 
 //function which set the value on drop down 
 settingUpDropDown = (keyDataObject) => {
+    console.log('SettingUpDropDown called');
     let dropDownData = document.getElementsByClassName("valueHolder1")
     for (i = 0; i < dropDownData.length; i++) {
         dropDownData[i].textContent = keyDataObject[dropDownData[i].previousElementSibling.innerHTML] ? keyDataObject[dropDownData[i].previousElementSibling.innerHTML] : '';

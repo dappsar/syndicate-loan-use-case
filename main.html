@@ -92,7 +92,7 @@
                         <span class="effect3"></span>
                         <span class="effect4"></span>
                         <span class="effect5"></span>
-                        <div class="add_applications" data-toggle="modal" data-target="#application">
+                        <div class="add_applications" data-toggle="modal" data-target="#applicationModal">
                             <span class="outer">
                                 <span class="outer_inn">
                                     <span>+</span>
@@ -172,14 +172,10 @@
                         <h3>Loan Data: <span class="heading_text"></span></h3>
                         <ul id="tabs" class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab"
-                                    onclick="keyData('keyData');">Key
-                                    Data</a>
+                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab">Key Data</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab"
-                                    onclick="manageTab('involvedParties')">Involved
-                                    Parties</a>
+                                <a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab">Involved Parties</a>
                             </li>
                             <li class="nav-item">
                                 <a id="tab-C" href="#pane-C" class="nav-link" data-toggle="tab" role="tab"
@@ -649,27 +645,38 @@
             </div>
         </div>
     </div>
-    <!--- Loan application modal-->
-    <div class="modal fade" id="application" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+
+    <!------------------------- Propose / Create new Loan ------------------------->
+
+    <!-- Modal -->
+    <div class="modal fade" id="applicationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="dialog">
+
+            <!-- Modal Content -->
             <div class="modal-content">
                 <div class="modal_para">
-                    <h3>Create New Loan</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3>Create a new Loan</h3>
                 </div>
+                <div class="modal-body">
                 <div class="form-label-group float-lab">
                     <textarea type="text" id="add_loan_applications" class="form-control"
                         placeholder="Name of Loan" required></textarea>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     <!-- <label for="comment">Term Sheet</label> -->
                 </div>
                 <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal"
                         class="primary_btn">Add</button></div>
+                </div>
+                <!-- <div class="update_btn">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div> -->
             </div>
         </div>
     </div>
+    
     <!--- comment detail modal-->
     <div class="modal fade" id="commentpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
@@ -711,65 +718,12 @@
 </body>
 
 <!-- <script>
-
    $('#test1').on("click", function(){
        alert("....");
      });
 
-
 </script> -->
 
-<script>
-// console.log(window.web3);ad
 
-//  window.addEventListener('load', async () => {   
 
-//             // Modern dapp browsers...
-//             if (window.ethereum) {
-//                 window.web3 = new Web3(ethereum);
-//                 try {
-//                     // Request account access if needed
-//                     await ethereum.enable();
-//                     // Acccounts now exposed
-
-//                     web3.eth.getAccounts(console.log);
-
-//                     // Function that returns default account
-//                     const fn = async () => {
-//                         try {
-//                             const myAccounts = await web3.eth.getAccounts();
-//                             $('#bcAddress').html(myAccounts[0]);
-//                             console.log(myAccounts[0]);
-//                             return myAccounts[0];
-//                         } 
-//                         catch (err) {
-//                             console.log(err);
-//                         }
-//                     }
-//                     // var account = web3.eth.accounts[0];
-//                     var defaultAccount = fn();
-//                     // console.log(defaultAccount);s
-                                                                            
-                    
-//                 } catch (error) {
-//                     console.log('Access denied');
-//                     console.log(error);
-//                     $('#errMsg').html("You need to connect metamask to use this Application");     
-//                 }
-//             }
-//             // Legacy dapp browsers...
-//             else if (window.web3) {
-//                 window.web3 = new Web3(web3.currentProvider);
-//                 // Acccounts always exposed
-//                 web3.eth.sendTransaction({/* ... */});
-//             }
-
-//             // Non-dapp browsers...
-//             else {
-//                 console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-//                 $('#errMsg').html("<b>Non-Ethereum browser detected.</b> You should consider trying MetaMask!");
-//             }
-//             });
-
-</script>
 </html>
