@@ -42,7 +42,8 @@
 
 </head>
 
-<body onload="manageTab('keyData');">
+<!-- <body onload="manageTab('keyData'); console.log('body onload');"> -->
+    <body onload="console.log('body onload');">
     <div class="container-fluid">
         <header>
             <nav>
@@ -81,8 +82,11 @@
         </header>
         <main>
             <div class="row">
-                <div class="col-sm-3 no-padding">
-                    <div class="left_pannel">
+                <div class="col-sm-3 no-padding" style="height:2000px">
+
+                    <!-- Left Panel: Loans (Overview) -->
+
+                    <div class="left_pannel" style="min-height: 10%">
                         <span class="effect1"></span>
                         <span class="effect2"></span>
                         <span class="effect3"></span>
@@ -160,6 +164,9 @@
                         </div> -->
                     </div>
                 </div>
+
+
+                <!-- In this section the tabs for the central column are defined -->
                 <div class="col-sm-5 no-padding">
                     <div class="main_application">
                         <h3>Loan Data: <span class="heading_text"></span></h3>
@@ -189,9 +196,9 @@
                                     onclick="manageTab('documentDetails')">Documents</a>
                             </li>
                         </ul>
-                        <!-- Tab panes -->
-                        <div id="
-                                    content" class="tab-content" role="tablist">
+
+                        <!-- Tab panes A B C D E-->
+                        <div id="content" class="tab-content" role="tablist">
                             <div id="pane-A" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-A">
                                 <div class="card-header" role="tab" id="heading-A">
                                     <h5 class="mb-0">

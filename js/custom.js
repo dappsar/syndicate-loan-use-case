@@ -1,6 +1,6 @@
 let applicationType = 'Housing Development'
 let currentTab = 'keyData'
-var select_arr = ['Loan Taker', 'Seller', 'Confidant']
+var select_arr = ['Borrower', 'Seller', 'Confident']
 var select_arr2 = ['Client', 'Bank#1', 'Bank#2']
 let text_value_application;                                         //to store the application type when you create new
 let modal = ''                                                      //variable to store modal tab
@@ -208,23 +208,26 @@ formValueSetter = (data) => {
 
 // storing pre defined data on browser
 var keyData = (tab) => {                                // only in the case of drop down
+    console.log('keyData() called')
     currentTab = tab;
     let keyDataObject = getLocalStorage(applicationType)
     if (keyDataObject && keyDataObject[tab])
         settingUpDropDown(keyDataObject[tab]);
     else {
+          // Marcel: This part checks if the keyDataObject is undefined and then stores the predefined data by called setUpEnv
         if (!keyDataObject) {
+          
             if (applicationType == 'Housing Development' || applicationType == 'Sale of an appartment complex' || applicationType == 'Housing Development Leipartstr') {
                 //defining key data 
-                keyDataObject = setUpEnv(tab);              //getting data from predefined json
-                settingUpDropDown(keyDataObject);           //binding drop down value on UI
+                keyDataObject = setUpEnv(tab);                      //getting data from predefined json
+                settingUpDropDown(keyDataObject);                   //binding drop down value on UI
                 //storing data in localstorage
-                formValueSetter(keyDataObject);             //setting up text field values
-                setLocalStorage(applicationType, keyDataObject)// set localstrage with data
+                formValueSetter(keyDataObject);                     //setting up text field values
+                setLocalStorage(applicationType, keyDataObject)     // set localstrage with data
             }
         }
-        else {                                          //in case when user don't have application data in localstorage
-            keyDataObject[tab] = setUpEnv(tab);         //getting from predefined 
+        else {                                                      //in case when user don't have application data in localstorage
+            keyDataObject[tab] = setUpEnv(tab);                     //getting from predefined 
             settingUpDropDown(keyDataObject[tab]);
             //storing data in localstorage
             formValueSetter(keyDataObject[tab]);
@@ -250,9 +253,10 @@ calculateTotalAmount = () => {
     document.getElementById("Total_value").textContent = total + ' €';      //bind calculated value to UI
 }
 
-// Function for changing tabs: call when you switch the tab
+// Function for changing tabs: called when you switch the tab
 var manageTab = (tab) => {                                      //tab=name of current tab
-    currentTab = tab;
+    console.log('manageTab');
+    currentTab = tab;                                           // Marcel: defining currentTab for other functions?         
     restoreComment();
     if (tab == 'involvedParties')
         keyData('involvedParties')                              //just for drop down case
@@ -285,7 +289,7 @@ var manageTab = (tab) => {                                      //tab=name of cu
 
 }
 
-//comment saved locally
+// comment saved locally
 storeComment = () => {
     restoreComment();
     let comment = document.getElementById('comment').value;                                     //get comment value from modal when you comment
