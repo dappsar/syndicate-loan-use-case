@@ -2,7 +2,7 @@ let applicationType = 'Housing Development'
 let currentTab = 'keyData'
 var select_arr = ['Borrower', 'Seller', 'Confident']
 var select_arr2 = ['Client', 'Bank#1', 'Bank#2']
-let text_value_application;                                         //to store the application type when you create new
+let text_value_application;                                         //to store the application type when you create new //MarceL: deprecated
 let modal = ''                                                      //variable to store modal tab
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -127,18 +127,21 @@ let appendComment = (comment, user) => {
         </li>`)
 }
 
-// defining predefined 3 application for initial state of application 
+// MJ: Create new Loan and add to Side Panel
+
 addItem = () => {
-    console.log('addItem() called');
-    text_value_application = document.getElementById("add_loan_applications").value;
-    if (!text_value_application)
-        return false;
-    else {
-        $(".appplication_section ul").prepend('<li class="active"><div class="lists"><h4>' + text_value_application + '</h4><div class="status"><p>Waiting for review</p></div><span class="date">' + getDateInFormate() + '</span></div></li>');
-        Appliaction_data.unshift({ 'loanApplication': text_value_application, status: 'Waiting for review', time: getDateInFormate() });
-        setLocalStorage('loanType', Appliaction_data);
-        $('.appplication_section ul li.active').trigger('click');
+    loanName = document.getElementById("add_Loan").value;
+    if (!loanName) {
+        loanName = "unnamed loan";
     }
+
+// Adding HTML elements to the left side panel
+    $(".appplication_section ul").prepend(
+        '<li class="active"><div class="lists"><h4>' + loanName + '</h4><div class="status"><p>Waiting for review</p></div><span class="date">' + getDateInFormate() + '</span></div></li>');
+    Appliaction_data.unshift({ 'loanApplication': loanName, status: 'Waiting for review', time: getDateInFormate() });
+    setLocalStorage('loanType', Appliaction_data);
+    $('.appplication_section ul li.active').trigger('click');
+
 }
 
 //get date in the required formate
@@ -146,11 +149,10 @@ getDateInFormate = () => {
     var today = new Date();
     var dd = today.getDate();
     var yyyy = today.getFullYear()
-    var month = monthNames[today.getMonth()]        // getMonth() returns number from 0...11
+    var month = monthNames[today.getMonth()]
     today = dd + ' ' + month + ' ' + yyyy;
     return today;
 }
-
 
 // storing signup input data on browser
 var submitFormData = () => {
@@ -241,7 +243,6 @@ var keyData = (tab) => {                                // only in the case of d
 
 //function which set the value on drop down 
 settingUpDropDown = (keyDataObject) => {
-    console.log('SettingUpDropDown called');
     let dropDownData = document.getElementsByClassName("valueHolder1")
     for (i = 0; i < dropDownData.length; i++) {
         dropDownData[i].textContent = keyDataObject[dropDownData[i].previousElementSibling.innerHTML] ? keyDataObject[dropDownData[i].previousElementSibling.innerHTML] : '';

@@ -103,7 +103,7 @@
                         <div class="appplication_section">
                             <p class="head">applications</p>
                             <ul class="nicescroll-box">
-                                <li class="in_review active">
+                                <li class="in_review active" id="sample_Loan3">
                                     <div class="lists">
                                         <h4>Housing Development</h4>
                                         <div class="status">
@@ -112,7 +112,7 @@
                                         <span class="date">12 March 2019</span>
                                     </div>
                                 </li>
-                                <li class="wating_for_review">
+                                <li class="wating_for_review" id="sample_Loan2">
                                     <div class="lists">
                                         <h4>Sale of an appartment complex</h4>
                                         <div class="status">
@@ -126,8 +126,8 @@
                                         <span class="date">6 March 2019</span>
                                     </div>
                                 </li>
-                                <li class="approved">
-                                    <div class="lists">
+                                <li class="approved" id="sample_Loan1">
+                                    <div class="lists" >
                                         <h4>Housing Development Leipartstr</h4>
                                         <div class="status">
                                             <p>Approved</p>
@@ -137,9 +137,16 @@
                                 </li>
                             </ul>
                         </div>
-                        <!-- <div class="token_section">
-                            <p class="head">ACTIVE TOKENIZED LOANS</p>
-                            <ul>
+                        <div class="token_section">
+                            <div class="container-fluid">
+                                <div class="col-sm-12 text-center">
+                                 <button type="button" class="btn btn-primary center-block" data-toggle="button" aria-pressed="false" autocomplete="off">
+                                        Toggle Sample Loans
+                                 </button>
+                                </div>
+                            </div>
+
+                            <ul> 
                                 <li>
                                     <div class="active_token">
                                         <h4>Housing Complex Wilmersdorf</h4>
@@ -161,7 +168,7 @@
                                     </div>
                                 </li>
                             </ul>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
 
@@ -661,7 +668,7 @@
                 </div>
                 <div class="modal-body">
                 <div class="form-label-group float-lab">
-                    <textarea type="text" id="add_loan_applications" class="form-control"
+                    <textarea type="text" id="add_Loan" class="form-control"
                         placeholder="Name of Loan" required></textarea>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
