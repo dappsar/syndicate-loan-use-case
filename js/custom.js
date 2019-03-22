@@ -1,16 +1,26 @@
-let applicationType = 'Housing Development'
-let currentTab = 'loanDetails'
+// Key value for local storage, conflict if same name
+let applicationType = 'Housing Development';
+// corresponding Variable (Key-Val)
+let text_value_application;                                         //to store the application type when you create new
+
+// doesnt have to be predefined 
+let currentTab;
+
 var select_arr = ['Loan Taker', 'Seller', 'Confidant']
 var select_arr2 = ['Client', 'Bank#1', 'Bank#2']
-let text_value_application;                                         //to store the application type when you create new
+
+
 let modal = ''                                                      //variable to store modal tab
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
 
-//Default array list for the loan application
+// Default array list for the loan application
 let Appliaction_data = [
-    { 'loanApplication': 'Housing Development', 'status': 'In review', 'time': '1 March 2019' },
+    { 
+    'loanApplication': 'Housing Development',
+    'status': 'In review',
+    'time': '1 March 2019' },
     { 'loanApplication': 'Sale of an appartment complex', 'status': 'Waiting for review', 'time': '6 March 2019' },
     { 'loanApplication': 'Housing Development Leipartstr', 'status': 'Approved', 'time': '1 Jan 2019' }
 ]
@@ -63,7 +73,11 @@ $(document).ready(function () {
     this code handle the event when you click
     on the application (when you switch application)
     ------- */
+
+    //  Needs to be body, because of strange dynamic behavior, otherwise new applications cant be selected/clicked
     $("body").on("click", ".appplication_section ul li", function () {
+
+    
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');
         let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];
@@ -72,7 +86,7 @@ $(document).ready(function () {
         manageTab(currentTab);                                      //to manage the state of tab in different application
         restoreComment();                                           //to show comment acc. to the application
         approvals();                                                //to show check box acc. to application
-        keyData(currentTab);                                       //to manage drop down
+        // keyData(currentTab);                                       //to manage drop down
         
         if (!getLocalStorage(applicationType)) {
             ResetForm();
@@ -118,6 +132,7 @@ let appendComment = (comment, user) => {
 
 //defining predefined 3 application for initial state of application 
 addItem = () => {
+    //
     text_value_application = document.getElementById("add_loan_applications").value;
     if (!text_value_application)
         return false;
@@ -195,33 +210,33 @@ formValueSetter = (data) => {
     calculateTotalAmount();
 }
 
-// storing pre defined data on browser
-var keyData = (tab) => {                                // only in the case of drop down
-    currentTab = tab;
-    let keyDataObject = getLocalStorage(applicationType)
-    if (keyDataObject && keyDataObject[tab])
-        settingUpDropDown(keyDataObject[tab]);
-    else {
-        if (!keyDataObject) {
-            if (applicationType == 'Housing Development' || applicationType == 'Sale of an appartment complex' || applicationType == 'Housing Development Leipartstr') {
-                //defining key data 
-                keyDataObject = setUpEnv(tab);              //getting data from predefined json
-                settingUpDropDown(keyDataObject);           //binding drop down value on UI
-                //storing data in localstorage
-                formValueSetter(keyDataObject);             //setting up text field values
-                setLocalStorage(applicationType, keyDataObject)// set localstrage with data
-            }
-        }
-        else {                                          //in case when user don't have application data in localstorage
-            keyDataObject[tab] = setUpEnv(tab);         //getting from predefined 
-            settingUpDropDown(keyDataObject[tab]);
-            //storing data in localstorage
-            formValueSetter(keyDataObject[tab]);
-            setLocalStorage(applicationType, keyDataObject)
-        }
+// // storing pre defined data on browser
+// var keyData = (tab) => {                                // only in the case of drop down
+//     currentTab = tab;
+//     let keyDataObject = getLocalStorage(applicationType)
+//     if (keyDataObject && keyDataObject[tab])
+//         settingUpDropDown(keyDataObject[tab]);
+//     else {
+//         if (!keyDataObject) {
+//             if (applicationType == 'Housing Development' || applicationType == 'Sale of an appartment complex' || applicationType == 'Housing Development Leipartstr') {
+//                 //defining key data 
+//                 keyDataObject = setUpEnv(tab);              //getting data from predefined json
+//                 settingUpDropDown(keyDataObject);           //binding drop down value on UI
+//                 //storing data in localstorage
+//                 formValueSetter(keyDataObject);             //setting up text field values
+//                 setLocalStorage(applicationType, keyDataObject)// set localstrage with data
+//             }
+//         }
+//         else {                                          //in case when user don't have application data in localstorage
+//             keyDataObject[tab] = setUpEnv(tab);         //getting from predefined 
+//             settingUpDropDown(keyDataObject[tab]);
+//             //storing data in localstorage
+//             formValueSetter(keyDataObject[tab]);
+//             setLocalStorage(applicationType, keyDataObject)
+//         }
 
-    }
-}
+//     }
+// }
 
 //function which set the value on drop down 
 settingUpDropDown = (keyDataObject) => {
@@ -239,7 +254,8 @@ calculateTotalAmount = () => {
     document.getElementById("Total_value").textContent = total + ' €';      //bind calculated value to UI
 }
 
-//call when you switch the tab
+// call when you switch the tab
+// Loading the data from local storage
 var manageTab = (tab) => {                                      //tab=name of current tab
     currentTab = tab;
     restoreComment();
@@ -370,9 +386,15 @@ modalValue = (tab) => {
 
 //when click on approval
 approvals = () => {
+    // users is locally defined variable
     let users = getLocalStorage(applicationType) ? getLocalStorage(applicationType)['approvals'] : [];
-    
-    if (users) {
+    console.log(typeof(users));
+    console.log(users)
+    // console.log(getLocalStorage(applicationType)['approvals']);
+    // console.log(users.includes('Bank#1'));
+
+    if (users==true) {
+        // .includes() checks string
         if (users.includes('Bank#1'))
             document.getElementById("Bank1").checked = true;
         else
@@ -387,7 +409,7 @@ approvals = () => {
             document.getElementById("Client").checked = false;
     }
     else {
-        document.getElementById("Bank2").checked = false;
+        document.getElementById("Bank2").checked = true;
         document.getElementById("Bank1").checked = false;
         document.getElementById("Client").checked = false;
     }

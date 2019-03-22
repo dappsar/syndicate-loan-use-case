@@ -147,10 +147,12 @@
                 <div class="col-sm-5 no-padding">
                     <div class="main_application">
                         <h3>Application Details</h3>
+
+                        <!-- Changing tabs (adding classes show and active) done by bootstrap -->
                         <ul id="tabs" class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab"
-                                    onclick="keyData('keyData');">Key
+                                <a id="tab-A" href="#pane-A" class="nav-link active" data-toggle="tab" role="tab"
+                                    onclick="manageTab('keyData');">Key
                                     Data</a>
                             </li>
                             <li class="nav-item">
@@ -164,7 +166,7 @@
                                     Details</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab-D" href="#pane-D" class="nav-link active" data-toggle="tab" role="tab"
+                                <a id="tab-D" href="#pane-D" class="nav-link" data-toggle="tab" role="tab"
                                     onclick="manageTab('loanDetails')">Loan
                                     Details</a>
                             </li>
@@ -176,7 +178,10 @@
                         <!-- Tab panes -->
                         <div id="
                                     content" class="tab-content" role="tablist">
-                            <div id="pane-A" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-A">
+
+                                    <!-- CSS Classes determine which tab to show, predefined in html -->
+                                    
+                            <div id="pane-A" class="card tab-pane fade active show" role="tabpanel" aria-labelledby="tab-A">
                                 <div class="card-header" role="tab" id="heading-A">
                                     <h5 class="mb-0">
                                         <!-- Note: `data-parent` removed from here -->
@@ -231,7 +236,12 @@
                                 <div id="collapse-B" class="collapse" data-parent="#content" role="tabpanel"
                                     aria-labelledby="heading-B">
                                     <div class="loan_detail">
-                                            <div class="involved_selection1">                                                
+
+                                      <!-- Sub Menu with fields  -->
+                                            <div class="involved_selection1">     
+
+                                                 <!-- List for Sub Tabs MENU  -->
+
                                                 <ul class="nav nav-tabs sub-tab" role="tablist">
                                                     <li class="nav-item">
                                                       <a class="nav-link active" href="#Client" role="tab" data-toggle="tab">Client</a>
@@ -243,6 +253,7 @@
                                                       <a class="nav-link" href="#Bank2" role="tab" data-toggle="tab">Bank2</a>
                                                     </li>
                                                 </ul>
+
                                                   <!-- Tab panes -->
                                                 <div class="tab-content">
                                                     <div role="tabpanel" class="tab-pane fade in active show" id="Client">
@@ -395,7 +406,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="pane-D" class="card tab-pane fade show active" role="tabpanel"
+
+                            <!-- ______________ TAB D ______________  -->
+
+                            <div id="pane-D" class="card tab-pane fade" role="tabpanel"
                                 aria-labelledby="tab-D">
                                 <div class="card-header" role="tab" id="heading-D">
                                     <h5 class="mb-0">
