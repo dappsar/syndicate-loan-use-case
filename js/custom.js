@@ -7,6 +7,8 @@ let modal = ''                                                      //variable t
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
+
+//Default array list for the loan application
 let Appliaction_data = [
     { 'loanApplication': 'Housing Development', 'status': 'In review', 'time': '1 March 2019' },
     { 'loanApplication': 'Sale of an appartment complex', 'status': 'Waiting for review', 'time': '6 March 2019' },
@@ -15,35 +17,24 @@ let Appliaction_data = [
 let DefaultType = ['Housing Development', 'Sale of an appartment complex', 'Housing Development Leipartstr'];
 
 $(document).ready(function () {
-    function createDropdown() {
+    function createDropdown() {                             // function to create custom dropdown
         var drop = $('.customDropdown');
         var i;
-        var htmlString = '<div class="dropContainer">';
+        var htmlString = '<div class="dropContainer">';     // creating dynamic dropContainer field for dropdown
         for (i = 0; i < select_arr.length; i += 1) {
             htmlString += '<div class="dropOption">' + select_arr[i] + '</div>';
         }
         htmlString += '</div>';
         drop.append(htmlString);
     }
-    createDropdown();
-    function createDropdownagain() {
-        var drop = $('.customDropdown.dd_role');
-        var i;
-        var htmlString = '<div class="dropContainer">';
-        for (i = 0; i < select_arr2.length; i += 1) {
-            htmlString += '<div class="dropOption">' + select_arr2[i] + '</div>';
-        }
-        htmlString += '</div>';
-        drop.append(htmlString);
-    }
-    createDropdownagain();
+    createDropdown();    
 
-    $('.customDropdown').on('click', function (event) {
+    $('.customDropdown').on('click', function (event) {           
 
-        var container = $(this).children('div.dropContainer');
+        var container = $(this).children('div.dropContainer');      //adding class on child div for custom dropdown
         var target = $(event.target);
 
-        container.toggle();
+        container.toggle();                                         // Toggling custom dropdown fields
         $(this).toggleClass('select_border');
         if (target.hasClass('dropOption')) {
             $(this).find('span.valueHolder1').text(target.text());
@@ -56,7 +47,7 @@ $(document).ready(function () {
         // $(this).parent().removeClass("round");
         $(this).parent().addClass("input_float_lbl");
 
-    }).blur(function () {
+    }).blur(function () {                                           // function to check and remove the float label class
         $(this).parent().removeClass("input_float_lbl");
         tmpval = $(this).val();
         if (tmpval == '') {
@@ -89,16 +80,16 @@ $(document).ready(function () {
 
     });
 
-    $('.date_picker').datepicker({
+    $('.date_picker').datepicker({                                  //to close when it get selected or clicked outside
         autoclose: true
     });
-    $(".add_applications").click(function () {
+    $(".add_applications").click(function () {                      // to make new loan appliaction list active when its get cretated.
         $('.appplication_section ul li.active').removeClass('active');
     })
 
 });
 
-//append comment
+//append comment on the history panel
 let appendComment = (comment, user) => {
     $('.History_pannel ul').prepend(`<li>
     <div class="histroy_detail">
