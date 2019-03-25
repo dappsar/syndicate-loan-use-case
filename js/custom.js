@@ -1,4 +1,4 @@
-let applicationType = 'Housing Development'
+
 let currentTab = 'keyData'
 var select_arr = ['Borrower', 'Seller', 'Confident']
 var select_arr2 = ['Client', 'Bank#1', 'Bank#2']
@@ -7,13 +7,158 @@ let modal = ''                                                      //variable t
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
-let Appliaction_data = [
-    { 'loanApplication': 'Housing Development', 'status': 'In review', 'time': '1 March 2019' },
-    { 'loanApplication': 'Sale of an appartment complex', 'status': 'Waiting for review', 'time': '6 March 2019' },
-    { 'loanApplication': 'Housing Development Leipartstr', 'status': 'Approved', 'time': '1 Jan 2019' }
-]
-let DefaultType = ['Housing Development', 'Sale of an appartment complex', 'Housing Development Leipartstr'];
 
+
+
+
+// var testObject = { 'one': 1, 'two': 2, 'three': 3 };
+// // Put the object into storage
+// localStorage.setItem('testObject', JSON.stringify(testObject));
+// // Retrieve the object from storage
+// var retrievedObject = localStorage.getItem('testObject');
+// console.log('retrievedObject: ', JSON.parse(retrievedObject));
+
+
+// Clear Storage for testing purposes
+localStorage.clear();
+sessionStorage.clear();
+
+const dummyLoan = { 
+    keyData: {
+            name: 'Housing Development Leipartstr',
+            purpose: 'Aquisition of apartment complex',
+            id: 0,
+            regParty: 0,
+            date: 0,
+    },
+    involvedParties: {
+            stakeholder_1: {
+                role: 'Client',
+                name: 'Estato Inc',
+                address: '5, 1st Avenue'
+            },
+            stakeholder_2: {
+                role: 'Bank',
+                name: 'web3Bank',
+                address: '10, 5th Avenue'
+            },
+            stakeholder_3: {
+                role: 'Bank',
+                name: 'Credit Bank',
+                address: '87, King Street'
+            },
+
+    },
+}
+
+// Object Literal Factory Function
+// Function: DataStorage / Logic  
+const createLoans = (name, id, purpose, state, registeringParty, date) => {
+    return {
+        name,
+        id,
+        purpose,
+        state, //e.g. in Review
+        registeringParty,
+        date
+    }
+}
+
+
+// Loan_Array
+var loans = []; 
+var tempLoanId = 0;
+var activeLoanId;
+
+
+// Function to Update Loan Object (Save Changes) 
+// id removed, because it should not change.
+// Consider Adding activeLoan (id) to params
+const updateLoan = (name, purpose, registeringParty, date) => {
+    // console.log('updateLoan() called, logging tempLoanId & activeLoan');  
+    // console.log(tempLoanId);
+    // console.log(activeLoan);
+    _currentLoan = loans[activeLoanId];
+    
+    _currentLoan.name = $('#loanName').val();
+    _currentLoan.purpose = $('#loanPurpose').val();
+    _currentLoan.registeringParty = $('#regParty').val();
+    _currentLoan.date = $('#loanDate').val();;  
+    console.log(_currentLoan);
+
+    sessionStorage.setItem(`id_${activeLoanId}`, JSON.stringify(_currentLoan));
+}
+
+
+
+// MJ: Create new Loan and add to Side Panel
+// Function: UI & Logic
+addItem = () => {
+
+    // MJ: Retrieve value of loan name from Create-Loan-Modal
+    loanName = $("#add_Loan").val();   
+    
+    // Set active Loan, to determine, where to write Updates to and what to display
+    activeLoanId = tempLoanId; 
+    
+    // Checks for void name. Consider adding more checks here.  
+    if (!loanName) {
+        loanName = "unnamed loan";
+    }
+    const newLoan = createLoans(loanName, tempLoanId);
+    loans.push(newLoan);
+    console.log(loans);
+    sessionStorage.setItem(`id_${tempLoanId}`, JSON.stringify(newLoan));
+
+
+    // Write to Key Data Form
+    $('#loanName').val(loanName).closest("div").addClass('input_float_lbl');
+    $('#loanId').val(tempLoanId).closest("div").addClass('input_float_lbl');
+    // $('#regParty').val('Here account address');
+
+
+
+// Adding HTML elements to the left side panel
+    $(".appplication_section ul").prepend(
+        `<li class="active" id="loan_id_${tempLoanId}">
+            <div class="lists"><h4>${loanName}</h4>
+                <div class="status">
+                <p>Waiting for review</p>
+                </div>
+                <span class="date">${getDateInFormate()}</span>
+            </div>
+        </li>`);
+
+    // // MJ: I suppose this adds some data to an array different than the original object
+    // Appliaction_data.unshift({ 'loanApplication': loanName, status: 'Waiting for review', time: getDateInFormate() });
+    // setLocalStorage('loanType', Appliaction_data);
+
+    $('.appplication_section ul li.active').trigger('click');
+
+    tempLoanId++;
+}
+
+
+
+// console.log(dummyLoan);
+// sessionStorage.setItem('id_1', JSON.stringify(dummyLoan));
+
+
+function toggleLoans() {
+    $('#sample_Loan1').toggle();
+    $('#sample_Loan2').toggle();
+    $('#sample_Loan3').toggle();
+}
+
+
+
+
+
+
+
+
+
+// MJ: Doing bunch of stuff, seemingly mostly for UI functionality
 $(document).ready(function () {
     function createDropdown() {
         var drop = $('.customDropdown');
@@ -75,19 +220,17 @@ $(document).ready(function () {
     $("body").on("click", ".appplication_section ul li", function () {
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');
-        let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];
-        // document.getElementById("heading_text").innerHTML = loan_heading;
+        let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];           
         $('.heading_text').html(loan_heading);
-        $('.heading_text').val(loan_heading);
         applicationType = $(this).closest('li')[0].innerText.split("\n")[0]
-        manageTab(currentTab);                                      //to manage the state of tab in different application
-        restoreComment();                                           //to show comment acc. to the application
-        approvals();                                                //to show check box acc. to application
-        keyData(currentTab);                                       //to manage drop down
+        // manageTab(currentTab);                                      //to manage the state of tab in different application
+        // restoreComment();                                           //to show comment acc. to the application
+        // approvals();                                                //to show check box acc. to application
+        // keyData(currentTab);                                       //to manage drop down
         
-        if (!getLocalStorage(applicationType)) {
-            ResetForm();
-        }
+        // if (!getLocalStorage(applicationType)) {
+        //     ResetForm();
+        // }
 
     });
 
@@ -194,36 +337,7 @@ formValueSetter = (data) => {
     calculateTotalAmount();
 }
 
-// storing pre defined data on browser
-var keyData = (tab) => {                                // only in the case of drop down
-    console.log('keyData() called')
-    currentTab = tab;
-    let keyDataObject = getLocalStorage(applicationType)
-    if (keyDataObject && keyDataObject[tab])
-        settingUpDropDown(keyDataObject[tab]);
-    else {
-          // Marcel: This part checks if the keyDataObject is undefined and then stores the predefined data by called setUpEnv
-        if (!keyDataObject) {
-          
-            if (applicationType == 'Housing Development' || applicationType == 'Sale of an appartment complex' || applicationType == 'Housing Development Leipartstr') {
-                //defining key data 
-                keyDataObject = setUpEnv(tab);                      //getting data from predefined json
-                settingUpDropDown(keyDataObject);                   //binding drop down value on UI
-                //storing data in localstorage
-                formValueSetter(keyDataObject);                     //setting up text field values
-                setLocalStorage(applicationType, keyDataObject)     // set localstrage with data
-            }
-        }
-        else {                                                      //in case when user don't have application data in localstorage
-            keyDataObject[tab] = setUpEnv(tab);                     //getting from predefined 
-            settingUpDropDown(keyDataObject[tab]);
-            //storing data in localstorage
-            formValueSetter(keyDataObject[tab]);
-            setLocalStorage(applicationType, keyDataObject)
-        }
 
-    }
-}
 
 //function which set the value on drop down 
 settingUpDropDown = (keyDataObject) => {
@@ -241,166 +355,70 @@ calculateTotalAmount = () => {
     document.getElementById("Total_value").textContent = total + ' €';      //bind calculated value to UI
 }
 
-// Function for changing tabs: called when you switch the tab
-var manageTab = (tab) => {                                      //tab=name of current tab
-    console.log('manageTab');
-    currentTab = tab;                                           // Marcel: defining currentTab for other functions?         
-    restoreComment();
-    if (tab == 'involvedParties')
-        keyData('involvedParties')                              //just for drop down case
+// // Function for changing tabs: called when you switch the tab
+// var manageTab = (tab) => {                                      //tab=name of current tab
+//     console.log('manageTab');
+//     currentTab = tab;                                           // Marcel: defining currentTab for other functions?         
+//     restoreComment();
+//     if (tab == 'involvedParties')
+//         keyData('involvedParties')                              //just for drop down case
 
-    let DetailsObject = getLocalStorage(applicationType)        //getting value from drop down 
-    if (DetailsObject && DetailsObject[tab])                    //checking if value exsist
-        formValueSetter(DetailsObject[tab]);                    //function which set the text field values
-    else {
-        if (!DetailsObject) {                                   //when you didn't find application in local storage   
-            if (DefaultType.indexOf(applicationType) > -1) {
-                DetailsObject = setUpEnv(tab)                       //get the predefined value from switch case function
-                let data = {}
-                data[tab] = DetailsObject                           //set up value acc. to tab
-                formValueSetter(DetailsObject);                     //function which set the text field values
-                calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
-                setLocalStorage(applicationType, data)              //storing data in localstorage
-            }
-        }
-        else {                                                  //when you find applicatioin in local storage but without tab info
+//     let DetailsObject = getLocalStorage(applicationType)        //getting value from drop down 
+//     if (DetailsObject && DetailsObject[tab])                    //checking if value exsist
+//         formValueSetter(DetailsObject[tab]);                    //function which set the text field values
+//     else {
+//         if (!DetailsObject) {                                   //when you didn't find application in local storage   
+//             if (DefaultType.indexOf(applicationType) > -1) {
+//                 DetailsObject = setUpEnv(tab)                       //get the predefined value from switch case function
+//                 let data = {}
+//                 data[tab] = DetailsObject                           //set up value acc. to tab
+//                 formValueSetter(DetailsObject);                     //function which set the text field values
+//                 calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
+//                 setLocalStorage(applicationType, data)              //storing data in localstorage
+//             }
+//         }
+//         else {                                                  //when you find applicatioin in local storage but without tab info
             
-            if (DefaultType.indexOf(applicationType) > -1) {
-                DetailsObject[tab] = setUpEnv(tab)                  //set up predefined value
-                formValueSetter(DetailsObject[tab]);                //function which set the text field values
-                calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
-                setLocalStorage(applicationType, DetailsObject)     //storing data in localstorage
-            }
-        }
-    }
+//             if (DefaultType.indexOf(applicationType) > -1) {
+//                 DetailsObject[tab] = setUpEnv(tab)                  //set up predefined value
+//                 formValueSetter(DetailsObject[tab]);                //function which set the text field values
+//                 calculateTotalAmount();                             //function which calculate the ammount acc. to (client,bank1,bank2)
+//                 setLocalStorage(applicationType, DetailsObject)     //storing data in localstorage
+//             }
+//         }
+//     }
 
 
-}
+// }
 
-// comment saved locally
-storeComment = () => {
-    restoreComment();
-    let comment = document.getElementById('comment').value;                                     //get comment value from modal when you comment
-    let commentedData = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : ''//getting application data from localstorage
-    let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
-    //user = `${user}-${modal}`
-    appendComment(comment, user);                                                              //function to bind comments in right hand side box
-    if (commentedData && commentedData[currentTab]) {                                           //check if data from localstorage give us comments 
+// // comment saved locally
+// storeComment = () => {
+//     restoreComment();
+//     let comment = document.getElementById('comment').value;                                     //get comment value from modal when you comment
+//     let commentedData = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : ''//getting application data from localstorage
+//     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
+//     //user = `${user}-${modal}`
+//     appendComment(comment, user);                                                              //function to bind comments in right hand side box
+//     if (commentedData && commentedData[currentTab]) {                                           //check if data from localstorage give us comments 
     
-        if (commentedData[currentTab]['comment']) {
-            commentedData[currentTab]['comment'][new Date().getTime()] = { [user]:{'comment': comment }}                 //bind the next comment with user name
-            setLocalStorage(applicationType, commentedData)                                     //save the updated comments in localstorage
-        }
-        else {
-            commentedData[currentTab] = Object.assign(commentedData[currentTab], { 'comment': { [new Date().getTime()]:{[user]: { 'comment': comment } } }})
-            setLocalStorage(applicationType, commentedData)                                     //set local storage with updated data
-        }
-    }
-    document.getElementById('comment').value = "";
-    // else {                                                                                     //in case local storage given object dont have comments yet
+//         if (commentedData[currentTab]['comment']) {
+//             commentedData[currentTab]['comment'][new Date().getTime()] = { [user]:{'comment': comment }}                 //bind the next comment with user name
+//             setLocalStorage(applicationType, commentedData)                                     //save the updated comments in localstorage
+//         }
+//         else {
+//             commentedData[currentTab] = Object.assign(commentedData[currentTab], { 'comment': { [new Date().getTime()]:{[user]: { 'comment': comment } } }})
+//             setLocalStorage(applicationType, commentedData)                                     //set local storage with updated data
+//         }
+//     }
+//     document.getElementById('comment').value = "";
+//     // else {                                                                                     //in case local storage given object dont have comments yet
     
-    //     // let data = Object.assign(commentedData, { 'comment': { [currentTab]: { [user]: { 'comment': comment } } } }) //bind comment
-    //     // setLocalStorage(applicationType, data)                                               //set local storage with updated data
-    // }
-}
+//     //     // let data = Object.assign(commentedData, { 'comment': { [currentTab]: { [user]: { 'comment': comment } } } }) //bind comment
+//     //     // setLocalStorage(applicationType, data)                                               //set local storage with updated data
+//     // }
+// }
 
 
-
-// setLocalStorage('firstLoan', loanData);
-
-// console.log(getLocalStorage('firstLoan'));
-// console.log(getLocalStorage(loanData));
-
-
-
-// var testObject = { 'one': 1, 'two': 2, 'three': 3 };
-
-// // Put the object into storage
-// localStorage.setItem('testObject', JSON.stringify(testObject));
-
-// // Retrieve the object from storage
-// var retrievedObject = localStorage.getItem('testObject');
-
-// console.log('retrievedObject: ', JSON.parse(retrievedObject));
-
-
-const dummyLoan = { 
-    keyData: {
-            name: 'Housing Development Leipartstr',
-            purpose: 'Aquisition of apartment complex',
-            id: 0,
-            regParty: 0,
-            date: 0,
-    },
-    involvedParties: {
-            stakeholder_1: {
-                role: 'Client',
-                name: 'Estato Inc',
-                address: '5, 1st Avenue'
-            },
-            stakeholder_2: {
-                role: 'Bank',
-                name: 'web3Bank',
-                address: '10, 5th Avenue'
-            },
-            stakeholder_3: {
-                role: 'Bank',
-                name: 'Credit Bank',
-                address: '87, King Street'
-            },
-
-    },
-}
-
-
-// Function: DataStorage / Logic
-const createLoans = (name, purpose, id, registeringParty, date) => {
-    return {
-        name,
-        purpose,
-        id,
-        registeringParty,
-        date
-    }
-}
-
-
-var tempLoanId = 0;
-
-
-// MJ: Create new Loan and add to Side Panel
-// Function: UI
-addItem = () => {
-    loanName = document.getElementById("add_Loan").value;
-
-    if (!loanName) {
-        loanName = "unnamed loan";
-    }
-    const newLoan = createLoans(loanName);
-    console.log(newLoan);
-    sessionStorage.setItem(`id_${tempLoanId}`, JSON.stringify(newLoan));
-    tempLoanId++;
-
-// Adding HTML elements to the left side panel
-    $(".appplication_section ul").prepend(
-        '<li class="active"><div class="lists"><h4>' + loanName + '</h4><div class="status"><p>Waiting for review</p></div><span class="date">' + getDateInFormate() + '</span></div></li>');
-    Appliaction_data.unshift({ 'loanApplication': loanName, status: 'Waiting for review', time: getDateInFormate() });
-    setLocalStorage('loanType', Appliaction_data);
-    $('.appplication_section ul li.active').trigger('click');
-
-}
-
-
-
-// console.log(dummyLoan);
-// sessionStorage.setItem('id_1', JSON.stringify(dummyLoan));
-
-
-function toggleLoans() {
-    $('#sample_Loan1').toggle();
-    $('#sample_Loan2').toggle();
-    $('#sample_Loan3').toggle();
-}
 
 
 
@@ -448,81 +466,81 @@ setUpEnv = (tab) => {
     }
 }
 
-//when to click on update button
-modalValue = (tab) => {
-    let localDb = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : { [tab]: {} };                                                  //getting data of current application from local storage
-    let formData = document.getElementsByClassName("form-control")                                  //getting form data from UI
-    localDb[tab]?localDb[tab]:localDb[tab] = setUpEnv(tab)
-    for (i = 0; i < formData.length; i++)
-        localDb[tab][formData[i].name] ? (localDb[tab][formData[i].name] = formData[i].value) : ''  //updating the editted data in object get from local storage
-    let dropData = document.getElementsByClassName("valueHolder1")                                  //getting drop down from UI                            
-    for (i = 0; i < dropData.length; i++)
-        localDb[tab][dropData[i].previousElementSibling.innerHTML] = dropData[i].textContent;       //setting up the editted data into object come from local storage
-    calculateTotalAmount();
-    let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
-    if (localDb['approvals']) {                                                                     //if local storage object has approval thing
-        if (!localDb['approvals'].includes(user))                                                   //check user exsist who is updating
-            localDb['approvals'].push(user)                                                         //adding user who is updating
-    }
-    else
-        localDb['approvals'] = [user]
-    setLocalStorage(applicationType, localDb);
-    approvals();
-}
+// //when to click on update button
+// modalValue = (tab) => {
+//     let localDb = getLocalStorage(applicationType) ? getLocalStorage(applicationType) : { [tab]: {} };                                                  //getting data of current application from local storage
+//     let formData = document.getElementsByClassName("form-control")                                  //getting form data from UI
+//     localDb[tab]?localDb[tab]:localDb[tab] = setUpEnv(tab)
+//     for (i = 0; i < formData.length; i++)
+//         localDb[tab][formData[i].name] ? (localDb[tab][formData[i].name] = formData[i].value) : ''  //updating the editted data in object get from local storage
+//     let dropData = document.getElementsByClassName("valueHolder1")                                  //getting drop down from UI                            
+//     for (i = 0; i < dropData.length; i++)
+//         localDb[tab][dropData[i].previousElementSibling.innerHTML] = dropData[i].textContent;       //setting up the editted data into object come from local storage
+//     calculateTotalAmount();
+//     let user = JSON.parse(sessionStorage.getItem('user')) ? JSON.parse(sessionStorage.getItem('user')) : 'unknown User'//getting current user
+//     if (localDb['approvals']) {                                                                     //if local storage object has approval thing
+//         if (!localDb['approvals'].includes(user))                                                   //check user exsist who is updating
+//             localDb['approvals'].push(user)                                                         //adding user who is updating
+//     }
+//     else
+//         localDb['approvals'] = [user]
+//     setLocalStorage(applicationType, localDb);
+//     approvals();
+// }
 
-//when click on approval
-approvals = () => {
-    let users = getLocalStorage(applicationType) ? getLocalStorage(applicationType)['approvals'] : [];
+// //when click on approval
+// approvals = () => {
+//     let users = getLocalStorage(applicationType) ? getLocalStorage(applicationType)['approvals'] : [];
     
-    if (users) {
-        if (users.includes('Bank#1'))
-            document.getElementById("Bank1").checked = true;
-        else
-            document.getElementById("Bank1").checked = false;
-        if (users.includes('Bank#2'))
-            document.getElementById("Bank2").checked = true;
-        else
-            document.getElementById("Bank2").checked = false;
-        if (users.includes('Client'))
-            document.getElementById("Client").checked = true;
-        else
-            document.getElementById("Client").checked = false;
-    }
-    else {
-        document.getElementById("Bank2").checked = false;
-        document.getElementById("Bank1").checked = false;
-        document.getElementById("Client").checked = false;
-    }
-}
+//     if (users) {
+//         if (users.includes('Bank#1'))
+//             document.getElementById("Bank1").checked = true;
+//         else
+//             document.getElementById("Bank1").checked = false;
+//         if (users.includes('Bank#2'))
+//             document.getElementById("Bank2").checked = true;
+//         else
+//             document.getElementById("Bank2").checked = false;
+//         if (users.includes('Client'))
+//             document.getElementById("Client").checked = true;
+//         else
+//             document.getElementById("Client").checked = false;
+//     }
+//     else {
+//         document.getElementById("Bank2").checked = false;
+//         document.getElementById("Bank1").checked = false;
+//         document.getElementById("Client").checked = false;
+//     }
+// }
 
-approvals();
+// approvals();
 
-//predefined Comment from local storage
-var restoreComment = () => {
-    $(".History_pannel ul").empty();  //$("#commentSection").empty();
-    let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};    
-    if(comments)
-    if ('comment' in comments) {
-        for (comment in comments['comment']) {
-            let data = comments['comment'][comment]
-            let key = Object.keys(data)[0]
-            let commentedText = data[Object.keys(data)[0]].comment            
-            appendComment(commentedText, key);
-        }
-    }
-}
-restoreComment();
+// //predefined Comment from local storage
+// var restoreComment = () => {
+//     $(".History_pannel ul").empty();  //$("#commentSection").empty();
+//     let comments = getLocalStorage(applicationType) ? getLocalStorage(applicationType)[currentTab] : {};    
+//     if(comments)
+//     if ('comment' in comments) {
+//         for (comment in comments['comment']) {
+//             let data = comments['comment'][comment]
+//             let key = Object.keys(data)[0]
+//             let commentedText = data[Object.keys(data)[0]].comment            
+//             appendComment(commentedText, key);
+//         }
+//     }
+// }
+// restoreComment();
 
-//Application loan list
-(() => {
-    let application_list = getLocalStorage('loanType');
-    if (application_list)
-        for (i = application_list.length - 4; i >= 0; i--) {
-            $(".appplication_section ul").prepend('<li><div class="lists"><h4>' + application_list[i].loanApplication + '</h4><div class="status"><p>' + application_list[i].status + '</p></div><span class="date">' + application_list[i].time + '</span></div></li>');
-            Appliaction_data = application_list;
-        }
+// //Application loan list
+// (() => {
+//     let application_list = getLocalStorage('loanType');
+//     if (application_list)
+//         for (i = application_list.length - 4; i >= 0; i--) {
+//             $(".appplication_section ul").prepend('<li><div class="lists"><h4>' + application_list[i].loanApplication + '</h4><div class="status"><p>' + application_list[i].status + '</p></div><span class="date">' + application_list[i].time + '</span></div></li>');
+//             Appliaction_data = application_list;
+//         }
 
-})()
+// })()
 
 
 // custom file upload js 
