@@ -43,7 +43,7 @@
 </head>
 
 <!-- <body onload="manageTab('keyData'); console.log('body onload');"> -->
-    <body onload="console.log('body onload');">
+    <body onload="console.log('body onload called');">
     <div class="container-fluid">
         <header>
             <nav>
@@ -82,6 +82,8 @@
         </header>
         <main>
             <div class="row">
+
+ <!------------- Left Column ------------>
                 <div class="col-sm-3 no-padding" style="height:2000px">
 
                     <!-- Left Panel: Loans (Overview) -->
@@ -100,8 +102,9 @@
                             </span>
                             <h4>Propose New Loan</h4>
                         </div>
+                        <!-- List of Loans / Applications -->
                         <div class="appplication_section">
-                            <p class="head">applications</p>
+                            <p class="head">Loan Overview</p>
                             <ul class="nicescroll-box">
                                 <li class="in_review active" id="sample_Loan3">
                                     <div class="lists">
@@ -140,7 +143,7 @@
                         <div class="token_section">
                             <div class="container-fluid">
                                 <div class="col-sm-12 text-center">
-                                 <button type="button" class="btn btn-primary center-block" data-toggle="button" aria-pressed="false" autocomplete="off">
+                                 <button type="button" class="btn btn-primary center-block" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
                                         Toggle Sample Loans
                                  </button>
                                 </div>
@@ -179,18 +182,18 @@
                         <h3>Loan Data: <span class="heading_text"></span></h3>
                         <ul id="tabs" class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a id="tab-A" href="#pane-A" class="nav-link" data-toggle="tab" role="tab">Key Data</a>
+                                <a id="tab-A" href="#pane-A" class="nav-link active" data-toggle="tab" role="tab">Key Data</a>
                             </li>
                             <li class="nav-item">
                                 <a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab">Involved Parties</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab-C" href="#pane-C" class="nav-link" data-toggle="tab" role="tab"
-                                    onclick="manageTab('objectDetails')">Object
+                                <a id="tab-C" href="#pane-C" class="nav-link" data-toggle="tab" role="tab" 
+                                onclick="manageTab('objectDetails')">Object
                                     Details</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab-D" href="#pane-D" class="nav-link active" data-toggle="tab" role="tab"
+                                <a id="tab-D" href="#pane-D" class="nav-link" data-toggle="tab" role="tab"
                                     onclick="manageTab('loanDetails')">Loan
                                     Details</a>
                             </li>
@@ -303,13 +306,6 @@
                                                     required>
                                                 <label for="InAddress">Address</label>
                                             </div>
-                                            <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button"
-                                                    class="primary_btn"
-                                                    onclick="modalValue('involvedParties')">Update</button>
-                                                <button onclick="modalValue('involvedParties');" type="button"
-                                                    class="ghost_btn">Approve</button>
-                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -358,13 +354,7 @@
                                                     name="Price Per Sqaure Meter" required>
                                                 <label for="meter">Price per Square meter</label>
                                             </div>
-                                            <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button"
-                                                    class="primary_btn"
-                                                    onclick="modalValue('objectDetails')">Update</button>
-                                                <button onclick="modalValue('objectDetails');" type="button"
-                                                    class="ghost_btn">Approve</button>
-                                            </div>
+
                                         </form>
                                     </div>
                                 </div>
@@ -439,13 +429,7 @@
                                                 <label for="bank2">Loan Duration</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
-                                            <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button"
-                                                    class="primary_btn"
-                                                    onclick="modalValue('loanDetails')">Update</button>
-                                                <button onclick="modalValue('loanDetails');" type="button"
-                                                    class="ghost_btn">Approve</button>
-                                            </div>
+ 
                                         </form>
                                     </div>
 
@@ -481,13 +465,7 @@
                                                     name="Additional document" required>
                                                 <label for="addocuments">Additional documents</label>
                                             </div>
-                                            <div class="group_btns">
-                                                <button data-toggle="modal" data-target="#update" type="button"
-                                                    class="primary_btn"
-                                                    onclick="modalValue('documentDetails')">Update</button>
-                                                <button onclick="modalValue('documentDetails');" type="button"
-                                                    class="ghost_btn">Approve</button>
-                                            </div>
+
                                         </form>
                                     </div>
                                 </div>
@@ -495,8 +473,11 @@
                         </div>
                         <!-- end -->
                     </div>
-                    <div class="container">
 
+                    
+                    <!-------------  Buttons ------------>
+
+                    <div class="container">
                         <div class="group_btns">
                             <button data-toggle="modal" data-target="#update" type="button"
                                 class="primary_btn"
@@ -510,10 +491,15 @@
                                 application</a>
                         </div>
 
-                        <button data-toggle="modal" id="writeToChain" type="button" onclick="createLoan($('#loanName').val(), $('#loanPurpose').val(), $('#loanDate').val())"
+                        <button data-toggle="modal" id="writeToChain" type="button" onclick="$('#loanName').val(), $('#loanPurpose').val(), $('#loanDate').val())"
                         class="primary_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Write to Blockchain</button>
                     </div>
+
                 </div>
+
+
+ <!------------- Right Column ------------>
+                
                 <div class="col-sm-4 no-padding">
                     <div class="approval">
                         <h3>Approval Status</h3>
@@ -612,7 +598,10 @@
         </main>
     </div>
 
-    <!-- Modal -->
+    <!------------------------------------------------------------>
+    <!-------------------------  Modals  ------------------------->
+    <!------------------------------------------------------------>
+
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -631,7 +620,8 @@
             </div>
         </div>
     </div>
-    <!--- update modal-->
+
+    <!------------- Update Modal ------------>
     <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -653,7 +643,7 @@
         </div>
     </div>
 
-    <!------------------------- Propose / Create new Loan ------------------------->
+    <!------------- Propose / Create new Loan Modal ------------>
 
     <!-- Modal -->
     <div class="modal fade" id="applicationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -678,13 +668,16 @@
                 <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal"
                         class="primary_btn">Add</button></div>
                 </div>
-                <div class="update_btn">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
             </div>
         </div>
     </div>
     
-    <!--- comment detail modal-->
+    <!------------- Comment Details Modal ------------>
+
     <div class="modal fade" id="commentpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -705,11 +698,10 @@
         </div>
     </div>
     </div>
+
     <!-- Custom js file -->
     <script>
         
-
-
         $(function () {
             $(".nicescroll-box").niceScroll({
                 scrollspeed: 40
@@ -718,19 +710,10 @@
             });
         });      
     </script>
+
     <script src="js/jquery.nicescroll.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
 
 </body>
-
-<!-- <script>
-   $('#test1').on("click", function(){
-       alert("....");
-     });
-
-</script> -->
-
-
-
 </html>

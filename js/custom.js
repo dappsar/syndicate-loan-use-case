@@ -127,22 +127,6 @@ let appendComment = (comment, user) => {
         </li>`)
 }
 
-// MJ: Create new Loan and add to Side Panel
-
-addItem = () => {
-    loanName = document.getElementById("add_Loan").value;
-    if (!loanName) {
-        loanName = "unnamed loan";
-    }
-
-// Adding HTML elements to the left side panel
-    $(".appplication_section ul").prepend(
-        '<li class="active"><div class="lists"><h4>' + loanName + '</h4><div class="status"><p>Waiting for review</p></div><span class="date">' + getDateInFormate() + '</span></div></li>');
-    Appliaction_data.unshift({ 'loanApplication': loanName, status: 'Waiting for review', time: getDateInFormate() });
-    setLocalStorage('loanType', Appliaction_data);
-    $('.appplication_section ul li.active').trigger('click');
-
-}
 
 //get date in the required formate
 getDateInFormate = () => {
@@ -319,6 +303,105 @@ storeComment = () => {
     //     // setLocalStorage(applicationType, data)                                               //set local storage with updated data
     // }
 }
+
+
+
+// setLocalStorage('firstLoan', loanData);
+
+// console.log(getLocalStorage('firstLoan'));
+// console.log(getLocalStorage(loanData));
+
+
+
+// var testObject = { 'one': 1, 'two': 2, 'three': 3 };
+
+// // Put the object into storage
+// localStorage.setItem('testObject', JSON.stringify(testObject));
+
+// // Retrieve the object from storage
+// var retrievedObject = localStorage.getItem('testObject');
+
+// console.log('retrievedObject: ', JSON.parse(retrievedObject));
+
+
+const dummyLoan = { 
+    keyData: {
+            name: 'Housing Development Leipartstr',
+            purpose: 'Aquisition of apartment complex',
+            id: 0,
+            regParty: 0,
+            date: 0,
+    },
+    involvedParties: {
+            stakeholder_1: {
+                role: 'Client',
+                name: 'Estato Inc',
+                address: '5, 1st Avenue'
+            },
+            stakeholder_2: {
+                role: 'Bank',
+                name: 'web3Bank',
+                address: '10, 5th Avenue'
+            },
+            stakeholder_3: {
+                role: 'Bank',
+                name: 'Credit Bank',
+                address: '87, King Street'
+            },
+
+    },
+}
+
+
+// Function: DataStorage / Logic
+const createLoans = (name, purpose, id, registeringParty, date) => {
+    return {
+        name,
+        purpose,
+        id,
+        registeringParty,
+        date
+    }
+}
+
+
+var tempLoanId = 0;
+
+
+// MJ: Create new Loan and add to Side Panel
+// Function: UI
+addItem = () => {
+    loanName = document.getElementById("add_Loan").value;
+
+    if (!loanName) {
+        loanName = "unnamed loan";
+    }
+    const newLoan = createLoans(loanName);
+    console.log(newLoan);
+    sessionStorage.setItem(`id_${tempLoanId}`, JSON.stringify(newLoan));
+    tempLoanId++;
+
+// Adding HTML elements to the left side panel
+    $(".appplication_section ul").prepend(
+        '<li class="active"><div class="lists"><h4>' + loanName + '</h4><div class="status"><p>Waiting for review</p></div><span class="date">' + getDateInFormate() + '</span></div></li>');
+    Appliaction_data.unshift({ 'loanApplication': loanName, status: 'Waiting for review', time: getDateInFormate() });
+    setLocalStorage('loanType', Appliaction_data);
+    $('.appplication_section ul li.active').trigger('click');
+
+}
+
+
+
+// console.log(dummyLoan);
+// sessionStorage.setItem('id_1', JSON.stringify(dummyLoan));
+
+
+function toggleLoans() {
+    $('#sample_Loan1').toggle();
+    $('#sample_Loan2').toggle();
+    $('#sample_Loan3').toggle();
+}
+
 
 
 //manage predefined data structure 
