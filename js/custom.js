@@ -54,7 +54,7 @@ const dummyLoan = {
 
 // Object Literal Factory Function
 // Function: DataStorage / Logic  
-const createLoans = (name, id, purpose, state, registeringParty, date) => {
+const createLoan = (name, id, purpose, state, registeringParty, date) => {
     return {
         name,
         id,
@@ -65,6 +65,20 @@ const createLoans = (name, id, purpose, state, registeringParty, date) => {
     }
 }
 
+// Create and store sample loans for users to show
+function createSampleLoans() {
+    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', '0x', '1/23/2019');
+    id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0x', '2/21/2019');
+    id_s3 = createLoan('Exhibition Center East', 'id_s3', 'Building the foundations', 'review', '0x', '3/2/2019');
+    sessionStorage.setItem(`id_s1`, JSON.stringify(id_s1));
+    sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
+    sessionStorage.setItem(`id_s3`, JSON.stringify(id_s3));
+}
+
+// Think about page onLoad behavior: Should it load sample loans or not?
+createSampleLoans();
+activeLoanId = "id_s1";
+
 
 // Loan_Array
 var loans = []; 
@@ -72,86 +86,109 @@ var tempLoanId = 0;
 var activeLoanId;
 
 
-// Function to Update Loan Object (Save Changes) 
+// Function to Update Loan Object (Save Changes from form fields) 
 // id removed, because it should not change.
 // Consider Adding activeLoan (id) to params
 const updateLoan = (name, purpose, registeringParty, date) => {
-    // console.log('updateLoan() called, logging tempLoanId & activeLoan');  
-    // console.log(tempLoanId);
-    // console.log(activeLoan);
+    // Load loan from array
+    console.log(activeLoanId);
+ 
     _currentLoan = loans[activeLoanId];
-    
+    console.log(_currentLoan);
     _currentLoan.name = $('#loanName').val();
     _currentLoan.purpose = $('#loanPurpose').val();
     _currentLoan.registeringParty = $('#regParty').val();
     _currentLoan.date = $('#loanDate').val();;  
     console.log(_currentLoan);
-
     sessionStorage.setItem(`id_${activeLoanId}`, JSON.stringify(_currentLoan));
 }
 
 
-
-// MJ: Create new Loan and add to Side Panel
+// MJ: Create new Loan and add it to Side Panel
 // Function: UI & Logic
 addItem = () => {
-
     // MJ: Retrieve value of loan name from Create-Loan-Modal
     loanName = $("#add_Loan").val();   
     
     // Set active Loan, to determine, where to write Updates to and what to display
-    activeLoanId = tempLoanId; 
+    activeLoanId = 'id_'+tempLoanId;
+    console.log('logging addItem: '+ activeLoanId); 
     
     // Checks for void name. Consider adding more checks here.  
     if (!loanName) {
         loanName = "unnamed loan";
     }
-    const newLoan = createLoans(loanName, tempLoanId);
-    loans.push(newLoan);
-    console.log(loans);
-    sessionStorage.setItem(`id_${tempLoanId}`, JSON.stringify(newLoan));
+
+    // Add functionality to pass Blockchain Address
+    const newLoan = createLoan(loanName, tempLoanId, undefined, 'review', curAddress, getDateInFormat());
+    // Store loan in Array, necessary?
+    // loans.push(newLoan);
+    // console.log(loans);
+
+    sessionStorage.setItem(activeLoanId, JSON.stringify(newLoan));
 
 
-    // Write to Key Data Form
-    $('#loanName').val(loanName).closest("div").addClass('input_float_lbl');
-    $('#loanId').val(tempLoanId).closest("div").addClass('input_float_lbl');
-    // $('#regParty').val('Here account address');
-
-
-
-// Adding HTML elements to the left side panel
+    // Adding HTML elements to the left side panel
+    // data-storage-key="id_${tempLoanId}" writes key for local storage in html
     $(".appplication_section ul").prepend(
-        `<li class="active" id="loan_id_${tempLoanId}">
+        `<li class="active" data-storage-key="id_${tempLoanId}">
             <div class="lists"><h4>${loanName}</h4>
                 <div class="status">
                 <p>Waiting for review</p>
                 </div>
-                <span class="date">${getDateInFormate()}</span>
+                <span class="date">${getDateInFormat('full')}</span>
             </div>
         </li>`);
 
-    // // MJ: I suppose this adds some data to an array different than the original object
-    // Appliaction_data.unshift({ 'loanApplication': loanName, status: 'Waiting for review', time: getDateInFormate() });
-    // setLocalStorage('loanType', Appliaction_data);
-
     $('.appplication_section ul li.active').trigger('click');
-
     tempLoanId++;
 }
 
 
-
-// console.log(dummyLoan);
-// sessionStorage.setItem('id_1', JSON.stringify(dummyLoan));
-
-
 function toggleLoans() {
+    console.log('toggleLoans called');
     $('#sample_Loan1').toggle();
     $('#sample_Loan2').toggle();
-    $('#sample_Loan3').toggle();
+    $('#sample_Loan3').hide();
 }
 
 
+// Setter Getter for local storage
+getLocalStorage = (key) => {
+    return JSON.parse(localStorage.getItem(key));
+}
+setLocalStorage = (key, value) => {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+
+
+
+function loadLoan(loan) {
+    var selectedLoanKey = loan.getAttribute("data-storage-key");
+
+    // Key in storage shall be equivalent to activeLoanId
+    activeLoanId = selectedLoanKey;
+    var loanObj = JSON.parse(sessionStorage.getItem(selectedLoanKey));
+    // console.log(loanObj);
+    // console.log(loanObj.name);
+
+    /* 
+    Simple error handling in case loan cannot be loaded 
+    (e.g. cleared storage or other reasons) 
+    */
+    if (loanObj) {
+        $('.heading_text').html(loanObj.name);
+        $('#loanName').val(loanObj.name);
+        $('#loanPurpose').val(loanObj.purpose);
+        $('#loanId').val(loanObj.id);
+        $('#regParty').val(loanObj.registeringParty);
+        $('#loanDate').val(loanObj.date);
+
+    }
+    else {
+        alert(`Error: Loan (${selectedLoanKey}) not found in your browser storage`);
+    }
+}
 
 
 // MJ: Doing bunch of stuff, seemingly mostly for UI functionality
@@ -209,26 +246,17 @@ $(document).ready(function () {
         }
     })
 
-    /* ---------Appliaction tab js
-    this code handle the event when you click
-    on the application (when you switch application)
-    ------- */
+    // Loan Overview: Here you selected the loans from the left panel / column
+
     $("body").on("click", ".appplication_section ul li", function () {
         $('.appplication_section ul li.active').removeClass('active');
-        $(this).closest('li').addClass('active');
-        let loan_heading = $(this).closest('li')[0].innerText.split("\n")[0];           
-        $('.heading_text').html(loan_heading);
-        applicationType = $(this).closest('li')[0].innerText.split("\n")[0]
-        // manageTab(currentTab);                                      //to manage the state of tab in different application
-        // restoreComment();                                           //to show comment acc. to the application
-        // approvals();                                                //to show check box acc. to application
-        // keyData(currentTab);                                       //to manage drop down
-        
-        // if (!getLocalStorage(applicationType)) {
-        //     ResetForm();
-        // }
+        $(this).closest('li').addClass('active');      
 
+        // passes list element with data- attribute to loadLoan()
+        loadLoan(this);
     });
+
+
 
     $('.date_picker').datepicker({
         autoclose: true
@@ -237,14 +265,14 @@ $(document).ready(function () {
         $('.appplication_section ul li.active').removeClass('active');
     })
 
-});
+}); // MJ: end of callback in document.reayd()
 
 //append comment
 let appendComment = (comment, user) => {
     $('.History_pannel ul').prepend(`<li>
     <div class="histroy_detail">
         <div class="top_section">
-            <p class="date">${getDateInFormate()}</p>
+            <p class="date">${getDateInFormat()}</p>
             <span class="explorer" data-toggle="modal" data-target="#commentpop" onclick="commentList()">View Detail</span>
         </div>
         <div class="status waiting">
@@ -267,14 +295,28 @@ let appendComment = (comment, user) => {
 }
 
 
-//get date in the required formate
-getDateInFormate = () => {
-    var today = new Date();
-    var dd = today.getDate();
-    var yyyy = today.getFullYear()
-    var month = monthNames[today.getMonth()]
-    today = dd + ' ' + month + ' ' + yyyy;
-    return today;
+// MJ: Function returns date as string, option: full, with month name, or regular
+getDateInFormat = (format) => {
+
+    if (format == 'full') {
+
+        var today = new Date();
+        var dd = today.getDate();
+        var yyyy = today.getFullYear();
+        var month = monthNames[today.getMonth()];
+        today = dd + ' ' + month + ' ' + yyyy;
+        return today;
+    }
+
+    else {
+
+       var today = new Date();
+       var dd = today.getDate();
+       var yyyy = today.getFullYear();
+       var mm = today.getMonth();
+       today = dd + '/' + mm + '/' + yyyy;
+       return today; 
+    }
 }
 
 // storing signup input data on browser
@@ -299,13 +341,6 @@ var submitFormData = () => {
 
 }
 
-// Setter Getter for local storage
-getLocalStorage = (key) => {
-    return JSON.parse(localStorage.getItem(key));
-}
-setLocalStorage = (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
-}
 
 //set fields empty
 ResetForm = () => {

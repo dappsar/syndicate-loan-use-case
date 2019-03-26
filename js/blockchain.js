@@ -34,8 +34,11 @@ else {
 });  // End enable window
 
 
-function createLoan(_name, _purpose, _date) {
-    alert("Sending Transaction with Value "+ _name + _purpose + _date);
+// Renaming of Loan createLoan -> writeLoan 
+function writeLoan() {
+    $name = $('#loanName').val();
+    console.log($name);
+    // alert("Sending Transaction with Value "+ _name + _purpose + _date);
     console.log('fn setNumber: log window.web3:');
 
     window.web3 = new Web3(ethereum);
@@ -50,7 +53,7 @@ function createLoan(_name, _purpose, _date) {
             storeContract = new web3.eth.Contract(storeABI, storeAddress);  
             console.log(storeContract);
 
-            storeContract.methods.createLoan(_name, _purpose, _date).send({from: myAccounts[0]})
+            storeContract.methods.writeLoan(_name, _purpose, _date).send({from: myAccounts[0]})
             .then((receipt) => {
                 console.log(receipt);
             });
@@ -69,9 +72,14 @@ function createLoan(_name, _purpose, _date) {
 // web3 = new Web3(ethereum);
 // console.log(web3);
 
+var curAddress;
+
 function printAddress(_address) {
     $('.bc_address').val(_address);
     $('.bc_address').html(_address);
+    
+    // Consider: pass into onLoad event listener
+    curAddress = _address;
 }
 
 // Prints Network to Headline to Headline

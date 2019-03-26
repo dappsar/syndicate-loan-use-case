@@ -659,7 +659,14 @@ textarea.form-control+label span {
 }
 
 .float-lab {
-    position: relative
+    position: relative;
+    /* Inserted from input_float_lbl to avoid displaying issues */
+    -moz-transform: translate(0, -10px);
+    -o-transform: translate(0, -10px);
+    -ms-transform: translate(0, -10px);
+    -webkit-transform: translate(0, -10px);
+    transform: translate(0, -10px);
+    font-size: 11px
 }
 
 .float-lab label {
@@ -1034,7 +1041,7 @@ span.valueHolder1 {
 }
 
 .appplication_section .head {
-    margin-bottom: 18px
+    margin: 6px 0 12px 0;
 }
 
 .appplication_section ul {

@@ -101,10 +101,10 @@
                             <h4>Propose New Loan</h4>
                         </div>
                         <!-- List of Loans / Applications -->
-                        <div class="appplication_section">
+                        <div class="appplication_section">  
                             <p class="head">Loan Overview</p>
                             <ul class="nicescroll-box">
-                                <li class="in_review active" id="sample_Loan3">
+                                <li class="in_review active" data-storage-key="id_s1" id="#sample_Loan1">
                                     <div class="lists">
                                         <h4>Housing Development</h4>
                                         <div class="status">
@@ -113,7 +113,7 @@
                                         <span class="date">12 March 2019</span>
                                     </div>
                                 </li>
-                                <li class="wating_for_review" id="sample_Loan2">
+                                <li class="wating_for_review" data-storage-key="id_s2" id="#sample_Loan2">
                                     <div class="lists">
                                         <h4>Sale of an appartment complex</h4>
                                         <div class="status">
@@ -127,7 +127,7 @@
                                         <span class="date">6 March 2019</span>
                                     </div>
                                 </li>
-                                <li class="approved" id="sample_Loan1">
+                                <li class="approved" data-storage-key="id_s3" id="#sample_Loan3">
                                     <div class="lists" >
                                         <h4>Housing Development Leipartstr</h4>
                                         <div class="status">
@@ -221,26 +221,26 @@
                                     <div class="loan_detail">
                                         <form>
 
-                                          <div class="form-label-group float-lab">
+                                          <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="loanName" class="form-control heading_text"
                                                     name="loanName" required>
                                                 <label for="loanName">Name of Loan</label>
                                             </div>
 
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="loanPurpose" class="form-control"
                                                     name="Purpose" required>
                                                 <label for="purpose">Purpose</label>
                                             </div>
 
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="loanId" class="form-control"
                                                     name="loanId" required disabled>
                                                 <label for="loanId">Loan Id</label>
                                             </div>
 
                                             <div class="form-label-group float-lab input_float_lbl">
-                                                <input type="text" id="regParty" class="form-control bc_address"
+                                                <input type="text" id="regParty" class="form-control"
                                                     name="regParty" value="" required disabled>
                                                 <label for="regParty">Registering party</label>
                                             </div>
@@ -497,7 +497,7 @@
                                 application</a>
                         </div>
 
-                        <button data-toggle="modal" id="writeToChain" type="button" onclick="$('#loanName').val(), $('#loanPurpose').val(), $('#loanDate').val())"
+                        <button data-toggle="modal" id="writeToChain" type="button" onclick="writeLoan()"
                         class="primary_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Write to Blockchain</button>
                     </div>
 
@@ -664,8 +664,8 @@
                 </div>
                 <div class="modal-body">
                 <div class="form-label-group float-lab">
-                    <textarea type="text" id="add_Loan" class="form-control"
-                        placeholder="Name of Loan" required></textarea>
+                    <input type="text" id="add_Loan" class="form-control"
+                        placeholder="Name of Loan" required>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
