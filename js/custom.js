@@ -87,14 +87,13 @@ const updateLoan = (name, purpose, registeringParty, date) => {
     // saves current form values to loaded loan Object
     loanObj.name = $('#loanName').val();
     loanObj.purpose = $('#loanPurpose').val();
+    loanObj.state = $('#state').val();
     loanObj.registeringParty = $('#regParty').val();
     loanObj.date = $('#loanDate').val();
 
     // Stores Updates to session storage
     sessionStorage.setItem(activeLoanId, JSON.stringify(loanObj));
 }
-
-
 
 
 // MJ: Create new Loan and add it to Side Panel
@@ -171,6 +170,7 @@ function loadLoan(htmlObject) {
         $('#loanName').val(loanObj.name);
         $('#loanPurpose').val(loanObj.purpose);
         $('#loanId').val(loanObj.id);
+        $('#state').val(loanObj.state);
         $('#regParty').val(loanObj.registeringParty);
         $('#loanDate').val(loanObj.date);
 

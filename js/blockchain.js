@@ -1,37 +1,49 @@
+
+// Asynchronous JS functions are required in web3.js 1.x
+
 window.addEventListener('load', async () => {   
-// Modern dapp browsers...
-if (window.ethereum) {
-    window.web3 = new Web3(ethereum);
-    try {
-        // Request account access if needed
-        await ethereum.enable();
-        // Acccounts now exposed
-        const myAccounts = await web3.eth.getAccounts();
-        console.log('Account unlocked')
+    // Modern dapp browsers...
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+        try {
+            // Request account access if needed
+            await ethereum.enable();
+            // Acccounts now exposed
+            const myAccounts = await web3.eth.getAccounts();
+            console.log('Account unlocked')
 
-        printNetwork();
-        printAddress(myAccounts[0]);
+            printNetwork();
+            printAddress(myAccounts[0]);
 
-    } catch (error) {
-        console.log('Access denied');
-        console.log(error);
-        $('#errMsg').html("You need to connect metamask to use this Application");     
+        } catch (error) {
+            console.log('Access denied');
+            console.log(error);
+            $('#errMsg').html("You need to connect metamask to use this Application");     
+        }
     }
-}
-// Legacy dapp browsers...
-else if (window.web3) {
-    window.web3 = new Web3(web3.currentProvider);
-    // Acccounts always exposed
-    web3.eth.sendTransaction({/* ... */});
-}
+    // Legacy dapp browsers...
+    else if (window.web3) {
+        window.web3 = new Web3(web3.currentProvider);
+        // Acccounts always exposed
+        web3.eth.sendTransaction({/* ... */});
+    }
 
 
-// Non-dapp browsers...
-else {
-    console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-    $('#errMsg').html("<b>Non-Ethereum browser detected.</b> You should consider trying MetaMask!");
-}
+    // Non-dapp browsers...
+    else {
+        console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+        $('#errMsg').html("<b>Non-Ethereum browser detected.</b> You should consider trying MetaMask!");
+    }
+
+    // Consider storing all logic in this wrapper function
+    startApp();
+
 });  // End enable window
+
+
+function retrieveLoan(id) {
+    storeContract.methods.loans(id).call();
+}
 
 
 // Renaming of Loan createLoan -> writeLoan 
@@ -39,7 +51,6 @@ function writeLoan() {
     activeLoan = returnActiveLoan();
     console.log('Info: Writing Loan with id: ' + activeLoanId);
     console.log(activeLoan);
-
 
     _name = activeLoan.name;
     _purpose = activeLoan.purpose;
