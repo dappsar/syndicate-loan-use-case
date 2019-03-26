@@ -1,9 +1,10 @@
 
-let currentTab = 'keyData'
+/// let currentTab = 'keyData'
+
+// Arrays for Dropdown menus
 var select_arr = ['Borrower', 'Seller', 'Confident']
 var select_arr2 = ['Client', 'Bank#1', 'Bank#2']
-let text_value_application;                                         //to store the application type when you create new //MarceL: deprecated
-let modal = ''                                                      //variable to store modal tab
+
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
@@ -149,11 +150,6 @@ function toggleLoans() {
     $('#sample_Loan2').toggle();
     $('#sample_Loan3').toggle();
 }
-
-
-
-
-
 
 
 
