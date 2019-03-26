@@ -10,17 +10,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 ];
 
 
-
-
-// var testObject = { 'one': 1, 'two': 2, 'three': 3 };
-// // Put the object into storage
-// localStorage.setItem('testObject', JSON.stringify(testObject));
-// // Retrieve the object from storage
-// var retrievedObject = localStorage.getItem('testObject');
-// console.log('retrievedObject: ', JSON.parse(retrievedObject));
-
-
-// Clear Storage for testing purposes
+// Clear browser storage for testing purposes
 localStorage.clear();
 sessionStorage.clear();
 
@@ -78,12 +68,9 @@ function createSampleLoans() {
 // Think about page onLoad behavior: Should it load sample loans or not?
 createSampleLoans();
 
-// Delete?
-// activeLoanId = "id_s1";
-
-
 // Loan_Array
 var loans = []; 
+
 var tempLoanId = 0;
 var activeLoanId;
 
@@ -106,6 +93,8 @@ const updateLoan = (name, purpose, registeringParty, date) => {
     // Stores Updates to session storage
     sessionStorage.setItem(activeLoanId, JSON.stringify(loanObj));
 }
+
+
 
 
 // MJ: Create new Loan and add it to Side Panel
@@ -148,7 +137,7 @@ addItem = () => {
     tempLoanId++;
 }
 
-
+// Togges sample loans for showroom functionality
 function toggleLoans() {
     console.log('toggleLoans called');
     $('#sample_Loan1').toggle();
@@ -157,16 +146,12 @@ function toggleLoans() {
 }
 
 
-// Setter Getter for local storage
-getLocalStorage = (key) => {
-    return JSON.parse(localStorage.getItem(key));
-}
-setLocalStorage = (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
+function activeLoan() {
+
+
 }
 
-
-
+// loads loan and writes into html form
 function loadLoan(htmlObject) {
     var selectedLoanKey = htmlObject.getAttribute("data-storage-key");
     // Key in storage shall be equivalent to activeLoanId
@@ -235,6 +220,7 @@ $(document).ready(function () {
     })
 
     // Input floating label js
+    // MJ: Function: UI
     $(".form-label-group input").focus(function () {
         // $(this).parent().removeClass("round");
         $(this).parent().addClass("input_float_lbl");
@@ -252,7 +238,8 @@ $(document).ready(function () {
     })
 
     // Loan Overview: Here you selected the loans from the left panel / column
-
+    // #################### Does it need to be in .ready() ???? ##########################
+    
     $("body").on("click", ".appplication_section ul li", function () {
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');      
@@ -274,7 +261,8 @@ $(document).ready(function () {
 
 }); // MJ: end of callback in document.reayd()
 
-//append comment
+// append comment
+// Comment functionality off
 let appendComment = (comment, user) => {
     $('.History_pannel ul').prepend(`<li>
     <div class="histroy_detail">
@@ -326,7 +314,7 @@ getDateInFormat = (format) => {
     }
 }
 
-// storing signup input data on browser
+// MJ: Signup page: Consider complete rewrite soon
 var submitFormData = () => {
 
     let signupData = {};
@@ -348,44 +336,53 @@ var submitFormData = () => {
 
 }
 
+// // Setter Getter for local storage
+// getLocalStorage = (key) => {
+//     return JSON.parse(localStorage.getItem(key));
+// }
+// setLocalStorage = (key, value) => {
+//     localStorage.setItem(key, JSON.stringify(value));
+// }
 
-//set fields empty
-ResetForm = () => {
-    let formData = document.getElementsByClassName("form-control")
-    for (i = 0; i < formData.length; i++) {
-        formData[i].value = '';//value binding
-        formData[i].parentElement.className = "form-label-group float-lab"//class binding
-    }
-    calculateTotalAmount();
-    let dropDownData = document.getElementsByClassName("valueHolder1")
-    for (i = 0; i < dropDownData.length; i++) {
-        dropDownData[i].textContent = '';
-        // dropDownData[i].parentElement.className = "customDropdown"
-        dropDownData[i].previousElementSibling.className = "valueHolder"
-    }
-}
+
+
+// //set fields empty
+// ResetForm = () => {
+//     let formData = document.getElementsByClassName("form-control")
+//     for (i = 0; i < formData.length; i++) {
+//         formData[i].value = '';//value binding
+//         formData[i].parentElement.className = "form-label-group float-lab"//class binding
+//     }
+//     calculateTotalAmount();
+//     let dropDownData = document.getElementsByClassName("valueHolder1")
+//     for (i = 0; i < dropDownData.length; i++) {
+//         dropDownData[i].textContent = '';
+//         // dropDownData[i].parentElement.className = "customDropdown"
+//         dropDownData[i].previousElementSibling.className = "valueHolder"
+//     }
+// }
 
 // setting up the values of fields
-formValueSetter = (data) => {
-    let formData = document.getElementsByClassName("form-control")
-    for (i = 0; i < formData.length; i++) {
-        formData[i].value = data[formData[i].name] ? data[formData[i].name] : '';//value binding
-        formData[i].parentElement.className = "form-label-group float-lab input_float_lbl"//class binding
-    }
-    calculateTotalAmount();
-}
+// formValueSetter = (data) => {
+//     let formData = document.getElementsByClassName("form-control")
+//     for (i = 0; i < formData.length; i++) {
+//         formData[i].value = data[formData[i].name] ? data[formData[i].name] : '';//value binding
+//         formData[i].parentElement.className = "form-label-group float-lab input_float_lbl"//class binding
+//     }
+//     calculateTotalAmount();
+// }
 
 
 
-//function which set the value on drop down 
-settingUpDropDown = (keyDataObject) => {
-    let dropDownData = document.getElementsByClassName("valueHolder1")
-    for (i = 0; i < dropDownData.length; i++) {
-        dropDownData[i].textContent = keyDataObject[dropDownData[i].previousElementSibling.innerHTML] ? keyDataObject[dropDownData[i].previousElementSibling.innerHTML] : '';
-        dropDownData[i].parentElement.className = "customDropdown"
-        dropDownData[i].previousElementSibling.className = "valueHolder float-label"
-    }
-}
+// //function which set the value on drop down 
+// settingUpDropDown = (keyDataObject) => {
+//     let dropDownData = document.getElementsByClassName("valueHolder1")
+//     for (i = 0; i < dropDownData.length; i++) {
+//         dropDownData[i].textContent = keyDataObject[dropDownData[i].previousElementSibling.innerHTML] ? keyDataObject[dropDownData[i].previousElementSibling.innerHTML] : '';
+//         dropDownData[i].parentElement.className = "customDropdown"
+//         dropDownData[i].previousElementSibling.className = "valueHolder float-label"
+//     }
+// }
 
 //load amount calculation
 calculateTotalAmount = () => {    
@@ -460,49 +457,49 @@ calculateTotalAmount = () => {
 
 
 
-//manage predefined data structure 
-setUpEnv = (tab) => {
-    switch (tab) {
-        case "keyData":
-            return {
-                'Name Of Loan': 'Seller',
-                'Purpose Of Loan': 'Confidant'
-            };
-        case "involvedParties":
-            return {
-                'RoleType': 'Client',
-                'Role': 'Loan Takker',
-                'Name': 'testing',
-                'address': 'This is 37/1 testing address, gurgaon'
-            };
-        case "objectDetails":
-            return {
-                'Description': 'Loan Takker',
-                'Total Area Outdoor+Indoor': '1000 yards',
-                'Usable Area Net Floor Space': '800 yards',
-                'Total Area Outdoor': '200 yards',
-                'Purchase Price': '1200000',
-                'Price Per Sqaure Meter': '1200'
-            }
-        case "loanDetails":
-            return {
-                'Client': 1200000,
-                'Bank#1': 1300000,
-                'Bank#2': 1400000,
-                'Interest Rate': 18,
-                'Loan Payout Structure': 'testing Cumulative',
-                'Load Repayment Structure': 'testing structure',
-                'Loan Start': 'Select loan start date',
-                'Loan Duration': 'testing duration 12 months'
-            }
-        case "documentDetails":
-            return {
-                'Expose': 'testing expose',
-                'Time Sheet': 'testing with time sheet',
-                'Additional document': 'tester document'
-            }
-    }
-}
+// //manage predefined data structure 
+// setUpEnv = (tab) => {
+//     switch (tab) {
+//         case "keyData":
+//             return {
+//                 'Name Of Loan': 'Seller',
+//                 'Purpose Of Loan': 'Confidant'
+//             };
+//         case "involvedParties":
+//             return {
+//                 'RoleType': 'Client',
+//                 'Role': 'Loan Takker',
+//                 'Name': 'testing',
+//                 'address': 'This is 37/1 testing address, gurgaon'
+//             };
+//         case "objectDetails":
+//             return {
+//                 'Description': 'Loan Takker',
+//                 'Total Area Outdoor+Indoor': '1000 yards',
+//                 'Usable Area Net Floor Space': '800 yards',
+//                 'Total Area Outdoor': '200 yards',
+//                 'Purchase Price': '1200000',
+//                 'Price Per Sqaure Meter': '1200'
+//             }
+//         case "loanDetails":
+//             return {
+//                 'Client': 1200000,
+//                 'Bank#1': 1300000,
+//                 'Bank#2': 1400000,
+//                 'Interest Rate': 18,
+//                 'Loan Payout Structure': 'testing Cumulative',
+//                 'Load Repayment Structure': 'testing structure',
+//                 'Loan Start': 'Select loan start date',
+//                 'Loan Duration': 'testing duration 12 months'
+//             }
+//         case "documentDetails":
+//             return {
+//                 'Expose': 'testing expose',
+//                 'Time Sheet': 'testing with time sheet',
+//                 'Additional document': 'tester document'
+//             }
+//     }
+// }
 
 // //when to click on update button
 // modalValue = (tab) => {

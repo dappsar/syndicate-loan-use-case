@@ -36,9 +36,10 @@ else {
 
 // Renaming of Loan createLoan -> writeLoan 
 function writeLoan() {
+
     $name = $('#loanName').val();
     console.log($name);
-    // alert("Sending Transaction with Value "+ _name + _purpose + _date);
+    alert("Sending Transaction with Value ");
     console.log('fn setNumber: log window.web3:');
 
     window.web3 = new Web3(ethereum);
@@ -77,7 +78,7 @@ var curAddress;
 function printAddress(_address) {
     $('.bc_address').val(_address);
     $('.bc_address').html(_address);
-    
+
     // Consider: pass into onLoad event listener
     curAddress = _address;
 }
