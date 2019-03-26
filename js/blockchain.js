@@ -1,5 +1,11 @@
 
-// Asynchronous JS functions are required in web3.js 1.x
+/* 
+Code by Marcel Jackisch / marcel.jackisch@lition.de
+Asynchronous JS functions are required in web3.js 1.x 
+ */
+
+var userAccount = web3.eth.accounts[0];
+
 
 window.addEventListener('load', async () => {   
     // Modern dapp browsers...
@@ -9,11 +15,8 @@ window.addEventListener('load', async () => {
             // Request account access if needed
             await ethereum.enable();
             // Acccounts now exposed
-            const myAccounts = await web3.eth.getAccounts();
+                // const myAccounts = await web3.eth.getAccounts();
             console.log('Account unlocked')
-
-            printNetwork();
-            printAddress(myAccounts[0]);
 
         } catch (error) {
             console.log('Access denied');
@@ -25,10 +28,7 @@ window.addEventListener('load', async () => {
     else if (window.web3) {
         window.web3 = new Web3(web3.currentProvider);
         // Acccounts always exposed
-        web3.eth.sendTransaction({/* ... */});
     }
-
-
     // Non-dapp browsers...
     else {
         console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
@@ -36,17 +36,36 @@ window.addEventListener('load', async () => {
     }
 
     // Consider storing all logic in this wrapper function
-    startApp();
+    startdApp();
 
 });  // End enable window
 
 
-function retrieveLoan(id) {
-    storeContract.methods.loans(id).call();
+function startdApp() {
+    console.log('startdApp() called, web3 interface running');
+    console.log(userAccount);
+    // Check if account has changed
+    // Produces errors for some reason
+    var accountInterval = setInterval(function() {
+      if (web3.eth.accounts[0] !== userAccount) {
+        userAccount = web3.eth.accounts[0];
+
+        console.log('Account has changed');
+        // Call some function to update the UI with the new account
+        // updateInterface();
+      }
+    }, 100);
+
+    printNetwork();
+    printAddress(userAccount);
 }
 
+function retrieveLoan(id) {
+    return storeContract.methods.loans(id).call();
+}
 
 // Renaming of Loan createLoan -> writeLoan 
+
 function writeLoan() {
     activeLoan = returnActiveLoan();
     console.log('Info: Writing Loan with id: ' + activeLoanId);
@@ -62,7 +81,6 @@ function writeLoan() {
     }
 
     alert("Sending Transaction on Ropston Network...");
-
     window.web3 = new Web3(ethereum);
 
     // Function that returns default account and sends Tx
@@ -91,9 +109,6 @@ function writeLoan() {
 
 
 
-// web3 = new Web3(ethereum);
-// console.log(web3);
-
 var curAddress;
 
 function printAddress(_address) {
@@ -104,7 +119,8 @@ function printAddress(_address) {
     curAddress = _address;
 }
 
-// Prints Network to Headline to Headline
+// Prints Network to UI (Header) 
+// reacts dynamically to changes
 function printNetwork () {
     console.log("Check");
     web3.eth.net.getId().then( (netId) => {
@@ -136,9 +152,3 @@ function printNetwork () {
         })
 
 }
-
-
-// $('#writeToChain').on("click", setNumber(1337));
-
-// $('#writeToChain').on("click", alert("Test"));
-

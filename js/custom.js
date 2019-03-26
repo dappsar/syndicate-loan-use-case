@@ -56,6 +56,7 @@ const createLoan = (name, id, purpose, state, registeringParty, date) => {
 }
 
 // Create and store sample loans for users to show
+// Function: Logic
 function createSampleLoans() {
     id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', '0x', '1/23/2019');
     id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0x', '2/21/2019');
@@ -64,12 +65,8 @@ function createSampleLoans() {
     sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
     sessionStorage.setItem(`id_s3`, JSON.stringify(id_s3));
 }
-
-// Think about page onLoad behavior: Should it load sample loans or not?
+// Reconsider page onLoad behavior: Should sample loans be auto-loaded or after pressing button?
 createSampleLoans();
-
-// Loan_Array
-var loans = []; 
 
 var tempLoanId = 0;
 var activeLoanId;
@@ -110,15 +107,9 @@ addItem = () => {
     if (!loanName) {
         loanName = "unnamed loan";
     }
-
     // Add functionality to pass Blockchain Address
-    const newLoan = createLoan(loanName, tempLoanId, undefined, 'review', curAddress, getDateInFormat());
-    // Store loan in Array, necessary?
-    // loans.push(newLoan);
-    // console.log(loans);
-
+    const newLoan = createLoan(loanName, tempLoanId, undefined, 'review', curAddress, getDateInFormat());  
     sessionStorage.setItem(activeLoanId, JSON.stringify(newLoan));
-
 
     // Adding HTML elements to the left side panel
     // data-storage-key="id_${tempLoanId}" writes key for local storage in html
@@ -137,6 +128,7 @@ addItem = () => {
 }
 
 // Togges sample loans for showroom functionality
+// Function: UI
 function toggleLoans() {
     console.log('toggleLoans called');
     $('#sample_Loan1').toggle();
@@ -144,13 +136,14 @@ function toggleLoans() {
     $('#sample_Loan3').toggle();
 }
 
-
+// Function: Logic
 function returnActiveLoan() {
     var activeLoan = JSON.parse(sessionStorage.getItem(activeLoanId));
     return activeLoan;
 }
 
 // loads loan and writes into html form
+// Function: UI + Logic (sets activeLoanId)
 function loadLoan(htmlObject) {
     var selectedLoanKey = htmlObject.getAttribute("data-storage-key");
     // Key in storage shall be equivalent to activeLoanId
