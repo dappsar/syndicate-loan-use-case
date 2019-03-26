@@ -39,9 +39,16 @@ function writeLoan() {
     activeLoan = returnActiveLoan();
     console.log('Info: Writing Loan with id: ' + activeLoanId);
     console.log(activeLoan);
+
+
     _name = activeLoan.name;
     _purpose = activeLoan.purpose;
     _date = activeLoan.date;
+
+    if (!_name || !_purpose || !_date) {
+        alert('Some value have not been specified, aborting...');
+        return;
+    }
 
     alert("Sending Transaction on Ropston Network...");
 
