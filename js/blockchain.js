@@ -37,7 +37,7 @@ else {
 // Renaming of Loan createLoan -> writeLoan 
 function writeLoan() {
     activeLoan = returnActiveLoan();
-    console.log('Writing Loan with id: ' + activeLoanId);
+    console.log('Info: Writing Loan with id: ' + activeLoanId);
     console.log(activeLoan);
     _name = activeLoan.name;
     _purpose = activeLoan.purpose;
@@ -53,8 +53,9 @@ function writeLoan() {
             const myAccounts = await web3.eth.getAccounts();
 
             var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of SC
-            storeContract = new web3.eth.Contract(storeABI, storeAddress);  
-            console.log(storeContract);
+            storeContract = new web3.eth.Contract(storeABI, storeAddress); 
+            console.log('Info: Calling createLoan() on Smart Contract: ' + storeAddress); 
+            // console.log(storeContract);
 
             storeContract.methods.createLoan(_name, _purpose, _date).send({from: myAccounts[0]})
             .then((receipt) => {
