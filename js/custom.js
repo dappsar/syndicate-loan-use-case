@@ -77,7 +77,9 @@ function createSampleLoans() {
 
 // Think about page onLoad behavior: Should it load sample loans or not?
 createSampleLoans();
-activeLoanId = "id_s1";
+
+// Delete?
+// activeLoanId = "id_s1";
 
 
 // Loan_Array
@@ -87,20 +89,22 @@ var activeLoanId;
 
 
 // Function to Update Loan Object (Save Changes from form fields) 
-// id removed, because it should not change.
-// Consider Adding activeLoan (id) to params
+// Function: Logic
 const updateLoan = (name, purpose, registeringParty, date) => {
     // Load loan from array
     console.log(activeLoanId);
  
-    _currentLoan = loans[activeLoanId];
-    console.log(_currentLoan);
-    _currentLoan.name = $('#loanName').val();
-    _currentLoan.purpose = $('#loanPurpose').val();
-    _currentLoan.registeringParty = $('#regParty').val();
-    _currentLoan.date = $('#loanDate').val();;  
-    console.log(_currentLoan);
-    sessionStorage.setItem(`id_${activeLoanId}`, JSON.stringify(_currentLoan));
+    // Loads currently active loan
+    var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+
+    // saves current form values to loaded loan Object
+    loanObj.name = $('#loanName').val();
+    loanObj.purpose = $('#loanPurpose').val();
+    loanObj.registeringParty = $('#regParty').val();
+    loanObj.date = $('#loanDate').val();
+
+    // Stores Updates to session storage
+    sessionStorage.setItem(activeLoanId, JSON.stringify(loanObj));
 }
 
 
@@ -149,7 +153,7 @@ function toggleLoans() {
     console.log('toggleLoans called');
     $('#sample_Loan1').toggle();
     $('#sample_Loan2').toggle();
-    $('#sample_Loan3').hide();
+    $('#sample_Loan3').toggle();
 }
 
 
@@ -163,11 +167,12 @@ setLocalStorage = (key, value) => {
 
 
 
-function loadLoan(loan) {
-    var selectedLoanKey = loan.getAttribute("data-storage-key");
-
+function loadLoan(htmlObject) {
+    var selectedLoanKey = htmlObject.getAttribute("data-storage-key");
     // Key in storage shall be equivalent to activeLoanId
     activeLoanId = selectedLoanKey;
+
+    // load loan from storage
     var loanObj = JSON.parse(sessionStorage.getItem(selectedLoanKey));
     // console.log(loanObj);
     // console.log(loanObj.name);
@@ -254,6 +259,8 @@ $(document).ready(function () {
 
         // passes list element with data- attribute to loadLoan()
         loadLoan(this);
+        $('#form-wrapper').removeClass('d-none');
+        $('#select-info').hide();     
     });
 
 

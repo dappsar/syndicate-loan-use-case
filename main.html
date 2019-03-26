@@ -104,7 +104,7 @@
                         <div class="appplication_section">  
                             <p class="head">Loan Overview</p>
                             <ul class="nicescroll-box">
-                                <li class="in_review active" data-storage-key="id_s1" id="#sample_Loan1">
+                                <li class="in_review" data-storage-key="id_s1" id="sample_Loan1">
                                     <div class="lists">
                                         <h4>Housing Development</h4>
                                         <div class="status">
@@ -113,7 +113,7 @@
                                         <span class="date">12 March 2019</span>
                                     </div>
                                 </li>
-                                <li class="wating_for_review" data-storage-key="id_s2" id="#sample_Loan2">
+                                <li class="wating_for_review" data-storage-key="id_s2" id="sample_Loan2">
                                     <div class="lists">
                                         <h4>Sale of an appartment complex</h4>
                                         <div class="status">
@@ -127,7 +127,7 @@
                                         <span class="date">6 March 2019</span>
                                     </div>
                                 </li>
-                                <li class="approved" data-storage-key="id_s3" id="#sample_Loan3">
+                                <li class="approved" data-storage-key="id_s3" id="sample_Loan3">
                                     <div class="lists" >
                                         <h4>Housing Development Leipartstr</h4>
                                         <div class="status">
@@ -178,7 +178,10 @@
                  <!------------- Tab Menu ------------>
                 <!-- In this section the tabs for the central column are defined -->
                 <div class="col-sm-5 no-padding">
-                    <div class="main_application">
+                    <h3 id="select-info" class="text-center">Please select a loan from the panel on the left.</h3>
+
+                    <div id="form-wrapper" class="main_application d-none"> 
+
                         <h3>Loan Data: <span class="heading_text"></span></h3>
                         <ul id="tabs" class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
@@ -247,7 +250,7 @@
 
                                             
                                             <div class="form-label-group float-lab input_float_lbl">
-                                                  <input value="01/01/2019" type="text" id="loanDate" class="form-control"
+                                                  <input type="text" id="loanDate" class="form-control"
                                                       name="loanDate" required disabled>
                                                   <label for="loanDate">Date of Registration</label>
                                               </div>                                           
@@ -298,12 +301,12 @@
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="InName" name="Name" class="form-control"
-                                                    required>
+                                                    required disabled>
                                                 <label for="InName">Name</label>
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="InAddress" name="address" class="form-control"
-                                                    required>
+                                                    required disabled>
                                                 <label for="InAddress">Address</label>
                                             </div>
                                         </form>
@@ -326,32 +329,32 @@
                                         <form>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="Description" class="form-control"
-                                                    name="Description" required>
+                                                    name="Description" required disabled>
                                                 <label for="Description">Description</label>
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="area" class="form-control"
-                                                    name="Total Area Outdoor+Indoor" required>
+                                                    name="Total Area Outdoor+Indoor" required disabled>
                                                 <label for="area">Total area Outdoor+Indoor</label>
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="usablearea" name="Usable Area Net Floor Space"
-                                                    class="form-control" required>
+                                                    class="form-control" required disabled>
                                                 <label for="usablearea">Usable area (net floor space)</label>
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="Outdoor" class="form-control"
-                                                    name="Total Area Outdoor" required>
+                                                    name="Total Area Outdoor" required disabled>
                                                 <label for="Outdoor">Total area Outdoor</label>
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="Purchase" class="form-control"
-                                                    name="Purchase Price" required>
+                                                    name="Purchase Price" required disabled>
                                                 <label for="Purchase">Purchase Price</label>
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="meter" class="form-control"
-                                                    name="Price Per Sqaure Meter" required>
+                                                    name="Price Per Sqaure Meter" required disabled>
                                                 <label for="meter">Price per Square meter</label>
                                             </div>
 
@@ -378,21 +381,21 @@
                                         <form>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="loanAmount" class="form-control" name="Client"
-                                                    required>
+                                                    required disabled>
                                                 <label for="loanAmount"><span>Client</span>: Loan amount</label>
                                                 <span class="euro">€</span>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank1" class="form-control" name="Bank#1"
-                                                    required>
+                                                    required disabled>
                                                 <label for="bank1"><span>Bank #1</span>: Loan amount </label>
                                                 <span class="euro">€</span>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank2" class="form-control" name="Bank#2"
-                                                    required>
+                                                    required disabled>
                                                 <label for="bank2"><span>Bank #2</span>: Loan amount </label>
                                                 <span class="euro">€</span>
                                                 <!-- <span class="error_text">Text Error</span> -->
@@ -403,32 +406,32 @@
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank2" name="Interest Rate" class="form-control"
-                                                    required>
+                                                    required disabled>
                                                 <label for="bank2">Interest rate</label>
                                                 <span class="euro">%</span>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank2" name="Loan Payout Structure"
-                                                    class="form-control" required>
+                                                    class="form-control" required disabled>
                                                 <label for="bank2">Loan Payout Structure</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank2" class="form-control"
-                                                    name="Load Repayment Structure" required>
+                                                    name="Load Repayment Structure" required disabled>
                                                 <label for="bank2">Loan Repayment Structure</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank2" class="form-control date_picker"
-                                                    name="Loan Start" required>
+                                                    name="Loan Start" required disabled>
                                                 <label for="bank2">Loan Start</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank2" class="form-control" name="Loan Duration"
-                                                    required>
+                                                    required disabled>
                                                 <label for="bank2">Loan Duration</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
@@ -455,7 +458,7 @@
                                         <form>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="Expose" class="form-control" name="Expose"
-                                                    required>
+                                                    required disabled>
                                                 <label for="Expose">Expose</label>
                                             </div>
                                             <div class="file-upload">
@@ -467,7 +470,7 @@
                                             </div>                                            
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="addocuments" class="form-control"
-                                                    name="Additional document" required>
+                                                    name="Additional document" required disabled>
                                                 <label for="addocuments">Additional documents</label>
                                             </div>
 
@@ -476,29 +479,28 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- end -->
-                    </div>
+                        <!-- End of form-wrapper -->
 
-                    
-                    <!-------------  Buttons ------------>
+                        <!-------------  Buttons ------------>
 
-                    <div class="container">
-                        <div class="group_btns">
+                        <div class="container">
+                                <div class="group_btns">
 
-                            <button data-toggle_x="modal" data-target="#update" type="button"
-                                class="primary_btn"
-                                onclick="alert(); updateLoan()">Save Changes</button>
-                            <button onclick="modalValue('loanDetails');" type="button"
-                                class="ghost_btn">Approve</button>
-                        </div>
+                                    <button data-toggle_x="modal" data-target="#update" type="button"
+                                        class="primary_btn"
+                                        onclick="alert('Saving changes to browser storage'); updateLoan()">Save Changes</button>
+                                    <button onclick="modalValue('loanDetails');" type="button"
+                                        class="ghost_btn">Approve</button>
+                                </div>
 
-                        <div class="reject_btn status_reject">
-                            <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
-                                application</a>
-                        </div>
+                                <div class="reject_btn status_reject">
+                                    <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
+                                        application</a>
+                                </div>
 
-                        <button data-toggle="modal" id="writeToChain" type="button" onclick="writeLoan()"
-                        class="primary_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Write to Blockchain</button>
+                                <button data-toggle="modal" id="writeToChain" type="button" onclick="writeLoan()"
+                                class="primary_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Write to Blockchain</button>
+                            </div>                      
                     </div>
 
                 </div>
