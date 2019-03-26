@@ -79,7 +79,7 @@ var activeLoanId;
 // Function: Logic
 const updateLoan = (name, purpose, registeringParty, date) => {
     // Load loan from array
-    console.log(activeLoanId);
+    console.log('Saving loan with id: ' + activeLoanId);
  
     // Loads currently active loan
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
@@ -146,9 +146,9 @@ function toggleLoans() {
 }
 
 
-function activeLoan() {
-
-
+function returnActiveLoan() {
+    var activeLoan = JSON.parse(sessionStorage.getItem(activeLoanId));
+    return activeLoan;
 }
 
 // loads loan and writes into html form
@@ -239,7 +239,7 @@ $(document).ready(function () {
 
     // Loan Overview: Here you selected the loans from the left panel / column
     // #################### Does it need to be in .ready() ???? ##########################
-    
+
     $("body").on("click", ".appplication_section ul li", function () {
         $('.appplication_section ul li.active').removeClass('active');
         $(this).closest('li').addClass('active');      
@@ -308,7 +308,7 @@ getDateInFormat = (format) => {
        var today = new Date();
        var dd = today.getDate();
        var yyyy = today.getFullYear();
-       var mm = today.getMonth();
+       var mm = today.getMonth()+1;
        today = dd + '/' + mm + '/' + yyyy;
        return today; 
     }

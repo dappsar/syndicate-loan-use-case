@@ -36,14 +36,16 @@ else {
 
 // Renaming of Loan createLoan -> writeLoan 
 function writeLoan() {
+    activeLoan = returnActiveLoan();
+    console.log('Writing Loan with id: ' + activeLoanId);
+    console.log(activeLoan);
+    _name = activeLoan.name;
+    _purpose = activeLoan.purpose;
+    _date = activeLoan.date;
 
-    $name = $('#loanName').val();
-    console.log($name);
-    alert("Sending Transaction with Value ");
-    console.log('fn setNumber: log window.web3:');
+    alert("Sending Transaction on Ropston Network...");
 
     window.web3 = new Web3(ethereum);
-
 
     // Function that returns default account and sends Tx
     const fn = async () => {
@@ -54,7 +56,7 @@ function writeLoan() {
             storeContract = new web3.eth.Contract(storeABI, storeAddress);  
             console.log(storeContract);
 
-            storeContract.methods.writeLoan(_name, _purpose, _date).send({from: myAccounts[0]})
+            storeContract.methods.createLoan(_name, _purpose, _date).send({from: myAccounts[0]})
             .then((receipt) => {
                 console.log(receipt);
             });
