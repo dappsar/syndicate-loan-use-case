@@ -4,7 +4,16 @@ Code by Marcel Jackisch / marcel.jackisch@lition.de
 Asynchronous JS functions are required in web3.js 1.x 
  */
 
-var userAccount = web3.eth.accounts[0];
+var userAccount;
+var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of SC
+
+// web3.eth.accounts[0] works only before the DOM is loaded
+// console.log('Loading blockchain.js');
+// console.log(web3.eth.accounts[0]);
+
+// var userAccount = web3.eth.accounts[0];
+// console.log(userAccount);
+
 
 
 window.addEventListener('load', async () => {   
@@ -14,9 +23,10 @@ window.addEventListener('load', async () => {
         try {
             // Request account access if needed
             await ethereum.enable();
-            // Acccounts now exposed
-                // const myAccounts = await web3.eth.getAccounts();
-            console.log('Account unlocked')
+
+            console.log('Account unlocked');
+            const myAccounts = await web3.eth.getAccounts();
+            userAccount = myAccounts[0];
 
         } catch (error) {
             console.log('Access denied');
@@ -44,17 +54,6 @@ window.addEventListener('load', async () => {
 function startdApp() {
     console.log('startdApp() called, web3 interface running');
     console.log(userAccount);
-    // Check if account has changed
-    // Produces errors for some reason
-    var accountInterval = setInterval(function() {
-      if (web3.eth.accounts[0] !== userAccount) {
-        userAccount = web3.eth.accounts[0];
-
-        console.log('Account has changed');
-        // Call some function to update the UI with the new account
-        // updateInterface();
-      }
-    }, 100);
 
     printNetwork();
     printAddress(userAccount);
@@ -64,6 +63,35 @@ function retrieveLoan(id) {
     return storeContract.methods.loans(id).call();
 }
 
+function _retrieveLoan(id) {
+    storeContract = new web3.eth.Contract(storeABI, storeAddress); 
+    return storeContract.methods.loans(id).call();
+}
+
+
+function logLoans() {
+    storeContract = new web3.eth.Contract(storeABI, storeAddress); 
+    for (i = 0; i < 10; i++) {
+        //console.log(retrieveLoan(i));
+
+        retrieveLoan(i)
+        .then(function(loan) {
+            $("#sc-loans").append(`<div class="loan">
+            <ul>
+              <li>Name: ${loan.name}</li>
+              <li>Id: ${loan.id}</li>
+              <li>Purpose: ${loan.purpose}</li>
+              <li>Date: ${loan.date}</li>
+            </ul>
+            </div>`);
+        });   
+
+        // retrieveLoan(i)
+        // .then((receipt) => {
+        //     console.log(receipt);
+        // });
+    }
+}
 // Renaming of Loan createLoan -> writeLoan 
 
 function writeLoan() {
@@ -81,6 +109,10 @@ function writeLoan() {
     }
 
     alert("Sending Transaction on Ropston Network...");
+    $('#tx-status').text('Sending transaction to the Blockchain Network');
+    $('#tx-date').text(getDateInFormat('full'));
+    $('#tx-status').closest('li').removeClass('d-none');
+
     window.web3 = new Web3(ethereum);
 
     // Function that returns default account and sends Tx
@@ -88,16 +120,20 @@ function writeLoan() {
         try {
             const myAccounts = await web3.eth.getAccounts();
 
-            var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of SC
             storeContract = new web3.eth.Contract(storeABI, storeAddress); 
             console.log('Info: Calling createLoan() on Smart Contract: ' + storeAddress); 
             // console.log(storeContract);
 
-            storeContract.methods.createLoan(_name, _purpose, _date).send({from: myAccounts[0]})
-            .then((receipt) => {
-                console.log(receipt);
+            storeContract.methods.createLoan(_name, _purpose, _date)
+            .send({from: myAccounts[0]})
+            .on("receipt", function() {
+             $('#tx-status').text('Transaction confirmed');
+             console.log(receipt);
+            })
+            .on("error", function(error) {
+                // Do something to alert the user their transaction has failed
+                $("tx-status").text(error);
             });
-            // return myAccounts[0];
         } 
         catch (err) {
             console.log(err);
@@ -122,7 +158,7 @@ function printAddress(_address) {
 // Prints Network to UI (Header) 
 // reacts dynamically to changes
 function printNetwork () {
-    console.log("Check");
+    console.log("printNetwork() called");
     web3.eth.net.getId().then( (netId) => {
         switch (netId) {
             case 1:

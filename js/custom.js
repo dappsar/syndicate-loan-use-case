@@ -1,5 +1,6 @@
-
-/// let currentTab = 'keyData'
+/* 
+custom.js defines main functionality for User Interface and Browser Storage of Loans
+*/
 
 // Arrays for Dropdown menus
 var select_arr = ['Borrower', 'Seller', 'Confident']
@@ -9,38 +10,28 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
 
-
 // Clear browser storage for testing purposes
 localStorage.clear();
 sessionStorage.clear();
 
-const dummyLoan = { 
-    keyData: {
-            name: 'Housing Development Leipartstr',
-            purpose: 'Aquisition of apartment complex',
-            id: 0,
-            regParty: 0,
-            date: 0,
-    },
-    involvedParties: {
-            stakeholder_1: {
-                role: 'Client',
-                name: 'Estato Inc',
-                address: '5, 1st Avenue'
-            },
-            stakeholder_2: {
-                role: 'Bank',
-                name: 'web3Bank',
-                address: '10, 5th Avenue'
-            },
-            stakeholder_3: {
-                role: 'Bank',
-                name: 'Credit Bank',
-                address: '87, King Street'
-            },
 
-    },
-}
+// Loan Overview: Here you selected the loans from the left panel / column
+// #################### Does it need to be in .ready() ???? ##########################
+
+$("body").on("click", ".appplication_section ul li", function () {
+    $('.appplication_section ul li.active').removeClass('active');
+    $(this).closest('li').addClass('active');      
+
+    // passes ul/li object with data- attribute to loadLoan()
+    loadLoan(this);
+
+    // Display Form after loading foirst Loan
+    $('#form-wrapper').removeClass('d-none');
+    $('#select-info').hide();     
+});
+
+
+
 
 // Object Literal Factory Function
 // Function: DataStorage / Logic  
@@ -145,6 +136,7 @@ function returnActiveLoan() {
 // loads loan and writes into html form
 // Function: UI + Logic (sets activeLoanId)
 function loadLoan(htmlObject) {
+    // Consider replacing selectedLoanKey with activeLoanId
     var selectedLoanKey = htmlObject.getAttribute("data-storage-key");
     // Key in storage shall be equivalent to activeLoanId
     activeLoanId = selectedLoanKey;
@@ -230,18 +222,18 @@ $(document).ready(function () {
         }
     })
 
-    // Loan Overview: Here you selected the loans from the left panel / column
-    // #################### Does it need to be in .ready() ???? ##########################
+    // // Loan Overview: Here you selected the loans from the left panel / column
+    // // #################### Does it need to be in .ready() ???? ##########################
 
-    $("body").on("click", ".appplication_section ul li", function () {
-        $('.appplication_section ul li.active').removeClass('active');
-        $(this).closest('li').addClass('active');      
+    // $("body").on("click", ".appplication_section ul li", function () {
+    //     $('.appplication_section ul li.active').removeClass('active');
+    //     $(this).closest('li').addClass('active');      
 
-        // passes list element with data- attribute to loadLoan()
-        loadLoan(this);
-        $('#form-wrapper').removeClass('d-none');
-        $('#select-info').hide();     
-    });
+    //     // passes list element with data- attribute to loadLoan()
+    //     loadLoan(this);
+    //     $('#form-wrapper').removeClass('d-none');
+    //     $('#select-info').hide();     
+    // });
 
 
 

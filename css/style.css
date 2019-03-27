@@ -1172,18 +1172,17 @@ span.valueHolder1 {
 
 .token_section ul {
     padding-left: 40px;
-    display: none
 }
 
 .token_section ul li {
     position: relative;
     list-style: none;
-    padding-top: 24px
+    /* padding-top: 24px */
 }
 
 .token_section ul li .active_token .token_detail p {
     font-size: 14px;
-    color: #B9DCF6;
+    /* color: #B9DCF6; */
     line-height: 24px;
     margin: 0;
     padding: 0
@@ -1194,7 +1193,7 @@ span.valueHolder1 {
     color: #fff
 }
 
-.token_section ul li:before {
+/* .token_section ul li:before {
     content: "";
     width: 4px;
     height: 20px;
@@ -1204,8 +1203,8 @@ span.valueHolder1 {
     bottom: auto;
     left: -40px;
     position: absolute;
-    box-shadow: 0 2px 6px 0 rgba(28, 111, 172, 0.58), 2px 0 4px 0 rgba(0, 0, 0, 0.5)
-}
+    box-shadow: 0 2px 6px 0 rgba(28, 111, 172, 0.58), 2px 0 4px 0 rgba(0, 0, 0, 0.5) 
+} */
 
 .effect1 {
     top: -70px;

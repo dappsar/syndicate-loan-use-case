@@ -144,13 +144,14 @@
                                  <button type="button" class="btn btn-primary center-block" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
                                         Toggle Sample Loans
                                  </button>
-                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="">
+                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="logLoans()">
                                         Retrieve Loans from Smart Contract
                                  </button>
                                 </div>
+                                <div id="sc-loans"></div>
                             </div>
 
-                            <ul> 
+                            <!-- <ul> 
                                 <li>
                                     <div class="active_token">
                                         <h4>Housing Complex Wilmersdorf</h4>
@@ -171,7 +172,7 @@
                                         </div>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
                     </div>
                 </div>
@@ -540,20 +541,42 @@
                         </div>
                     </div>
                     <div class="History_pannel">
-                        <h3>History (Non-functional)</h3>
+                        <h3>History </h3>
                         <ul>
+                             
+                            <li class="d-none">
+                                <div class="histroy_detail">
+                                    <div class="top_section">
+                                        <p class="date" id="tx-date"><span class="time" id="tx-time"></span></p>
+                                    </div>
+                                    <p class="banks_application" id="tx-status">Tx Status</p>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="histroy_detail">
+                                    <div class="top_section">
+                                        <p class="date">3 March 2019<span class="time">2:01 PM</span></p>
+                                    </div>
+                                    <div class="status">
+                                        <p> In review</p>
+                                    </div>
+                                    <p class="banks_application"> Application viewed (This is a dummy)</p>
+                                </div>
+                            </li>
                             <li class="histroy_list active">
                                 <div class="histroy_detail">
                                     <div class="top_section">
                                         <p class="date">6 March 2019<span class="time">5:01 PM</span></p>
-                                        <!-- <span class="explorer">View on Explorer</span> -->
+                                        <span class="explorer">View on Explorer</span>
                                     </div>
                                     <div class="status">
                                         <p class="status_point"> In review</p>
                                     </div>
                                     <p class="banks"><span>Bank#1.</span> <span>Application approved.</span></p>
                                 </div>
-                            </li>
+                            </li>  
+
                             <li>
                                 <div class="histroy_detail">
                                     <div class="top_section">
@@ -562,7 +585,7 @@
                                     <div class="status">
                                         <p> In review</p>
                                     </div>
-                                    <p class="banks_application">Change loan application</p>
+                                    <p class="banks_application">Change loan application</p> 
                                     <!-- <div class="change_loan">
                                         <p class="change-amt-head">Change Loan Amount </p>
                                         <div class="change_amount">
@@ -587,28 +610,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <div class="histroy_detail">
-                                    <div class="top_section">
-                                        <p class="date">3 March 2019<span class="time">2:01 PM</span></p>
-                                    </div>
-                                    <div class="status">
-                                        <p> In review</p>
-                                    </div>
-                                    <p class="banks_application"> Application viewed</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="histroy_detail">
-                                    <div class="top_section">
-                                        <p class="date">1 March 2019<span class="time">2:01 PM</span></p>
-                                    </div>
-                                    <div class="status waiting">
-                                        <p> Waiting for review</p>
-                                    </div>
-                                    <p class="banks_application"> Application submitted</p>
-                                </div>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
