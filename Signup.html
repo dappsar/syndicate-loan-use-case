@@ -22,9 +22,11 @@
 
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/datepicker3.css">
 
     <!-- Custom js file -->
     <script src="js/custom.js"></script>
+
 
     <!-- Favicon icon -->
     <link rel="icon" href="images/fab_icon.png" type="image/png" sizes="16x16">
@@ -66,38 +68,33 @@
                                 <div class="row">
                                     <div class="col-sm-6 pad-rt-4">
                                         <div class="form-label-group float-lab">
-                                            <input type="text" id="inputFname" name="firstName" class="form-control"
+                                            <input type="text" id="firstName" name="firstName" class="form-control"
                                                 required>
-                                            <label for="inputEmail">First name</label>
+                                            <label for="firstName">First name</label>
                                             <!-- <span class="error_text">Text Error</span> -->
                                         </div>
                                     </div>
                                     <div class="col-sm-6 pad-lt-4">
                                         <div class="form-label-group float-lab">
-                                            <input type="text" id="inputLname" name="lastName" class="form-control"
+                                            <input type="text" id="lastName" name="lastName" class="form-control"
                                                 required>
-                                            <label for="inputEmail">Last name</label>
+                                            <label for="lastName">Last name</label>
                                             <!-- <span class="error_text">Text Error</span> -->
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-label-group float-lab">
-                                    <input type="text" id="inputCompany" name="companyName" class="form-control"
+                                    <input type="text" id="companyName" name="companyName" class="form-control"
                                         required>
-                                    <label for="inputEmail">Company Name</label>
+                                    <label for="companyName">Company Name</label>
                                     <!-- <span class="error_text">Text Error</span> -->
                                 </div>
 
                                 <div class="form-label-group float-lab input_float_lbl">
-                                    <input type="text" id="iputPublic" name="publicBlockId" class="form-control bc_address" value=""
+                                    <input type="text" id="signUpAddress" name="signUpAddress" class="form-control bc_address" value=""
                                         required>
-                                    <label for="inputPassword">Public Blockchain ID</label>
+                                    <label for="signUpAddress">Public Blockchain ID</label>
                                 </div>
-                                <!-- <div class="form-label-group float-lab">
-                                    <input type="text" id="numberStore" name="publicBlockId" class="form-control"
-                                        required >
-                                    <label for="numberStore">Store a number</label>
-                                </div> -->
                                 <div class="form-label-group">
                                     <div class="customDropdown">
                                         <span class="valueHolder">Role</span>
@@ -108,12 +105,15 @@
 
                                     <p id="errMsg" style="padding: 10px;"></p>
                             </form>
-                            <!-- <button onclick="setNumber($('#numberStore').val())" title="Submit Data" id="setN" class="primary_btn">Write</button> -->
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Datepicker js file -->
+    <script src="js/bootstrap-datepicker.js"></script>
     </body>
 </html>

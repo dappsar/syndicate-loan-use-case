@@ -9,7 +9,18 @@ var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of 
 
 // web3.eth.accounts[0] works only before the DOM is loaded
 // console.log('Loading blockchain.js');
-// console.log(web3.eth.accounts[0]);
+console.log(web3.eth.accounts[0]);
+
+$(document).ready( () => {
+console.log(web3.eth.accounts[0]);
+console.log(web3.eth.accounts[0]);
+console.log(web3.eth.accounts[0]);
+console.log(web3.eth.accounts[0]);
+console.log(web3.eth.accounts[0]);
+    
+
+} )
+
 
 // var userAccount = web3.eth.accounts[0];
 // console.log(userAccount);

@@ -12,7 +12,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 
 // Clear browser storage for testing purposes
 localStorage.clear();
-sessionStorage.clear();
+// sessionStorage.clear();
 
 
 // Loan Overview: Here you selected the loans from the left panel / column
@@ -166,6 +166,8 @@ function loadLoan(htmlObject) {
 }
 
 
+
+
 // MJ: Doing bunch of stuff, seemingly mostly for UI functionality
 $(document).ready(function () {
     function createDropdown() {
@@ -299,27 +301,41 @@ getDateInFormat = (format) => {
     }
 }
 
-// MJ: Signup page: Consider complete rewrite soon
 var submitFormData = () => {
+    console.log('submitFormData() called');
+    alert('submitFormData() called');
+    var userObj = {};
 
-    let signupData = {};
-    //get form object having input fields values
-    let formData = document.getElementsByClassName("form-control")
-    //getting drop down values from class
-    let dropDownData = document.getElementsByClassName("valueHolder1")
-    //managing current user
-    sessionStorage.setItem('user', JSON.stringify(formData[0].value))
-    sessionStorage.setItem('role', JSON.stringify(dropDownData[0].textContent))
-    //getting values from form
-    for (i = 0; i < formData.length; i++)
-        //creating new key pair of tag and value from input
-        signupData[formData[i].name] = formData[i].value
-    //adding drop down selected value
-    signupData.Role = dropDownData[0].textContent
-    //storing data in localstorage
-    setLocalStorage(new Date(), signupData)
-
+    userObj.company = $('#companyName').val();
+    userObj.address = $('#signUpAddress').val();
+    userObj.name = $('#signUpAddress').val();
+    userObj.firstName = $('#firstName').val();
+    userObj.lastName = $('#lastName').val();
+    
+    sessionStorage.setItem($('#signUpAddress').val(), JSON.stringify(userObj));
 }
+
+// // MJ: Signup page: Consider complete rewrite soon
+// var submitFormData = () => {
+
+//     let signupData = {};
+//     //get form object having input fields values
+//     let formData = document.getElementsByClassName("form-control")
+//     //getting drop down values from class
+//     let dropDownData = document.getElementsByClassName("valueHolder1")
+//     //managing current user
+//     sessionStorage.setItem('user', JSON.stringify(formData[0].value))
+//     sessionStorage.setItem('role', JSON.stringify(dropDownData[0].textContent))
+//     //getting values from form
+//     for (i = 0; i < formData.length; i++)
+//         //creating new key pair of tag and value from input
+//         signupData[formData[i].name] = formData[i].value
+//     //adding drop down selected value
+//     signupData.Role = dropDownData[0].textContent
+//     //storing data in localstorage
+//     setLocalStorage(new Date(), signupData)
+
+// }
 
 // // Setter Getter for local storage
 // getLocalStorage = (key) => {
