@@ -1,6 +1,5 @@
 pragma solidity ^0.5.2;
 
-
 contract SynLoanData {
     
     uint public loanId;         // supposed to be a unique number
@@ -14,16 +13,10 @@ contract SynLoanData {
     }
 
 
-/*
-Struct participant defines key data of participants such as banks and businesses 
-*/
-    struct participant {
-        string name;
-        string role;    
-        string _address;
-    }
+    // Map a loan id to an account address of user
+    mapping (uint => address) loanToRegUser; 
+    mapping (address => uint) userLoanList; 
 
-    mapping (address => participant) loanOwners; 
 
     LoanData[] public loans;
 
@@ -34,6 +27,7 @@ Struct participant defines key data of participants such as banks and businesses
             public 
     {
         loanId++;
+        loanToRegUser[loanId] = msg.sender;
         loans.push(LoanData(_name, loanId, 0, _purpose, _date));
     }
 
@@ -57,6 +51,17 @@ Retrieve stored Loan Data
 */
     function getLoan() public {}
 
-
-
 }
+
+
+// /*
+// Struct participant defines key data of participants such as banks and businesses 
+// */
+//     struct participant {
+//         string name;
+//         string role;    
+//         string _address;
+//     }
+
+// // Dictionary to find account data
+// mapping (address => participant) addressToUser; 
