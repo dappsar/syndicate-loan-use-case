@@ -9,16 +9,26 @@ contract SynLoanData {
         uint id;                // Loan ID
         uint revisionNumber;    // Shall increment with every update to the loan
         string purpose;
-        string date;            // for now string eg. "03/15/2019"
+        string date;            // for now string, eg. dd/mm/yyyy "03/15/2019"
     }
 
 
     // Map a loan id to an account address of user
-    mapping (uint => address) loanToRegUser; 
+    mapping (uint => address) loanToRegistrar; 
     mapping (address => uint) userLoanList; 
 
 
     LoanData[] public loans;
+
+
+    /*
+    Modifier to make sure only registrar of loan can update
+    */
+    modifier onlyRegistrar(uint _loanId) {
+      require(msg.sender == loanToRegistrar[_loanId]);
+      _;
+    }
+
 
 
     function createLoan (string memory _name,
@@ -26,18 +36,17 @@ contract SynLoanData {
                          string memory _date) 
             public 
     {
-        loanId++;
-        loanToRegUser[loanId] = msg.sender;
+        loanToRegistrar[loanId] = msg.sender;
         loans.push(LoanData(_name, loanId, 0, _purpose, _date));
+        loanId++;
     }
 
-// How to add multiple loans to one mapping address?
 
 /*
 Update Loan Data, Add a revision Number
 */
     function updateLoan(string memory _name, uint _id, string memory _purpose, string memory _date) 
-        public 
+        public onlyRegistrar(_id)
     {
         loans[_id].name = _name;
         loans[_id].revisionNumber++;
@@ -45,23 +54,24 @@ Update Loan Data, Add a revision Number
         loans[_id].date = _date;
     }
 
-
 /*
 Retrieve stored Loan Data
 */
     function getLoan() public {}
 
+
+/*
+Struct participant defines key data of participants such as banks and businesses -
+*/
+    struct participant {
+        string name;
+        string role;    
+        string _address;
+    }
+
+// Dictionary to find account data
+mapping (address => participant) addressToUser; 
+
 }
 
 
-// /*
-// Struct participant defines key data of participants such as banks and businesses 
-// */
-//     struct participant {
-//         string name;
-//         string role;    
-//         string _address;
-//     }
-
-// // Dictionary to find account data
-// mapping (address => participant) addressToUser; 
