@@ -7,24 +7,23 @@ Asynchronous JS functions are required in web3.js 1.x
 var userAccount;
 var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of SC
 
-// web3.eth.accounts[0] works only before the DOM is loaded
-// console.log('Loading blockchain.js');
-console.log(web3.eth.accounts[0]);
-
-$(document).ready( () => {
-console.log(web3.eth.accounts[0]);
-console.log(web3.eth.accounts[0]);
-console.log(web3.eth.accounts[0]);
-console.log(web3.eth.accounts[0]);
-console.log(web3.eth.accounts[0]);
-    
-
-} )
 
 
-// var userAccount = web3.eth.accounts[0];
-// console.log(userAccount);
+// // web3.eth.accounts[0] works only before the DOM is loaded
+// // console.log('Loading blockchain.j
+// function logAcc() {
+//     console.log(web3.eth.accounts[0]);
+//     $(document).ready(() => {
+//         try { 
+//             console.log(web3.eth.accounts[0]);
+//         }
+//             catch (err) {
+//                 console.log('error: accounts[0] is undefined');
+//             }
+//     });
+// }
 
+// logAcc();
 
 
 window.addEventListener('load', async () => {   

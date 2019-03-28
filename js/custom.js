@@ -14,7 +14,6 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 localStorage.clear();
 // sessionStorage.clear();
 
-
 // Loan Overview: Here you selected the loans from the left panel / column
 // #################### Does it need to be in .ready() ???? ##########################
 
