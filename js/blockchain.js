@@ -4,11 +4,6 @@ Code by Marcel Jackisch / marcel.jackisch@lition.de
 Asynchronous JS functions are required in web3.js 1.x 
  */
 
-var userAccount;
-var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of SC
-
-
-
 // // web3.eth.accounts[0] works only before the DOM is loaded
 // // console.log('Loading blockchain.j
 // function logAcc() {
@@ -24,6 +19,10 @@ var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of 
 // }
 
 // logAcc();
+
+var userAccount;
+// var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of SC_v0.1
+var storeAddress = "0x25e74B41529C290dbEc47ab8E4fB067EB04d91E1";  // Address of SC_v0.2
 
 
 window.addEventListener('load', async () => {   
@@ -73,14 +72,17 @@ function retrieveLoan(id) {
     return storeContract.methods.loans(id).call();
 }
 
-function _retrieveLoan(id) {
-    storeContract = new web3.eth.Contract(storeABI, storeAddress); 
-    return storeContract.methods.loans(id).call();
-}
+// function _retrieveLoan(id) {
+//     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
+//     return storeContract.methods.loans(id).call();
+// }
 
 
 function logLoans() {
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
+
+    // // Function to get the array length for for-loop
+    // storeContract.methods.getArrLength().call();
     for (i = 0; i < 10; i++) {
         //console.log(retrieveLoan(i));
 
@@ -94,6 +96,10 @@ function logLoans() {
               <li>Date: ${loan.date}</li>
             </ul>
             </div>`);
+
+            var bc_key = 'bc_' + loan.id;
+            console.log(bc_key);
+            sessionStorage.setItem(bc_key, JSON.stringify(loan));
         });   
 
         // retrieveLoan(i)

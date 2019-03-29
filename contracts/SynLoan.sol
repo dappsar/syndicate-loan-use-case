@@ -61,6 +61,15 @@ Retrieve stored Loan Data
 
 
 /*
+Get the length of the loan array
+*/
+    function getArrLength() returns (uint256)
+    {
+        return loans.length;
+    }
+
+
+/*
 Struct participant defines key data of participants such as banks and businesses -
 */
     struct participant {
