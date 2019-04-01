@@ -15,7 +15,11 @@ contract SynLoanData {
 
     // Map a loan id to an account address of user
     mapping (uint => address) loanToRegistrar; 
-    mapping (address => uint) userLoanList; 
+
+    // counts the amount of loans belonging to the address
+    mapping (address => uint) userLoanCount;
+
+    // mapping (address => uint) userLoanList; 
 
 
     LoanData[] public loans;
@@ -36,7 +40,9 @@ contract SynLoanData {
                          string memory _date) 
             public 
     {
-        loanToRegistrar[loanId] = msg.sender;
+
+        loanToRegistrar[loanId] = msg.sender; // Store the address of the user in a mapping
+        userLoanCount[msg.sender]++;
         loans.push(LoanData(_name, loanId, 0, _purpose, _date));
         loanId++;
     }
@@ -63,9 +69,27 @@ Retrieve stored Loan Data
 /*
 Get the length of the loan array
 */
-    function getArrLength() returns (uint256)
+    function getArrLength() public returns (uint256)
     {
         return loans.length;
+    }
+
+
+/*
+The function should return an array with all the loans the user is involved in, disregarding any other permissioning like read-write requests
+As of now, only the registrar mapping is applied, a loan belonging to multiple users cannot be created yet
+*/
+    function getLoansByUser(address _user) external view returns(uint[] memory) {
+        // Create a new array with as many entries as Loans belong to the user
+        uint[] memory result = new uint[](userLoanCount[_user]);
+        uint counter = 0;
+        for (uint i = 0; i < loans.length; i++) {
+            if (loanToRegistrar[i] == msg.sender) {
+                result[counter] = i;
+                counter++;
+            }
+        }
+        return result;
     }
 
 
@@ -78,8 +102,8 @@ Struct participant defines key data of participants such as banks and businesses
         string _address;
     }
 
-// Dictionary to find account data
-mapping (address => participant) addressToUser; 
+    // Dictionary to find account data
+    mapping (address => participant) addressToUser; 
 
 }
 

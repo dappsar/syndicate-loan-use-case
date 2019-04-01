@@ -88,20 +88,20 @@ function logLoans() {
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
 
     // // Function to get the array length for for-loop
-    // storeContract.methods.getArrLength().call();
+    // var loanArrLength = storeContract.methods.getArrLength().call();
     for (i = 0; i < 10; i++) {
         //console.log(retrieveLoan(i));
 
         retrieveLoan(i)
         .then(function(loan) {
-            $("#sc-loans").append(`<div class="loan">
-            <ul>
-              <li>Name: ${loan.name}</li>
-              <li>Id: ${loan.id}</li>
-              <li>Purpose: ${loan.purpose}</li>
-              <li>Date: ${loan.date}</li>
-            </ul>
-            </div>`);
+            // $("#sc-loans").append(`<div class="loan">
+            // <ul>
+            //   <li>Name: ${loan.name}</li>
+            //   <li>Id: ${loan.id}</li>
+            //   <li>Purpose: ${loan.purpose}</li>
+            //   <li>Date: ${loan.date}</li>
+            // </ul>
+            // </div>`);
 
             var bc_key = 'bc_' + loan.id;
             console.log(bc_key);
@@ -113,6 +113,7 @@ function logLoans() {
             //     console.log('This loan isnt yours');
             // }
             sessionStorage.setItem(bc_key, JSON.stringify(loan));
+            addLoanToSidePanel(loan.id, loan.name);
         });   
 
         // retrieveLoan(i)
