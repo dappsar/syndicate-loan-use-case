@@ -77,6 +77,12 @@ function retrieveLoan(id) {
 //     return storeContract.methods.loans(id).call();
 // }
 
+// Function to retrieve mapping
+function retrieveLoanToRegistrar(_id) {
+    return storeContract.methods.loanToRegistrar(_id).call();
+}
+
+
 
 function logLoans() {
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
@@ -99,6 +105,13 @@ function logLoans() {
 
             var bc_key = 'bc_' + loan.id;
             console.log(bc_key);
+            console.log(userAccount);
+            // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
+            //     console.log('This loan is yours');
+            // }
+            // else {
+            //     console.log('This loan isnt yours');
+            // }
             sessionStorage.setItem(bc_key, JSON.stringify(loan));
         });   
 
@@ -110,6 +123,8 @@ function logLoans() {
 }
 // Renaming of Loan createLoan -> writeLoan 
 
+
+// function to create loan on smart contract and write it to the blockchain
 function writeLoan() {
     activeLoan = returnActiveLoan();
     console.log('Info: Writing Loan with id: ' + activeLoanId);

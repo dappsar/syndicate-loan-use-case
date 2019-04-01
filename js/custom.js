@@ -24,7 +24,7 @@ $("body").on("click", ".appplication_section ul li", function () {
     // passes ul/li object with data- attribute to loadLoan()
     loadLoan(this);
 
-    // Display Form after loading foirst Loan
+    // Display Form after loading first Loan
     $('#form-wrapper').removeClass('d-none');
     $('#select-info').hide();     
 });
@@ -83,9 +83,26 @@ const updateLoan = (name, purpose, registeringParty, date) => {
 }
 
 
+
+var addLoanToSidePanel = (_tempLoanId, _loanName) => {
+
+    $(".appplication_section ul").prepend(
+        `<li class="active" data-storage-key="id_${_tempLoanId}">
+            <div class="lists"><h4>${_loanName}</h4>
+                <div class="status">
+                <p>Waiting for review</p>
+                </div>
+                <span class="date">${getDateInFormat('full')}</span>
+            </div>
+        </li>`);
+
+    $('.appplication_section ul li.active').trigger('click');
+}
+
+
 // MJ: Create new Loan and add it to Side Panel
 // Function: UI & Logic
-addItem = () => {
+var addItem = () => {
     // MJ: Retrieve value of loan name from Create-Loan-Modal
     loanName = $("#add_Loan").val();   
     
@@ -103,17 +120,9 @@ addItem = () => {
 
     // Adding HTML elements to the left side panel
     // data-storage-key="id_${tempLoanId}" writes key for local storage in html
-    $(".appplication_section ul").prepend(
-        `<li class="active" data-storage-key="id_${tempLoanId}">
-            <div class="lists"><h4>${loanName}</h4>
-                <div class="status">
-                <p>Waiting for review</p>
-                </div>
-                <span class="date">${getDateInFormat('full')}</span>
-            </div>
-        </li>`);
 
-    $('.appplication_section ul li.active').trigger('click');
+    addLoanToSidePanel(tempLoanId, loanName);
+   
     tempLoanId++;
 }
 
