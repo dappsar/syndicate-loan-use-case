@@ -59,6 +59,8 @@ function createSampleLoans() {
 createSampleLoans();
 
 var tempLoanId = 0;
+
+// Variable to determine which loan is currently displayed in UI
 var activeLoanId;
 
 
@@ -84,15 +86,28 @@ const updateLoan = (name, purpose, registeringParty, date) => {
 
 
 
-var addLoanToSidePanel = (_tempLoanId, _loanName) => {
+var addLoanToSidePanel = (_loanId, _loanName, date, type) => {
+
+    // Sets data-storage-key dependent on loan object type (local or from smart contract)
+    // date is either the current or from smart contract storage
+    var loanIdAttr;
+    if (type == 'bc')
+    {
+        loanIdAttr = 'bc_'+_loanId;
+        date = _date
+    }
+    else {
+        loanIdAttr = 'id_'+_loanId;
+        date = getDateInFormat('full');
+    }
 
     $(".appplication_section ul").prepend(
-        `<li class="active" data-storage-key="id_${_tempLoanId}">
+        `<li class="active" data-storage-key="${loanIdAttr}">
             <div class="lists"><h4>${_loanName}</h4>
                 <div class="status">
                 <p>Waiting for review</p>
                 </div>
-                <span class="date">${getDateInFormat('full')}</span>
+                <span class="date">${date}</span>
             </div>
         </li>`);
 
@@ -105,7 +120,8 @@ var addLoanToSidePanel = (_tempLoanId, _loanName) => {
 var addItem = () => {
     // MJ: Retrieve value of loan name from Create-Loan-Modal
     loanName = $("#add_Loan").val();   
-    
+    $("#add_Loan").val('Name of loan');
+
     // Set active Loan, to determine, where to write Updates to and what to display
     activeLoanId = 'id_'+tempLoanId;
     console.log('logging addItem: '+ activeLoanId); 
@@ -118,11 +134,8 @@ var addItem = () => {
     const newLoan = createLoan(loanName, tempLoanId, undefined, 'review', curAddress, getDateInFormat());  
     sessionStorage.setItem(activeLoanId, JSON.stringify(newLoan));
 
-    // Adding HTML elements to the left side panel
-    // data-storage-key="id_${tempLoanId}" writes key for local storage in html
-
+    // call function that adds loan to UI side panel
     addLoanToSidePanel(tempLoanId, loanName);
-   
     tempLoanId++;
 }
 
@@ -144,13 +157,10 @@ function returnActiveLoan() {
 // loads loan and writes into html form
 // Function: UI + Logic (sets activeLoanId)
 function loadLoan(htmlObject) {
-    // Consider replacing selectedLoanKey with activeLoanId
-    var selectedLoanKey = htmlObject.getAttribute("data-storage-key");
-    // Key in storage shall be equivalent to activeLoanId
-    activeLoanId = selectedLoanKey;
 
+    activeLoanId = htmlObject.getAttribute("data-storage-key");
     // load loan from storage
-    var loanObj = JSON.parse(sessionStorage.getItem(selectedLoanKey));
+    var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
     // console.log(loanObj);
     // console.log(loanObj.name);
 
@@ -169,7 +179,7 @@ function loadLoan(htmlObject) {
 
     }
     else {
-        alert(`Error: Loan (${selectedLoanKey}) not found in your browser storage`);
+        alert(`Error: Loan (${activeLoanId}) not found in your browser storage`);
     }
 }
 

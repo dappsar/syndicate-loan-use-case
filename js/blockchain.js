@@ -92,18 +92,28 @@ function logLoans() {
     for (i = 0; i < 10; i++) {
         //console.log(retrieveLoan(i));
 
-        retrieveLoan(i)
-        .then(function(loan) {
-            // $("#sc-loans").append(`<div class="loan">
-            // <ul>
-            //   <li>Name: ${loan.name}</li>
-            //   <li>Id: ${loan.id}</li>
-            //   <li>Purpose: ${loan.purpose}</li>
-            //   <li>Date: ${loan.date}</li>
-            // </ul>
-            // </div>`);
+        var bcLoanArray;
 
+        retrieveLoan(i)
+        .then(function(loan) {           
+
+            bcLoanArray.push(loan);
+
+            if (bcLoanArray.includes(i)) {
+            // Set key for sessionStorage
             var bc_key = 'bc_' + loan.id;
+
+            // Write new object based on loan object retrieved from Smart Contract
+            var bc_loan = {
+                name: loan.name,
+                id: loan.id,
+                purpose: loan.purpose,
+                date: loan.date,
+                revisionNumber: loan.revisionNumber
+                state: 'review',
+            };
+
+
             console.log(bc_key);
             console.log(userAccount);
             // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
@@ -112,8 +122,11 @@ function logLoans() {
             // else {
             //     console.log('This loan isnt yours');
             // }
-            sessionStorage.setItem(bc_key, JSON.stringify(loan));
-            addLoanToSidePanel(loan.id, loan.name);
+
+            //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
+            sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
+            addLoanToSidePanel(loan.id, loan.name, loan.date, 'bc');
+            }
         });   
 
         // retrieveLoan(i)
