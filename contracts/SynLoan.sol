@@ -8,6 +8,7 @@ contract SynLoanData {
         string name;            // Name of  the Loan
         uint id;                // Loan ID
         uint revisionNumber;    // Shall increment with every update to the loan
+        address registeringParty; 
         string purpose;
         string date;            // for now string, eg. dd/mm/yyyy "03/15/2019"
     }
@@ -42,8 +43,8 @@ contract SynLoanData {
     {
 
         loanToRegistrar[loanId] = msg.sender; // Store the address of the user in a mapping
-        userLoanCount[msg.sender]++;
-        loans.push(LoanData(_name, loanId, 0, _purpose, _date));
+        userLoanCount[msg.sender]++; // necessary for array to count loans registered by user
+        loans.push(LoanData(_name, loanId, 0, msg.sender, _purpose, _date));
         loanId++;
     }
 
@@ -69,7 +70,7 @@ Retrieve stored Loan Data
 /*
 Get the length of the loan array
 */
-    function getArrLength() public returns (uint256)
+    function getArrLength() public view returns (uint256)
     {
         return loans.length;
     }

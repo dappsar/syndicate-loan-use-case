@@ -85,7 +85,7 @@ function retrieveLoanToRegistrar(_id) {
 
 // var bcLoanArray = [];
 
-
+// Function called on button "Retrieve Loans from SC"
 function logLoans() {
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
 
@@ -100,11 +100,11 @@ function logLoans() {
         retrieveLoan(i)
         .then(function(loan) {           
 
-            // Set key for sessionStorage
+            // Set key to store loan in sessionStorage
             var bc_key = 'bc_' + loan.id;
 
+            // Check if key (object) already exists
             if (!sessionKeys.includes(bc_key)) {
-
                 // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
                 var bc_loan = {
                     name: loan.name,
@@ -118,7 +118,7 @@ function logLoans() {
                 console.log(bc_key);
                 console.log(userAccount);
 
-                // not yet functional due to SC version
+                // INFO: not yet functional due to SC version
                 // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
                 //     console.log('This loan is yours');
                 // }
@@ -195,7 +195,7 @@ function updateLoanOnChain() {
 
             storeContract.methods.updateLoan(_name, _id, _purpose, _date)
             .send({from: myAccounts[0]})
-            .on("receipt", function() {
+            .on("receipt", function(receipt) {
              $('#tx-status').text('Transaction confirmed');
              console.log(receipt);
             })
@@ -222,7 +222,7 @@ function writeLoan() {
 
     // Updates Loan in Browser-Storage
     updateLoan();
-    
+
     // Load active loan from JSON in Storage
     activeLoan = returnActiveLoan();
     console.log(activeLoan);
@@ -254,9 +254,14 @@ function writeLoan() {
 
             storeContract.methods.createLoan(_name, _purpose, _date)
             .send({from: myAccounts[0]})
-            .on("receipt", function() {
+            .on("receipt", function(receipt) {
              $('#tx-status').text('Transaction confirmed');
              console.log(receipt);
+             // Delete locally stored loan from SessionStorage and retrieve from BC
+             sessionStorage.removeItem(activeLoanId);
+             deleteFromSidePanel(activeLoanId);
+             logLoans();
+             
             })
             .on("error", function(error) {
                 // Do something to alert the user their transaction has failed

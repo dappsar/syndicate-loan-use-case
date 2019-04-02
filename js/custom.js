@@ -54,10 +54,14 @@ function createSampleLoans() {
     sessionStorage.setItem(`id_s1`, JSON.stringify(id_s1));
     sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
     sessionStorage.setItem(`id_s3`, JSON.stringify(id_s3));
+    $('#sample_Loan1').hide();
+    $('#sample_Loan2').hide();
+    $('#sample_Loan3').hide();
 }
 // Reconsider page onLoad behavior: Should sample loans be auto-loaded or after pressing button?
 createSampleLoans();
 
+// Initialize tempLoanId for locally created loans (serves as key for storage)
 var tempLoanId = 0;
 
 // Variable to determine which loan is currently displayed in UI
@@ -67,13 +71,14 @@ var activeLoanId;
 // Function to Update Loan Object (Save Changes from form fields) 
 // Function: Logic
 const updateLoan = (name, purpose, registeringParty, date) => {
+    alert('Saving changes to browser storage');
     // Load loan from array
     console.log('Saving loan with id: ' + activeLoanId);
  
     // Loads currently active loan
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
 
-    // saves current form values to loaded loan Object
+    // Reads current form values from HTML and saves them to loaded loan Object
     loanObj.name = $('#loanName').val();
     loanObj.purpose = $('#loanPurpose').val();
     loanObj.state = $('#state').val();
@@ -84,6 +89,22 @@ const updateLoan = (name, purpose, registeringParty, date) => {
     sessionStorage.setItem(activeLoanId, JSON.stringify(loanObj));
 }
 
+// // function that shall automatically refresh side panel and load loans
+// function refreshSidePanel() {
+//     sessionKeys = Object.keys(sessionStorage);
+//     sessionKeys.forEach( function(item) {
+//         if (item.includes('bc')) {
+
+//         }
+//         else {
+
+//         }
+//     });
+// }
+
+var deleteFromSidePanel = (_id) => {
+    $(`li[data-storage-key="${_id}"`).remove();
+}
 
 
 var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
@@ -95,17 +116,20 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
     {
         loanIdAttr = 'bc_'+_loanId;
         date = _date
+        bc_info = ' | loaded from Blockchain';
     }
     else {
         loanIdAttr = 'id_'+_loanId;
         date = getDateInFormat('full');
+        bc_info = '';
     }
 
     $(".appplication_section ul").prepend(
         `<li class="active" data-storage-key="${loanIdAttr}">
             <div class="lists"><h4>${_loanName}</h4>
                 <div class="status">
-                <p>Waiting for review</p>
+                <p>Waiting for review${bc_info}</p>
+
                 </div>
                 <span class="date">${date}</span>
             </div>
