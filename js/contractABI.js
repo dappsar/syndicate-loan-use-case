@@ -59,6 +59,39 @@ storeABI = [
 	{
 		"constant": true,
 		"inputs": [],
+		"name": "getArrLength",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_user",
+				"type": "address"
+			}
+		],
+		"name": "getLoansByUser",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
 		"name": "loanId",
 		"outputs": [
 			{
@@ -91,6 +124,10 @@ storeABI = [
 			{
 				"name": "revisionNumber",
 				"type": "uint256"
+			},
+			{
+				"name": "registeringParty",
+				"type": "address"
 			},
 			{
 				"name": "purpose",

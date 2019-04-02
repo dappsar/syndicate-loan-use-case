@@ -21,8 +21,10 @@ Asynchronous JS functions are required in web3.js 1.x
 // logAcc();
 
 var userAccount;
-// var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";  // Address of SC_v0.1
-var storeAddress = "0x25e74B41529C290dbEc47ab8E4fB067EB04d91E1";  // Address of SC_v0.2
+// var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";     // Address of SC_v0.1
+// var storeAddress = "0x25e74B41529C290dbEc47ab8E4fB067EB04d91E1";     // Address of SC_v0.1.2
+var storeAddress = "0xdb57afDb21FCBEd96739FE46ab328496bf35845d";        // Address of SC_v0.1.3
+
 
 
 window.addEventListener('load', async () => {   
@@ -82,23 +84,29 @@ function retrieveLoanToRegistrar(_id) {
     return storeContract.methods.loanToRegistrar(_id).call();
 }
 
+function getArrLength() {
+    return storeContract.methods.getArrLength().call();
+}
+
 
 // var bcLoanArray = [];
 
 // Function called on button "Retrieve Loans from SC"
-function logLoans() {
+async function logLoans() {
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
 
-    // // Function to get the array length for for-loop
-    // var loanArrLength = storeContract.methods.getArrLength().call();
-    for (i = 0; i < 10; i++) {
-        //console.log(retrieveLoan(i));
+    // // Call function to get the array length for for-loop
+    const loanArrLength = await getArrLength();
 
+    console.log(loanArrLength);
+    // Looping through each loan-item of array 
+    for (i = 0; i < loanArrLength; i++) {
+        //console.log(retrieveLoan(i));
+        console.log('Logging SC loans: for-loop: '+ i);
         // gets the keys from the key-value storage (e.g. id_1)
         sessionKeys = Object.keys(sessionStorage);
 
-        retrieveLoan(i)
-        .then(function(loan) {           
+        const loan = await retrieveLoan(i);
 
             // Set key to store loan in sessionStorage
             var bc_key = 'bc_' + loan.id;
@@ -114,9 +122,7 @@ function logLoans() {
                     revisionNumber: loan.revisionNumber,
                     state: 'review',
                 };
-
-                console.log(bc_key);
-                console.log(userAccount);
+                console.log('Logging SC loans: key: '+ bc_key);
 
                 // INFO: not yet functional due to SC version
                 // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
@@ -131,7 +137,7 @@ function logLoans() {
 
                 addLoanToSidePanel(loan.id, loan.name, loan.date, 'bc');
             }
-        });   
+ 
 
         // retrieveLoan(i)
         // .then((receipt) => {

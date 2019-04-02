@@ -1,16 +1,23 @@
 pragma solidity ^0.5.2;
 
+/*
+Contract for Syndicate Loan MVP by Lition Technologie AG - https://www.lition.io/
+version 0.1.3
+creator: Marcel Jackisch
+*/
+
+
 contract SynLoanData {
     
-    uint public loanId;         // supposed to be a unique number
+    uint public loanId;             // supposed to be a unique number
 
     struct LoanData {
-        string name;            // Name of  the Loan
-        uint id;                // Loan ID
-        uint revisionNumber;    // Shall increment with every update to the loan
-        address registeringParty; 
-        string purpose;
-        string date;            // for now string, eg. dd/mm/yyyy "03/15/2019"
+        string name;                // Name of  the Loan
+        uint id;                    // Loan ID
+        uint revisionNumber;        // Shall increment with every update to the loan
+        address registeringParty;   // to record in struct who created the loan
+        string purpose;             
+        string date;                // for now string, eg. dd/mm/yyyy "03/15/2019"
     }
 
 
