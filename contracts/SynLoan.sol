@@ -2,7 +2,7 @@ pragma solidity ^0.5.2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - https://www.lition.io/
-version 0.1.3
+version 0.1.4
 creator: Marcel Jackisch
 */
 
@@ -17,7 +17,7 @@ contract SynLoanData {
         uint revisionNumber;        // Shall increment with every update to the loan
         address registeringParty;   // to record in struct who created the loan
         string purpose;             
-        string date;                // for now string, eg. dd/mm/yyyy "03/15/2019"
+        uint regTime;                // UNIX Timestamp 
     }
 
 
@@ -43,15 +43,12 @@ contract SynLoanData {
 
 
 
-    function createLoan (string memory _name,
-                         string memory _purpose,
-                         string memory _date) 
-            public 
-    {
+    function createLoan (string memory _name, string memory _purpose) public {
 
         loanToRegistrar[loanId] = msg.sender; // Store the address of the user in a mapping
-        userLoanCount[msg.sender]++; // necessary for array to count loans registered by user
-        loans.push(LoanData(_name, loanId, 0, msg.sender, _purpose, _date));
+        userLoanCount[msg.sender]++; // necessary for array to count loans registered by user#
+        uint currentTime = now;
+        loans.push(LoanData(_name, loanId, 0, msg.sender, _purpose, currentTime));
         loanId++;
     }
 
@@ -59,13 +56,12 @@ contract SynLoanData {
 /*
 Update Loan Data, Add a revision Number
 */
-    function updateLoan(string memory _name, uint _id, string memory _purpose, string memory _date) 
+    function updateLoan(string memory _name, uint _id, string memory _purpose) 
         public onlyRegistrar(_id)
     {
         loans[_id].name = _name;
         loans[_id].revisionNumber++;
         loans[_id].purpose = _purpose;
-        loans[_id].date = _date;
     }
 
 /*
@@ -92,7 +88,7 @@ As of now, only the registrar mapping is applied, a loan belonging to multiple u
         uint[] memory result = new uint[](userLoanCount[_user]);
         uint counter = 0;
         for (uint i = 0; i < loans.length; i++) {
-            if (loanToRegistrar[i] == msg.sender) {
+            if (loanToRegistrar[i] == _user) {
                 result[counter] = i;
                 counter++;
             }

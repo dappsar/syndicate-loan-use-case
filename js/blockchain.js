@@ -24,7 +24,7 @@ Note: Asynchronous JS functions are required in web3.js 1.x
 var userAccount;
 // var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";     // Address of SC_v0.1
 // var storeAddress = "0x25e74B41529C290dbEc47ab8E4fB067EB04d91E1";     // Address of SC_v0.1.2
-var storeAddress = "0xdb57afDb21FCBEd96739FE46ab328496bf35845d";        // Address of SC_v0.1.3
+var storeAddress = "0x42453BFd68e07b3563d7a8Fc89bEA260c9f5a501";        // Address of SC_v0.1.4
 
 
 
@@ -81,12 +81,16 @@ function retrieveLoan(id) {
 // }
 
 // Function to retrieve mapping
-function retrieveLoanToRegistrar(_id) {
-    return storeContract.methods.loanToRegistrar(_id).call();
+function retrieveLoanToRegistrar(id) {
+    return storeContract.methods.loanToRegistrar(id).call();
 }
 
 function getArrLength() {
     return storeContract.methods.getArrLength().call();
+}
+
+function getLoansByUser(address) {
+    return storeContract.methods.getLoansByUser(address).call(); 
 }
 
 
@@ -98,8 +102,11 @@ async function logLoans() {
 
     // // Call function to get the array length for for-loop
     const loanArrLength = await getArrLength();
+    console.log(`Found ${loanArrLength} loans in Smart Contract`);
 
-    console.log(loanArrLength);
+    const loanIdsByUser = await getLoansByUser(curAddress);
+    console.log(loanIdsByUser);
+
     // Looping through each loan-item of array 
     for (i = 0; i < loanArrLength; i++) {
         //console.log(retrieveLoan(i));
@@ -119,7 +126,8 @@ async function logLoans() {
                     name: loan.name,
                     id: loan.id,
                     purpose: loan.purpose,
-                    date: loan.date,
+                    date: loan.regTime,
+                    registeringParty: loan.registeringParty,
                     revisionNumber: loan.revisionNumber,
                     state: 'review',
                 };
@@ -136,7 +144,7 @@ async function logLoans() {
                 //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
                 sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
 
-                addLoanToSidePanel(loan.id, loan.name, loan.date, 'bc');
+                addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
             }
  
 
@@ -200,7 +208,7 @@ function updateLoanOnChain() {
             console.log('Info: Calling updateLoan() on Smart Contract: ' + storeAddress); 
             // console.log(storeContract);
 
-            storeContract.methods.updateLoan(_name, _id, _purpose, _date)
+            storeContract.methods.updateLoan(_name, _id, _purpose)
             .send({from: myAccounts[0]})
             .on("receipt", function(receipt) {
              $('#tx-status').text('Transaction confirmed');

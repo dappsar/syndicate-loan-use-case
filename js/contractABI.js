@@ -9,10 +9,6 @@ storeABI = [
 			{
 				"name": "_purpose",
 				"type": "string"
-			},
-			{
-				"name": "_date",
-				"type": "string"
 			}
 		],
 		"name": "createLoan",
@@ -43,10 +39,6 @@ storeABI = [
 			},
 			{
 				"name": "_purpose",
-				"type": "string"
-			},
-			{
-				"name": "_date",
 				"type": "string"
 			}
 		],
@@ -134,8 +126,8 @@ storeABI = [
 				"type": "string"
 			},
 			{
-				"name": "date",
-				"type": "string"
+				"name": "regTime",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
