@@ -2,6 +2,9 @@
 custom.js defines main functionality for User Interface and Browser Storage of Loans
 */
 
+console.log('Syndicate Loan dApp MVP sucessfully loaded: \n version 0.1.3')
+
+
 // Arrays for Dropdown menus
 var select_arr = ['Borrower', 'Seller', 'Confident']
 var select_arr2 = ['Client', 'Bank#1', 'Bank#2']

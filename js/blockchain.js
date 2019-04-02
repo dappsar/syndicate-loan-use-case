@@ -1,7 +1,8 @@
 
 /* 
 Code by Marcel Jackisch / marcel.jackisch@lition.de
-Asynchronous JS functions are required in web3.js 1.x 
+Written with web3.js 1.x library
+Note: Asynchronous JS functions are required in web3.js 1.x 
  */
 
 // // web3.eth.accounts[0] works only before the DOM is loaded
