@@ -262,7 +262,7 @@ function writeLoan() {
             console.log('Info: Calling createLoan() on Smart Contract: ' + storeAddress); 
             // console.log(storeContract);
 
-            storeContract.methods.createLoan(_name, _purpose, _date)
+            storeContract.methods.createLoan(_name, _purpose)
             .send({from: myAccounts[0]})
             .on("receipt", function(receipt) {
              $('#tx-status').text('Transaction confirmed');
@@ -271,7 +271,6 @@ function writeLoan() {
              sessionStorage.removeItem(activeLoanId);
              deleteFromSidePanel(activeLoanId);
              logLoans();
-             
             })
             .on("error", function(error) {
                 // Do something to alert the user their transaction has failed
