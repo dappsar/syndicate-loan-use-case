@@ -106,15 +106,16 @@ async function logLoans() {
 
     const loanIdsByUser = await getLoansByUser(curAddress);
     console.log(loanIdsByUser);
+    console.log(loanIdsByUser.length);
 
     // Looping through each loan-item of array 
-    for (i = 0; i < loanArrLength; i++) {
+    for (i = 0; i < loanIdsByUser.length; i++) {
         //console.log(retrieveLoan(i));
         console.log('Logging SC loans: for-loop: '+ i);
         // gets the keys from the key-value storage (e.g. id_1)
         sessionKeys = Object.keys(sessionStorage);
 
-        const loan = await retrieveLoan(i);
+        const loan = await retrieveLoan(loanIdsByUser[i]);
 
             // Set key to store loan in sessionStorage
             var bc_key = 'bc_' + loan.id;
@@ -145,13 +146,7 @@ async function logLoans() {
                 sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
 
                 addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
-            }
- 
-
-        // retrieveLoan(i)
-        // .then((receipt) => {
-        //     console.log(receipt);
-        // });
+            } // end if
     }
 }
 

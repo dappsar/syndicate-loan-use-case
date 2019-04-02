@@ -2,7 +2,7 @@
 custom.js defines main functionality for User Interface and Browser Storage of Loans
 */
 
-console.log('Syndicate Loan dApp MVP sucessfully loaded: \n version 0.1.3')
+console.log('Syndicate Loan dApp MVP sucessfully loaded: \n version 0.1.4')
 
 
 // Arrays for Dropdown menus
