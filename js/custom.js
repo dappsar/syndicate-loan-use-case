@@ -12,7 +12,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 
 // Clear browser storage for testing purposes
 localStorage.clear();
-// sessionStorage.clear();
+sessionStorage.clear();
 
 // Loan Overview: Here you selected the loans from the left panel / column
 // #################### Does it need to be in .ready() ???? ##########################
@@ -111,15 +111,19 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
             </div>
         </li>`);
 
-    $('.appplication_section ul li.active').trigger('click');
+        // Triggers clicking on the created / loaded loan
+        $('.appplication_section ul li.active').trigger('click');
+
+    
 }
 
 
-// MJ: Create new Loan and add it to Side Panel
+// MJ: Create new Loan and call function to add it to Side Panel
 // Function: UI & Logic
 var addItem = () => {
     // MJ: Retrieve value of loan name from Create-Loan-Modal
-    loanName = $("#add_Loan").val();   
+    loanName = $("#add_Loan").val();
+    // Set the field of in the modal to the standard value   
     $("#add_Loan").val('Name of loan');
 
     // Set active Loan, to determine, where to write Updates to and what to display
@@ -136,6 +140,7 @@ var addItem = () => {
 
     // call function that adds loan to UI side panel
     addLoanToSidePanel(tempLoanId, loanName);
+
     tempLoanId++;
 }
 
@@ -182,6 +187,7 @@ function loadLoan(htmlObject) {
         $('#loanPurpose').val(loanObj.purpose);
         $('#loanId').val(loanObj.id);
         $('#state').val(loanObj.state);
+        $('#revisionNumber').val(loanObj.revisionNumber);
         $('#regParty').val(loanObj.registeringParty);
         $('#loanDate').val(loanObj.date);
 

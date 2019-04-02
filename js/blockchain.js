@@ -94,6 +94,7 @@ function logLoans() {
     for (i = 0; i < 10; i++) {
         //console.log(retrieveLoan(i));
 
+        // gets the keys from the key-value storage (e.g. id_1)
         sessionKeys = Object.keys(sessionStorage);
 
         retrieveLoan(i)
@@ -104,7 +105,7 @@ function logLoans() {
 
             if (!sessionKeys.includes(bc_key)) {
 
-                // Create new object based on loan object retrieved from Smart Contract
+                // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
                 var bc_loan = {
                     name: loan.name,
                     id: loan.id,
@@ -117,6 +118,7 @@ function logLoans() {
                 console.log(bc_key);
                 console.log(userAccount);
 
+                // not yet functional due to SC version
                 // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
                 //     console.log('This loan is yours');
                 // }
@@ -137,14 +139,96 @@ function logLoans() {
         // });
     }
 }
-// Renaming of Loan createLoan -> writeLoan 
+
+// Function: UI
+function txNotifyUI() {
+    alert("Sending Transaction on Ropston Network...");
+    $('#tx-status').text('Sending transaction to the Blockchain Network');
+    $('#tx-date').text(getDateInFormat('full'));
+    $('#tx-status').closest('li').removeClass('d-none');
+}
 
 
-// function to create loan on smart contract and write it to the blockchain
-function writeLoan() {
+function updateLoanOnChain() {
+
+    txNotifyUI();
+
+    // Load active loan from JSON in Storage
     activeLoan = returnActiveLoan();
-    console.log('Info: Writing Loan with id: ' + activeLoanId);
     console.log(activeLoan);
+    console.log('Loading loan with id: ' + activeLoanId);
+
+    // Updates Loan in Browser-Storage
+    updateLoan();
+
+    // Check if Form fields have really been updated
+    // if (tempLoan !== activeLoan) {
+    //     updateLoan();
+    // }
+    // else {
+    //     alert("Your loan has not been changed");
+    //     return;
+    // }
+
+    
+    _name = activeLoan.name;
+    _id = activeLoan.id;
+    _purpose = activeLoan.purpose;
+    _date = activeLoan.date;
+
+
+    // if (!_name || !_purpose || !_date) {
+    //     alert('Some value have not been specified, aborting...');
+    //     return;
+    // }
+
+    window.web3 = new Web3(ethereum);
+
+    // Function that returns default account and sends Tx
+    const fn = async () => {
+        try {
+            const myAccounts = await web3.eth.getAccounts();
+
+            storeContract = new web3.eth.Contract(storeABI, storeAddress); 
+            console.log('Info: Calling updateLoan() on Smart Contract: ' + storeAddress); 
+            // console.log(storeContract);
+
+            storeContract.methods.updateLoan(_name, _id, _purpose, _date)
+            .send({from: myAccounts[0]})
+            .on("receipt", function() {
+             $('#tx-status').text('Transaction confirmed');
+             console.log(receipt);
+            })
+            .on("error", function(error) {
+                // Do something to alert the user their transaction has failed
+                $("tx-status").text(error);
+            });
+        } 
+        catch (err) {
+            console.log(err);
+        }
+    }
+    fn(); // call send to contract 
+
+
+}
+
+
+
+
+// Function to create loan on smart contract and write it to the blockchain
+// Function: Logic (+some UI)
+function writeLoan() {
+
+    // Updates Loan in Browser-Storage
+    updateLoan();
+    
+    // Load active loan from JSON in Storage
+    activeLoan = returnActiveLoan();
+    console.log(activeLoan);
+
+    console.log('Info: Writing Loan with id: ' + activeLoanId);
+
 
     _name = activeLoan.name;
     _purpose = activeLoan.purpose;
@@ -155,10 +239,7 @@ function writeLoan() {
         return;
     }
 
-    alert("Sending Transaction on Ropston Network...");
-    $('#tx-status').text('Sending transaction to the Blockchain Network');
-    $('#tx-date').text(getDateInFormat('full'));
-    $('#tx-status').closest('li').removeClass('d-none');
+    txNotifyUI();
 
     window.web3 = new Web3(ethereum);
 

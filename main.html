@@ -43,7 +43,7 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.50/packages/web3/src/Web3.js"></script> -->
 
 </head>
-<body onload="console.log('body onload called');">
+<body onload="console.log('body onload called');" >
     <div class="container-fluid">
         <header>
             <nav>
@@ -84,7 +84,7 @@
             <div class="row">
 
  <!------------- Left Column ------------>
-                <div class="col-sm-3 no-padding" style="height:2000px">
+                <div class="col-sm-3 no-padding" style="min-height:100%; display:block; ">
 
                     <!-- Left Panel: Loans (Overview) -->
 
@@ -245,13 +245,19 @@
                                             <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="loanId" class="form-control"
                                                     name="loanId" required disabled>
-                                                <label for="loanId">Loan Id</label>
+                                                <label for="loanId">Loan Id (on Blockchain)</label>
                                             </div>
 
                                             <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="state" class="form-control"
                                                     name="state" required disabled>
                                                 <label for="state">Status</label>
+                                            </div>
+
+                                            <div class="form-label-group float-lab input_float_lbl">
+                                                <input type="text" id="revisionNumber" class="form-control"
+                                                    name="revisionNumber" required disabled>
+                                                <label for="revisionNumber">Revision Number</label>
                                             </div>
 
                                             <div class="form-label-group float-lab input_float_lbl">
