@@ -86,7 +86,7 @@ const updateLoan = (name, purpose, registeringParty, date) => {
 
 
 
-var addLoanToSidePanel = (_loanId, _loanName, date, type) => {
+var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
 
     // Sets data-storage-key dependent on loan object type (local or from smart contract)
     // date is either the current or from smart contract storage
@@ -157,8 +157,16 @@ function returnActiveLoan() {
 // loads loan and writes into html form
 // Function: UI + Logic (sets activeLoanId)
 function loadLoan(htmlObject) {
-
+    $('#writeToChain').show();
+    $('#updateToChain').hide();
+    
     activeLoanId = htmlObject.getAttribute("data-storage-key");
+
+    if (activeLoanId.includes('bc')) {
+        $('#writeToChain').hide();
+        $('#updateToChain').show();
+    }
+
     // load loan from storage
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
     // console.log(loanObj);

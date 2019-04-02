@@ -83,6 +83,8 @@ function retrieveLoanToRegistrar(_id) {
 }
 
 
+// var bcLoanArray = [];
+
 
 function logLoans() {
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
@@ -92,40 +94,40 @@ function logLoans() {
     for (i = 0; i < 10; i++) {
         //console.log(retrieveLoan(i));
 
-        var bcLoanArray;
+        sessionKeys = Object.keys(sessionStorage);
 
         retrieveLoan(i)
         .then(function(loan) {           
 
-            bcLoanArray.push(loan);
-
-            if (bcLoanArray.includes(i)) {
             // Set key for sessionStorage
             var bc_key = 'bc_' + loan.id;
 
-            // Write new object based on loan object retrieved from Smart Contract
-            var bc_loan = {
-                name: loan.name,
-                id: loan.id,
-                purpose: loan.purpose,
-                date: loan.date,
-                revisionNumber: loan.revisionNumber
-                state: 'review',
-            };
+            if (!sessionKeys.includes(bc_key)) {
 
+                // Create new object based on loan object retrieved from Smart Contract
+                var bc_loan = {
+                    name: loan.name,
+                    id: loan.id,
+                    purpose: loan.purpose,
+                    date: loan.date,
+                    revisionNumber: loan.revisionNumber,
+                    state: 'review',
+                };
 
-            console.log(bc_key);
-            console.log(userAccount);
-            // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
-            //     console.log('This loan is yours');
-            // }
-            // else {
-            //     console.log('This loan isnt yours');
-            // }
+                console.log(bc_key);
+                console.log(userAccount);
 
-            //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
-            sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
-            addLoanToSidePanel(loan.id, loan.name, loan.date, 'bc');
+                // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
+                //     console.log('This loan is yours');
+                // }
+                // else {
+                //     console.log('This loan isnt yours');
+                // }
+
+                //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
+                sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
+
+                addLoanToSidePanel(loan.id, loan.name, loan.date, 'bc');
             }
         });   
 
