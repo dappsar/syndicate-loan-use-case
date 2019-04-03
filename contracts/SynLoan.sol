@@ -17,7 +17,8 @@ contract SynLoanData {
         uint revisionNumber;        // Shall increment with every update to the loan
         address registeringParty;   // to record in struct who created the loan
         string purpose;             
-        uint regTime;                // UNIX Timestamp 
+        uint regTime;                // UNIX Timestamp
+        bool approvalStatus; 
     }
 
 
@@ -68,6 +69,15 @@ Update Loan Data, Add a revision Number
 Retrieve stored Loan Data
 */
     function getLoan() public {}
+
+
+/*
+Approve Loan
+*/
+
+    function approveLoan(uint _id) public onlyRegistrar(_id) {
+        loans[_id].approvalStatus = true;
+    }
 
 
 /*

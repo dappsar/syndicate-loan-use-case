@@ -26,6 +26,7 @@ var userAccount;
 // var storeAddress = "0x25e74B41529C290dbEc47ab8E4fB067EB04d91E1";     // Address of SC_v0.1.2
 var storeAddress = "0x42453BFd68e07b3563d7a8Fc89bEA260c9f5a501";        // Address of SC_v0.1.4
 
+var curAddress;
 
 
 window.addEventListener('load', async () => {   
@@ -285,9 +286,6 @@ function writeLoan() {
     fn(); // call send to contract 
 } // End setNumber
 
-
-
-var curAddress;
 
 function printAddress(_address) {
     $('.bc_address').val(_address);

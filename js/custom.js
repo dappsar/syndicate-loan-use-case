@@ -216,7 +216,8 @@ function loadLoan(htmlObject) {
         $('#state').val(loanObj.state);
         $('#revisionNumber').val(loanObj.revisionNumber);
         $('#regParty').val(loanObj.registeringParty);
-        $('#loanDate').val(loanObj.date);
+        $('#loanDate').val(loanObj.date);        
+        // $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
     }
     else {
@@ -337,11 +338,11 @@ let appendComment = (comment, user) => {
 
 
 // MJ: Function returns date as string, option: full, with month name, or regular
-getDateInFormat = (format) => {
+getDateInFormat = (format, timestamp) => {
 
     if (format == 'full') {
 
-        var today = new Date();
+        var today = new Date(timestamp*1000);
         var dd = today.getDate();
         var yyyy = today.getFullYear();
         var month = monthNames[today.getMonth()];
