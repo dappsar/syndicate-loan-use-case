@@ -1,8 +1,8 @@
 pragma solidity ^0.5.2;
 
 /*
-Contract for Syndicate Loan MVP by Lition Technologie AG - https://www.lition.io/
-version 0.1.4
+Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
+version 0.1.6
 creator: Marcel Jackisch
 */
 
@@ -15,27 +15,28 @@ contract SynLoanData {
         string name;                        // Name of  the Loan
         uint id;                            // Loan ID
         uint revisionNumber;                // Shall increment with every update to the loan
-        address registeringParty;           // to record in struct who created the loan
+        address registeringParty;           // to record in struct who created the loan --> make array 
         string purpose;             
         uint regTime;                           // UNIX Timestamp
         mapping (address => uint) userToId;     // Gets local id belonging to an address in loan
         uint[] loanAmounts;                     // corresponding to participants
-        bool[] approvalStatus;                  // Array to store approvals 
+        bool[] approvalStatus;                  // Array to store approvals
+        uint8 numOfUsers; 
     }
 
 /*
-Struct participant defines key data of participants such as banks and businesses -
+Struct user defines key data of participants such as banks and businesses -
 */
-    struct participant {
+    struct user {
         string name;
         string role;        // Borrower or Lender
         address account;    
     }
 
-    participant[] public participants;      // Public array of all participants in dApp/Smart Contract
+    user[] public users;      // Public array of all participants in dApp/Smart Contract
     
     // Dictionary to find account data
-    mapping (address => participant) addressToUser; 
+    mapping (address => user) addressToUser; 
 
     // Map a loan id to an account address of user
     mapping (uint => address) loanToRegistrar; 
@@ -60,25 +61,44 @@ Struct participant defines key data of participants such as banks and businesses
     /*
     Function shall add new participants to a loan
     */
-    function registerParticipants (uint _loanId, string memory _name, string memory _role, address _participant) public {
+    function addUserToLoan (uint _loanId, address _account) public onlyRegistrar(_loanId) {
+        uint userNum = loans[_loanId].numOfUsers++;
+        loans[_loanId].userToId[_account] = userNum;
+    }
 
+    /*
+    Registration of User Accounts
+    */
+    function registerUser (string memory _name, string memory _role) public {
+        // Self-registration: adds Userdata to user array
+        users.push(user(_name, _role, msg.sender));
     }
 
 
     function createLoan (string memory _name, string memory _purpose) public {
 
-        loanToRegistrar[loanId] = msg.sender;   // Store the address of the user in a mapping
-        userLoanCount[msg.sender]++;            // necessary for array to count loans registered by user#
-        // uint currentTime = now;
-        // LoanData storage ln
+        loanToRegistrar[loanId] = msg.sender;   // Store the address of the user in mapping
+        userLoanCount[msg.sender]++;            // necessary for array to count loans registered by user
         
-        loans.push(LoanData(_name, loanId, 0, msg.sender, _purpose, now, userToId[msg.sender]=0));
+        // create LoanData instance in memory, later populate array
+        LoanData memory ln;
+        ln.name = _name;
+        ln.id = loanId;
+        ln.revisionNumber = 0;
+        ln.registeringParty = msg.sender;
+        ln.purpose = _purpose;
+        ln.regTime = now;
+        // push and store returned index in arrSize
+        uint arrSize = loans.push(ln);
+        // Set first address (registrator to user=0 of loan)
+        loans[arrSize - 1].userToId[msg.sender] = 0;
         loanId++;
     }
 
 
 /*
-Update Loan Data, Add a revision Number
+Update Loan Data, increment version / revision number
+Here, all the other data like loan amount, start date and other conditions shall be filled
 */
     function updateLoan(string memory _name, uint _id, string memory _purpose) 
         public onlyRegistrar(_id)
@@ -86,13 +106,6 @@ Update Loan Data, Add a revision Number
         loans[_id].name = _name;
         loans[_id].revisionNumber++;
         loans[_id].purpose = _purpose;
-    }
-
-/*
-Retrieve stored Loan Data (getter function automatically declared by loans[] array)
-*/
-    function getLoan(uint _id) public view returns (LoanData memory) {
-        return loans[_id];
     }
 
  /*
@@ -105,11 +118,12 @@ Possibility to delete loan
 
 
 /*
-Approve Loan
+Approves Loan: each participant of Loan can give his approval
 */
 
-    function approveLoan(uint _id) public onlyRegistrar(_id) {
-        loans[_id].approvalStatus[] = true;
+    function approveLoan(uint _id) public  {
+        uint userId = loans[_id].userToId[msg.sender];
+        loans[_id].approvalStatus[userId] = true;
     }
 
 
