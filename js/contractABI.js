@@ -3,6 +3,38 @@ storeABI = [
 		"constant": false,
 		"inputs": [
 			{
+				"name": "_loanId",
+				"type": "uint256"
+			},
+			{
+				"name": "_account",
+				"type": "address"
+			}
+		],
+		"name": "addUserToLoan",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "approveLoan",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
 				"name": "_name",
 				"type": "string"
 			},
@@ -19,8 +51,31 @@ storeABI = [
 	},
 	{
 		"constant": false,
-		"inputs": [],
-		"name": "getLoan",
+		"inputs": [
+			{
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "deleteLoan",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_role",
+				"type": "string"
+			}
+		],
+		"name": "registerUser",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -128,6 +183,37 @@ storeABI = [
 			{
 				"name": "regTime",
 				"type": "uint256"
+			},
+			{
+				"name": "numOfUsers",
+				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "users",
+		"outputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "role",
+				"type": "string"
+			},
+			{
+				"name": "account",
+				"type": "address"
 			}
 		],
 		"payable": false,

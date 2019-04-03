@@ -2,7 +2,7 @@ pragma solidity ^0.5.2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.1.6
+version 0.1.6.1
 creator: Marcel Jackisch
 */
 
@@ -60,8 +60,10 @@ Struct user defines key data of participants such as banks and businesses -
 
     /*
     Function shall add new participants to a loan
+    (Optional feature idea: Check if user already registered)
     */
     function addUserToLoan (uint _loanId, address _account) public onlyRegistrar(_loanId) {
+        //     Does it need to check if user has previously been added?
         uint userNum = loans[_loanId].numOfUsers++;
         loans[_loanId].userToId[_account] = userNum;
     }
@@ -123,9 +125,16 @@ Approves Loan: each participant of Loan can give his approval
 
     function approveLoan(uint _id) public  {
         uint userId = loans[_id].userToId[msg.sender];
+        // I think population of the array this way might not work
         loans[_id].approvalStatus[userId] = true;
     }
 
+/*
+Helper function to retrieve from mapping inside struct
+    */
+    function getUserToId(uint256 _id, address _address) public view returns (uint256) {
+        return loans[_id].userToId[_address];
+    }
 
 /*
 Get the length of the loan array
