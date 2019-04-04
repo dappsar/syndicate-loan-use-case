@@ -21,17 +21,11 @@ Note: Asynchronous JS functions are required in web3.js 1.x
 
 // logAcc();
 
-var userAccount;
-// var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";     // Address of SC_v0.1
-// var storeAddress = "0x25e74B41529C290dbEc47ab8E4fB067EB04d91E1";     // Address of SC_v0.1.2
-// var storeAddress = "0x42453BFd68e07b3563d7a8Fc89bEA260c9f5a501";     // Address of SC_v0.1.4
-var storeAddress = "0x188D78ebED7E6C47B17d1Ba29cb741d67BFaA9B6";        // Address of SC_v0.1.6
 
-
-
-var curAddress;
-
-
+/* 
+Onload event listener: asks permission to access accounts (metamask) 
+and starts app by calling startdApp()
+*/
 window.addEventListener('load', async () => {   
     // Modern dapp browsers...
     if (window.ethereum) {
@@ -75,40 +69,20 @@ function startdApp() {
     printAddress(userAccount);
 }
 
-function retrieveLoan(id) {
-    return storeContract.methods.loans(id).call();
-}
-
-// function _retrieveLoan(id) {
-//     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
-//     return storeContract.methods.loans(id).call();
-// }
-
-// Function to retrieve mapping
-function retrieveLoanToRegistrar(id) {
-    return storeContract.methods.loanToRegistrar(id).call();
-}
-
-function getArrLength() {
-    return storeContract.methods.getArrLength().call();
-}
-
-function getLoansByUser(address) {
-    return storeContract.methods.getLoansByUser(address).call(); 
-}
 
 
-// var bcLoanArray = [];
-
-// Function called on button "Retrieve Loans from SC"
+/* 
+Function called on clicking button "Retrieve Loans from Smart Contract"
+Loads loans from blockchain and writes them as objects into browser storage 
+*/
 async function logLoans() {
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
 
-    // // Call function to get the array length for for-loop
+    // // Call function to get the length of the loan-array and pass it to for-loop
     const loanArrLength = await getArrLength();
     console.log(`Found ${loanArrLength} loans in Smart Contract`);
 
-    const loanIdsByUser = await getLoansByUser(curAddress);
+    const loanIdsByUser = await getLoansByUser(userAccount);
     console.log(loanIdsByUser);
     console.log(loanIdsByUser.length);
 
@@ -116,13 +90,16 @@ async function logLoans() {
     for (i = 0; i < loanIdsByUser.length; i++) {
         //console.log(retrieveLoan(i));
         console.log('Logging SC loans: for-loop: '+ i);
-        // gets the keys from the key-value storage (e.g. id_1)
-        sessionKeys = Object.keys(sessionStorage);
 
+
+        // loading the loan object from Blockchain
         const loan = await retrieveLoan(loanIdsByUser[i]);
 
             // Set key to store loan in sessionStorage
             var bc_key = 'bc_' + loan.id;
+
+            // Retrieves all keys from the key-value browser storage (e.g. id_1)
+            sessionKeys = Object.keys(sessionStorage);
 
             // Check if key (object) already exists
             if (!sessionKeys.includes(bc_key)) {
@@ -135,6 +112,7 @@ async function logLoans() {
                     registeringParty: loan.registeringParty,
                     revisionNumber: loan.revisionNumber,
                     state: 'review',
+                    approvalStatus: loan
                 };
                 console.log('Logging SC loans: key: '+ bc_key);
 
@@ -152,14 +130,6 @@ async function logLoans() {
                 addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
             } // end if
     }
-}
-
-// Function: UI
-function txNotifyUI() {
-    alert("Sending Transaction on Ropston Network...");
-    $('#tx-status').text('Sending transaction to the Blockchain Network');
-    $('#tx-date').text(getDateInFormat('full'));
-    $('#tx-status').closest('li').removeClass('d-none');
 }
 
 
@@ -237,17 +207,21 @@ function retrieveLoanUser(_loanId, _address) {
 
 }
 
-// Function to approve current Loan
-async function approveLoan(id) {
+// Function to approve current (activeLoanId) Loan
+async function approveLoan() {
 
     const myAccounts = await web3.eth.getAccounts();
+    // Load active loan object from browser storage
+    activeLoan = returnActiveLoan();
 
     txNotifyUI()
-    storeContract.methods.approveLoan(id)
+    storeContract.methods.approveLoan(activeLoan.id)
     .send({from: myAccounts[0]})
     .on("receipt", function(receipt) {
      $('#tx-status').text('Transaction confirmed');
      console.log(receipt);
+     activeLoan.approvalStatus = true;   // Must be an array 
+
     })
     .on("error", function(error) {
         // Do something to alert the user their transaction has failed
@@ -317,16 +291,28 @@ function writeLoan() {
 } // End setNumber
 
 
+/* 
+Functionality regarding the User Interface (UI)
+*/
+
 function printAddress(_address) {
     $('.bc_address').val(_address);
     $('.bc_address').html(_address);
 
     // Consider: pass into onLoad event listener
-    curAddress = _address;
+    userAccount = _address;
 }
 
-// Prints Network to UI (Header) 
-// reacts dynamically to changes
+
+function txNotifyUI() {
+    alert("Sending Transaction on Ropston Network...");
+    $('#tx-status').text('Sending transaction to the Blockchain Network');
+    $('#tx-date').text(getDateInFormat('full'));
+    $('#tx-status').closest('li').removeClass('d-none');
+}
+
+
+// Prints Network to Front-End (Header) and reacts dynamically to changes
 function printNetwork () {
     console.log("printNetwork() called");
     web3.eth.net.getId().then( (netId) => {

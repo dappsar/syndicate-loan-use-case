@@ -32,6 +32,7 @@
     <!-- _____________________ Blockchain related files _____________________ -->
     <!-- Blockchain js file, includes major blockchain functionality -->
     <script src="js/blockchain.js"></script>
+    <script src="js/blockchain.helper.js"></script>
 
     <!-- Contract ABI js -->
     <script language="javascript" type="text/javascript" src="js\contractABI.js"></script>
@@ -508,7 +509,7 @@
                                         class="primary_btn"
                                         onclick="updateLoan()">Save Changes</button>
 
-                                    <button onclick="alert('\'Approve\' is non-functional as of today');" type="button"
+                                    <button onclick="approveLoan()" type="button"
                                         class="ghost_btn">Approve</button>
                                 </div>
 

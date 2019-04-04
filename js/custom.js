@@ -118,7 +118,7 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
     if (type == 'bc')
     {
         loanIdAttr = 'bc_'+_loanId;
-        date = _date
+        date = getDateInFormat(undefined, _date)
         bc_info = ' | loaded from Blockchain';
     }
     else {
@@ -162,7 +162,7 @@ var addItem = () => {
         loanName = "unnamed loan";
     }
     // Add functionality to pass Blockchain Address
-    const newLoan = createLoan(loanName, tempLoanId, undefined, 'review', curAddress, getDateInFormat());  
+    const newLoan = createLoan(loanName, tempLoanId, undefined, 'review', userAccount, getDateInFormat());  
     sessionStorage.setItem(activeLoanId, JSON.stringify(newLoan));
 
     // call function that adds loan to UI side panel
@@ -216,8 +216,8 @@ function loadLoan(htmlObject) {
         $('#state').val(loanObj.state);
         $('#revisionNumber').val(loanObj.revisionNumber);
         $('#regParty').val(loanObj.registeringParty);
-        $('#loanDate').val(loanObj.date);        
-        // $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
+        // $('#loanDate').val(loanObj.date);        
+        $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
     }
     else {

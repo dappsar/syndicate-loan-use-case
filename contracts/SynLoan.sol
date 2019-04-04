@@ -39,8 +39,8 @@ Struct user defines key data of participants such as banks and businesses -
         address account;    
     }
 
-    // Check if array really necessary
-    userData[] public users;      // Public array of all participants in dApp/Smart Contract
+    // Public array of all participants in dApp/Smart Contract (maybe unnecessary)
+    userData[] public users;      
     
     // Dictionary to find account data
     mapping (address => userData) addressToUserData; 
@@ -61,8 +61,7 @@ Struct user defines key data of participants such as banks and businesses -
     }
 
     /*
-    Function shall add new participants to a loan
-    (Optional feature idea: Check if user already registered)
+    Function to add new users to a loan, checks if user has been added before
     */
     function addUserToLoan (uint _loanId, address _account) public onlyRegistrar(_loanId) returns (uint){
         //  Require should work as follows: Check if uint mapped to account address is zero, if e.g. 1, an address can't be added twice
