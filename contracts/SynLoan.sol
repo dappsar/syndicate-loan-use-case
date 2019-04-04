@@ -1,8 +1,11 @@
 pragma solidity ^0.5.2;
 
+// necessary because some functions return structs
+pragma experimental ABIEncoderV2;
+
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.1.6.1
+version 0.1.8
 creator: Marcel Jackisch
 */
 
@@ -11,6 +14,8 @@ contract SynLoanData {
     
     uint public loanId;     // supposed to be a unique number
 
+    LoanData[] public loans;
+    
     struct LoanData {
         string name;                        // Name of  the Loan
         uint id;                            // Loan ID
@@ -18,36 +23,33 @@ contract SynLoanData {
         address registeringParty;           // to record in struct who created the loan --> make array 
         string purpose;             
         uint regTime;                           // UNIX Timestamp
-        mapping (address => uint) userToId;     // Gets local id belonging to an address in loan
+        mapping (address => uint) userToId;     // Gets local user id belonging (mapped to) an address in loan
         uint[] loanAmounts;                     // corresponding to participants
         bool[] approvalStatus;                  // Array to store approvals
+        address[] userList; 
         uint8 numOfUsers; 
     }
 
 /*
 Struct user defines key data of participants such as banks and businesses -
 */
-    struct user {
+    struct userData {
         string name;
         string role;        // Borrower or Lender
         address account;    
     }
 
-    user[] public users;      // Public array of all participants in dApp/Smart Contract
+    // Check if array really necessary
+    userData[] public users;      // Public array of all participants in dApp/Smart Contract
     
     // Dictionary to find account data
-    mapping (address => user) addressToUser; 
+    mapping (address => userData) addressToUserData; 
 
     // Map a loan id to an account address of user
     mapping (uint => address) loanToRegistrar; 
 
     // counts the amount of loans belonging to the address
     mapping (address => uint) userLoanCount;
-
-    // mapping (address => uint) userLoanList; 
-
-
-    LoanData[] public loans;
 
 
     /*
@@ -62,18 +64,35 @@ Struct user defines key data of participants such as banks and businesses -
     Function shall add new participants to a loan
     (Optional feature idea: Check if user already registered)
     */
-    function addUserToLoan (uint _loanId, address _account) public onlyRegistrar(_loanId) {
-        //     Does it need to check if user has previously been added?
+    function addUserToLoan (uint _loanId, address _account) public onlyRegistrar(_loanId) returns (uint){
+        //  Require should work as follows: Check if uint mapped to account address is zero, if e.g. 1, an address can't be added twice
+        // Problem: First user (Registrar has userId 0, therefore, could be added twice 
+        require(loans[_loanId].userToId[_account] == 0, "User already exists in loan");
         uint userNum = loans[_loanId].numOfUsers++;
+        // Adds user to mapping
         loans[_loanId].userToId[_account] = userNum;
+        // Pushes address to userList array (to retrieve all users, iterate)
+        loans[_loanId].userList.push(_account);
+        
+        // Let size of arrays that correspond with users grow in size
+        loans[_loanId].approvalStatus.length++;
+        loans[_loanId].loanAmounts.length++;
+        return userNum;
     }
 
     /*
     Registration of User Accounts
     */
     function registerUser (string memory _name, string memory _role) public {
+
+        // Require arguments, otherwise ghost users possible
+        
         // Self-registration: adds Userdata to user array
-        users.push(user(_name, _role, msg.sender));
+        // users.push(userData(_name, _role, msg.sender));
+        
+         // Self-registration: Mapping
+        addressToUserData[msg.sender] = userData(_name, _role, msg.sender);
+
     }
 
 
@@ -90,10 +109,11 @@ Struct user defines key data of participants such as banks and businesses -
         ln.registeringParty = msg.sender;
         ln.purpose = _purpose;
         ln.regTime = now;
-        // push and store returned index in arrSize
-        uint arrSize = loans.push(ln);
-        // Set first address (registrator to user=0 of loan)
-        loans[arrSize - 1].userToId[msg.sender] = 0;
+        
+        loans.push(ln);
+        
+        // Add loan creator himself
+        addUserToLoan(loanId, msg.sender);
         loanId++;
     }
 
@@ -125,23 +145,47 @@ Approves Loan: each participant of Loan can give his approval
 
     function approveLoan(uint _id) public  {
         uint userId = loans[_id].userToId[msg.sender];
-        // I think population of the array this way might not work
         loans[_id].approvalStatus[userId] = true;
     }
 
 /*
-Helper function to retrieve from mapping inside struct
-    */
+Helper function to retrieve UserId from mapping inside struct
+ */
     function getUserToId(uint256 _id, address _address) public view returns (uint256) {
         return loans[_id].userToId[_address];
     }
+    
+ /*
+Helper function to retrieve List of all registered Addresses in Loan 
+Add: Their position / id
+ */   
+    function getUsersInLoan (uint256 _loanId) public view returns (address[] memory, uint) {
+        address[] memory addrArr = loans[_loanId].userList;
+        uint userCount = loans[_loanId].numOfUsers;
+        return (addrArr, userCount);
+    }
+    
+    
+    function getAddressToUser(address _address) public view returns (userData memory) {
+        return addressToUserData[_address];
+    }
+    
+ /*
+Helper function to retrieve approval status array
+ */   
+    function getApprovalStatus(uint256 _id) public view returns (bool[] memory) {
+        bool[] memory array = loans[_id].approvalStatus; // approvalStatus is a bool array in a struct array 
+        return array;
+    }
+    
+
 
 /*
 Get the length of the loan array
 */
     function getArrLength() public view returns (uint256)
     {
-        return loans.length;
+        return (loans.length) ;
     }
 
 
