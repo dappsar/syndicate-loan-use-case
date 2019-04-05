@@ -176,6 +176,7 @@ Add: Their position / id
     
     function getAddressToUser(address _address) public view returns (userData memory) {
         return addressToUserData[_address];
+        
     }
     
  /*

@@ -119,6 +119,7 @@ async function logLoans() {
                 revisionNumber: loan.revisionNumber,
                 state: 'review',
                 approvalStatus: approvals,
+                userId: userId,
             };
             console.log('Logging SC loans: key: '+ bc_key);
 

@@ -219,6 +219,15 @@ function loadLoan(htmlObject) {
         // $('#loanDate').val(loanObj.date);        
         $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
+        if (loanObj.approvalStatus[loanObj.userId]) {
+            $('#user_1').prop('checked', true);
+        }
+        else 
+        {
+            $('#user_1').prop('checked', false);
+        }
+
+
     }
     else {
         alert(`Error: Loan (${activeLoanId}) not found in your browser storage`);
