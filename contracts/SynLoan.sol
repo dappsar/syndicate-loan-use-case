@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.1.8
+version 0.1.8.5
 creator: Marcel Jackisch
 */
 
@@ -125,8 +125,10 @@ Here, all the other data like loan amount, start date and other conditions shall
         public onlyRegistrar(_id)
     {
         loans[_id].name = _name;
-        loans[_id].revisionNumber++;
         loans[_id].purpose = _purpose;
+
+        loans[_id].revisionNumber++;
+        resetApprovals(_id);
     }
 
  /*
@@ -142,9 +144,16 @@ Possibility to delete loan
 Approves Loan: each participant of Loan can give his approval
 */
 
-    function approveLoan(uint _id) public  {
-        uint userId = loans[_id].userToId[msg.sender];
-        loans[_id].approvalStatus[userId] = true;
+    function approveLoan(uint _loanId) public  {
+        uint userId = loans[_loanId].userToId[msg.sender];
+        loans[_loanId].approvalStatus[userId] = true;
+    }
+
+
+    function resetApprovals(uint _loanId) internal {
+        for (uint i=0; i < approvalStatus.length; i++) {
+            loans[_loanId].approvalStatus[i] = false;
+        }
     }
 
 /*
@@ -172,12 +181,11 @@ Add: Their position / id
  /*
 Helper function to retrieve approval status array
  */   
-    function getApprovalStatus(uint256 _id) public view returns (bool[] memory) {
-        bool[] memory array = loans[_id].approvalStatus; // approvalStatus is a bool array in a struct array 
+    function getApprovalStatus(uint256 _loanId) public view returns (bool[] memory) {
+        bool[] memory array = loans[_loanId].approvalStatus; // approvalStatus is a bool array in a struct array 
         return array;
     }
     
-
 
 /*
 Get the length of the loan array

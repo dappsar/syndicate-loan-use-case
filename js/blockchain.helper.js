@@ -37,5 +37,10 @@ function getLoansByUser(address) {
 
 // Retrieves approval status array
 function getApprovalStatus(loanId)  {
-    return storeContract.methods.getLoansByUser(address).call();  
+    return storeContract.methods.getApprovalStatus(loanId).call(); 
+}
+
+// Retrieves userId in a loan
+function getUserToId(loanId, address) {
+    return storeContract.methods.getUserToId(loanId, address).call(); 
 }

@@ -105,6 +105,7 @@ const updateLoan = (name, purpose, registeringParty, date) => {
 //     });
 // }
 
+// Function: UI
 var deleteFromSidePanel = (_id) => {
     $(`li[data-storage-key="${_id}"`).remove();
 }
@@ -114,7 +115,8 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
 
     // Sets data-storage-key dependent on loan object type (local or from smart contract)
     // date is either the current or from smart contract storage
-    var loanIdAttr;
+
+    var loanIdAttr; // For identification in attributes
     if (type == 'bc')
     {
         loanIdAttr = 'bc_'+_loanId;
@@ -128,7 +130,7 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
     }
 
     $(".appplication_section ul").prepend(
-        `<li class="active" data-storage-key="${loanIdAttr}">
+        `<li data-storage-key="${loanIdAttr}">
             <div class="lists"><h4>${_loanName}</h4>
                 <div class="status">
                 <p>Waiting for review${bc_info}</p>
@@ -139,9 +141,7 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
         </li>`);
 
         // Triggers clicking on the created / loaded loan
-        $('.appplication_section ul li.active').trigger('click');
-
-    
+       // $('.appplication_section ul li.active').trigger('click');
 }
 
 
@@ -340,9 +340,15 @@ let appendComment = (comment, user) => {
 // MJ: Function returns date as string, option: full, with month name, or regular
 getDateInFormat = (format, timestamp) => {
 
-    if (format == 'full') {
-
+    if (timestamp) {
         var today = new Date(timestamp*1000);
+    }
+    else {
+        var today = new Date();
+    }
+
+
+    if (format == 'full') {
         var dd = today.getDate();
         var yyyy = today.getFullYear();
         var month = monthNames[today.getMonth()];
@@ -351,8 +357,6 @@ getDateInFormat = (format, timestamp) => {
     }
 
     else {
-
-       var today = new Date();
        var dd = today.getDate();
        var yyyy = today.getFullYear();
        var mm = today.getMonth()+1;

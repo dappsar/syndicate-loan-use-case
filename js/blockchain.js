@@ -95,40 +95,46 @@ async function logLoans() {
         // loading the loan object from Blockchain
         const loan = await retrieveLoan(loanIdsByUser[i]);
 
-            // Set key to store loan in sessionStorage
-            var bc_key = 'bc_' + loan.id;
+        // Set key to store loan in sessionStorage
+        var bc_key = 'bc_' + loan.id;
 
-            // Retrieves all keys from the key-value browser storage (e.g. id_1)
-            sessionKeys = Object.keys(sessionStorage);
+        const approvals = await getApprovalStatus(i);
+        console.log(approvals); 
 
-            // Check if key (object) already exists
-            if (!sessionKeys.includes(bc_key)) {
-                // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
-                var bc_loan = {
-                    name: loan.name,
-                    id: loan.id,
-                    purpose: loan.purpose,
-                    date: loan.regTime,
-                    registeringParty: loan.registeringParty,
-                    revisionNumber: loan.revisionNumber,
-                    state: 'review',
-                    approvalStatus: loan
-                };
-                console.log('Logging SC loans: key: '+ bc_key);
+        const userId = await getUserToId(i, userAccount);
+        console.log(userId);
 
-                // INFO: not yet functional due to SC version
-                // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
-                //     console.log('This loan is yours');
-                // }
-                // else {
-                //     console.log('This loan isnt yours');
-                // }
+        // Retrieves all keys from the key-value browser storage (e.g. id_1)
+        sessionKeys = Object.keys(sessionStorage);
 
-                //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
-                sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
+        // Check if key (object) already exists
+        if (!sessionKeys.includes(bc_key)) {
+            // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
+            var bc_loan = {
+                name: loan.name,
+                id: loan.id,
+                purpose: loan.purpose,
+                date: loan.regTime,
+                registeringParty: loan.registeringParty,
+                revisionNumber: loan.revisionNumber,
+                state: 'review',
+                approvalStatus: approvals,
+            };
+            console.log('Logging SC loans: key: '+ bc_key);
 
-                addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
-            } // end if
+            // INFO: not yet functional due to SC version
+            // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
+            //     console.log('This loan is yours');
+            // }
+            // else {
+            //     console.log('This loan isnt yours');
+            // }
+
+            //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
+            sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
+
+            addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
+        } // end if
     }
 }
 
@@ -254,13 +260,12 @@ function writeLoan() {
         return;
     }
 
-    txNotifyUI();
-
     window.web3 = new Web3(ethereum);
 
     // Function that returns default account and sends Tx
     const fn = async () => {
         try {
+            txNotifyUI();
             const myAccounts = await web3.eth.getAccounts();
 
             storeContract = new web3.eth.Contract(storeABI, storeAddress); 
@@ -291,8 +296,11 @@ function writeLoan() {
 } // End setNumber
 
 
-/* 
-Functionality regarding the User Interface (UI)
+
+
+
+/*  
+   Functionality regarding the User Interface (UI)  
 */
 
 function printAddress(_address) {
@@ -303,14 +311,13 @@ function printAddress(_address) {
     userAccount = _address;
 }
 
-
+// Notification currently popping up in History Panel
 function txNotifyUI() {
     alert("Sending Transaction on Ropston Network...");
     $('#tx-status').text('Sending transaction to the Blockchain Network');
     $('#tx-date').text(getDateInFormat('full'));
     $('#tx-status').closest('li').removeClass('d-none');
 }
-
 
 // Prints Network to Front-End (Header) and reacts dynamically to changes
 function printNetwork () {
@@ -342,5 +349,4 @@ function printNetwork () {
             ($('#bc_network').html("Unkown <span class=\"warning\"> - Please switch to Ropston - </span>"));
             }
         })
-
 }
