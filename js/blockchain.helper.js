@@ -45,6 +45,20 @@ function getUserToId(loanId, address) {
     return storeContract.methods.getUserToId(loanId, address).call(); 
 }
 
+// returns address array and number of all users
 function getUsersInLoan(loanId) {
     return storeContract.methods.getUsersInLoan(loanId).call();
+}
+
+function retrieveLoan(id) {
+    return storeContract.methods.loans(id).call();
+}
+
+function retrieveUserData(_address) {
+    return storeContract.methods.addressToUserData(_address).call();
+}
+
+// Store the data of all users in object
+function storeUserData() {
+    
 }

@@ -6,15 +6,15 @@ console.log('Syndicate Loan dApp MVP sucessfully loaded: \n version 0.1.4')
 
 
 // Arrays for Dropdown menus
-var select_arr = ['Borrower', 'Seller', 'Confident']
-var select_arr2 = ['Client', 'Bank#1', 'Bank#2']
+var select_arr = ['Lender', 'Borrower'];
+var select_arr2 = ['Client', 'Bank#1', 'Bank#2'];
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
 
 // Clear browser storage for testing purposes
-localStorage ? localStorage.clear() : console.log('No local storage to be cleared');
+// localStorage ? localStorage.clear() : console.log('No local storage to be cleared');
 sessionStorage.clear();
 
 // Loan Overview: Here you selected the loans from the left panel / column
@@ -40,23 +40,28 @@ $('#approval_status').hide();
 
 // Object Literal Factory Function
 // Function: DataStorage / Logic  
-const createLoan = (name, id, purpose, state, registeringParty, date) => {
+const createLoan = (name, id, purpose, state, registeringParty, date, addresses, approvalStatus) => {
     return {
         name,
         id,
         purpose,
         state, //e.g. in Review
         registeringParty,
-        date
+        date,
+        addresses,
+        approvalStatus,
     }
 }
 
 // Create and store sample loans for users to show
 // Function: Logic
 function createSampleLoans() {
-    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', '0x', '1/23/2019');
-    id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0x', '2/21/2019');
-    id_s3 = createLoan('Exhibition Center East', 'id_s3', 'Building the foundations', 'review', '0x', '3/2/2019');
+    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1/23/2019',
+     ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [true, false]);
+    id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff', '2/21/2019',
+     ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [true, false]);
+    id_s3 = createLoan('Exhibition Center East', 'id_s3', 'Building the foundations', 'review', '0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '3/2/2019',
+     ['0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [false, false]);
     sessionStorage.setItem(`id_s1`, JSON.stringify(id_s1));
     sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
     sessionStorage.setItem(`id_s3`, JSON.stringify(id_s3));
@@ -244,7 +249,7 @@ function loadParties() {
 
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
     addr = loanObj.addresses;
-    
+
     // Add check to see if user is YOU
     for (i = 0; i < addr.length; i++) {
         info = "";
@@ -419,7 +424,7 @@ var submitFormData = () => {
     userObj.firstName = $('#firstName').val();
     userObj.lastName = $('#lastName').val();
     
-    sessionStorage.setItem($('#signUpAddress').val(), JSON.stringify(userObj));
+    localStorage.setItem($('#signUpAddress').val(), JSON.stringify(userObj));
 }
 
 // // MJ: Signup page: Consider complete rewrite soon

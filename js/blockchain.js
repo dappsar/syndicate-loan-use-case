@@ -117,8 +117,8 @@ async function logLoans() {
         if (!sessionKeys.includes(bc_key)) {
             // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
             var bc_loan = {
-                name: loan.name,
                 id: loan.id,
+                name: loan.name,
                 purpose: loan.purpose,
                 date: loan.regTime,
                 registeringParty: loan.registeringParty,
@@ -156,7 +156,7 @@ function updateLoanOnChain() {
     console.log(activeLoan);
     console.log('Loading loan with id: ' + activeLoanId);
 
-    // Updates Loan in Browser-Storage
+    // Updates Loan in Browser-Storage according to form values
     updateLoan();
 
     // Check if Form fields have really been updated
@@ -191,7 +191,7 @@ function updateLoanOnChain() {
             console.log('Info: Calling updateLoan() on Smart Contract: ' + storeAddress); 
             // console.log(storeContract);
 
-            storeContract.methods.updateLoan(_name, _id, _purpose)
+            storeContract.methods.updateLoan(_id,_name, _purpose)
             .send({from: myAccounts[0]})
             .on("receipt", function(receipt) {
              $('#tx-status').text('Transaction confirmed');
@@ -207,18 +207,6 @@ function updateLoanOnChain() {
         }
     }
     fn(); // call send to contract 
-
-
-}
-
-
-function retrieveLoan(id) {
-    return storeContract.methods.loans(id).call();
-}
-
-function retrieveLoanUser(_loanId, _address) {
-
-
 }
 
 // Function to approve current (activeLoanId) Loan
@@ -305,12 +293,9 @@ function writeLoan() {
 
 
 
-
-
 /*  
-   Functionality regarding the User Interface (UI)  
+   From here: Functionality regarding the User Interface (UI)  
 */
-
 function printAddress(_address) {
     $('.bc_address').val(_address);
     $('.bc_address').html(_address);
