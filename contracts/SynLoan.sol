@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.1.8.5
+version 0.1.9
 creator: Marcel Jackisch
 */
 
@@ -66,9 +66,10 @@ Struct user defines key data of participants such as banks and businesses -
     function addUserToLoan (uint _loanId, address _account) public onlyRegistrar(_loanId) returns (uint){
         //  Require should work as follows: Check if uint mapped to account address is zero, if e.g. 1, an address can't be added twice
         // Problem: First user (Registrar has userId 0, therefore, could be added twice 
+        // Standard value of mapping = 0, not 'undefined'
         require(loans[_loanId].userToId[_account] == 0, "User already exists in loan");
         uint userNum = loans[_loanId].numOfUsers++;
-        // Adds user to mapping
+        // Adds user to mapping (analog to incremented numOfUsers)
         loans[_loanId].userToId[_account] = userNum;
         // Pushes address to userList array (to retrieve all users, iterate)
         loans[_loanId].userList.push(_account);
@@ -151,7 +152,8 @@ Approves Loan: each participant of Loan can give his approval
 
 
     function resetApprovals(uint _loanId) internal {
-        for (uint i=0; i < approvalStatus.length; i++) {
+        uint n = loans[_loanId].approvalStatus.length;
+        for (uint i=0; i < n; i++) {
             loans[_loanId].approvalStatus[i] = false;
         }
     }
@@ -165,7 +167,7 @@ Helper function to retrieve UserId from mapping inside struct
     
  /*
 Helper function to retrieve List of all registered Addresses in Loan 
-Add: Their position / id
+Add: Their position / id (index of array == userId?)
  */   
     function getUsersInLoan (uint256 _loanId) public view returns (address[] memory, uint) {
         address[] memory addrArr = loans[_loanId].userList;

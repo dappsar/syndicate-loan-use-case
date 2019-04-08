@@ -98,11 +98,17 @@ async function logLoans() {
         // Set key to store loan in sessionStorage
         var bc_key = 'bc_' + loan.id;
 
-        const approvals = await getApprovalStatus(i);
-        console.log(approvals); 
+        const approvalArray = await getApprovalStatus(i);
+        console.log(approvalArray); 
 
+        // a check based on comparing userAccount (address) with array could achieve the same
         const userId = await getUserToId(i, userAccount);
         console.log(userId);
+
+        const usersInLoanArray_ = await getUsersInLoan(i);
+        const usersInLoanArray = usersInLoanArray_[0];
+        console.log(usersInLoanArray);
+
 
         // Retrieves all keys from the key-value browser storage (e.g. id_1)
         sessionKeys = Object.keys(sessionStorage);
@@ -118,7 +124,8 @@ async function logLoans() {
                 registeringParty: loan.registeringParty,
                 revisionNumber: loan.revisionNumber,
                 state: 'review',
-                approvalStatus: approvals,
+                approvalStatus: approvalArray,
+                addresses: usersInLoanArray,
                 userId: userId,
             };
             console.log('Logging SC loans: key: '+ bc_key);

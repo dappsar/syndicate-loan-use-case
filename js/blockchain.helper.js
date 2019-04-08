@@ -44,3 +44,7 @@ function getApprovalStatus(loanId)  {
 function getUserToId(loanId, address) {
     return storeContract.methods.getUserToId(loanId, address).call(); 
 }
+
+function getUsersInLoan(loanId) {
+    return storeContract.methods.getUsersInLoan(loanId).call();
+}

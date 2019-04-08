@@ -44,7 +44,7 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.50/packages/web3/src/Web3.js"></script> -->
 
 </head>
-<body onload="console.log('body onload called');" >
+<body>
     <div class="container-fluid">
         <header>
             <nav>
@@ -532,23 +532,12 @@
  <!------------- Right Column ------------>
                 
                 <div class="col-sm-4 no-padding">
-                    <div class="approval">
+                    <div class="approval " id="approval_status">
                         <h3>Approval Status</h3>
 
                         <div class="approval_parent">
                             <div class="approval_check">
-                                <div class="form-group">
-                                    <input type="checkbox" id="user_1" disabled>
-                                    <label for="user_1">Bank #1 (You)</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" id="user_2" disabled> 
-                                    <label for="user_2">Bank #2</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" id="user_3" disabled>
-                                    <label for="user_3">Client</label>
-                                </div>
+                                <!-- Here, users are added when loans are loaded -->
                             </div>
                         </div>
                     </div>
