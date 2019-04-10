@@ -157,11 +157,11 @@ function updateLoanOnChain() {
     console.log('Loading loan with id: ' + activeLoanId);
 
     // Updates Loan in Browser-Storage according to form values
-    updateLoan();
+    updateLoanInBrowser();
 
     // Check if Form fields have really been updated
     // if (tempLoan !== activeLoan) {
-    //     updateLoan();
+    //     updateLoanInBrowser();
     // }
     // else {
     //     alert("Your loan has not been changed");
@@ -191,7 +191,7 @@ function updateLoanOnChain() {
             console.log('Info: Calling updateLoan() on Smart Contract: ' + storeAddress); 
             // console.log(storeContract);
 
-            storeContract.methods.updateLoan(_id,_name, _purpose)
+            storeContract.methods.updateLoan(_id, _name, _purpose)
             .send({from: myAccounts[0]})
             .on("receipt", function(receipt) {
              $('#tx-status').text('Transaction confirmed');
@@ -238,7 +238,7 @@ async function approveLoan() {
 function writeLoan() {
 
     // Updates Loan in Browser-Storage
-    updateLoan();
+    updateLoanInBrowser();
 
     // Load active loan from JSON in Storage
     activeLoan = returnActiveLoan();

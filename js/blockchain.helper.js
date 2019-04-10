@@ -58,9 +58,9 @@ function retrieveUserData(_address) {
     return storeContract.methods.addressToUserData(_address).call();
 }
 
-// Retrieves the length of the loans array
+// Retrieves the length of the user array
 function getUserArrLength() {
-    return storeContract.methods.getArrLength().call();
+    return storeContract.methods.getUserArrLength().call();
 }
 
 // Store the data of all users in object

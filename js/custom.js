@@ -81,7 +81,7 @@ var activeLoanId;
 
 // Function to Update Loan Object (Save Changes from form fields) 
 // Function: Logic
-const updateLoan = (name, purpose, registeringParty, date) => {
+const updateLoanInBrowser = (name, purpose, registeringParty, date) => {
     alert('Saving changes to browser storage');
     // Load loan from array
     console.log('Saving loan with id: ' + activeLoanId);
@@ -170,7 +170,8 @@ var addItem = () => {
         loanName = "unnamed loan";
     }
     // Add functionality to pass Blockchain Address
-    const newLoan = createLoan(loanName, tempLoanId, undefined, 'review', userAccount, getDateInFormat());  
+    unixtime = Math.floor(Date.now() / 1000);
+    const newLoan = createLoan(loanName, tempLoanId, undefined, 'review', userAccount, unixtime);  
     sessionStorage.setItem(activeLoanId, JSON.stringify(newLoan));
 
     // call function that adds loan to UI side panel
@@ -200,6 +201,7 @@ function loadLoan(htmlObject) {
     $('#writeToChain').show();
     $('#updateToChain').hide();
     $('.approval_check').empty();
+    $('#loan_users').empty();
     
     activeLoanId = htmlObject.getAttribute("data-storage-key");
 
@@ -248,32 +250,47 @@ function loadLoan(htmlObject) {
 function loadParties() {
 
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
-    addr = loanObj.addresses;
 
-    // Add check to see if user is YOU
-    for (i = 0; i < addr.length; i++) {
-        info = "";
+    // Check case that loan in creation has not any addresses
+    try {
+        if (!loanObj.addresses) throw "Error: No addresses in loan object found"
 
-        if (i == loanObj.userId) {
-            info = "(You)";
+        addr = loanObj.addresses;
+
+        // Add check to see if user is YOU
+        for (i = 0; i < addr.length; i++) {
+            info = "";
+
+            if (i == loanObj.userId) {
+                info = "(You)";
+            }
+            // Add users to UI Approval Status Panel 
+            $('.approval_check').append(` 
+            <div class="form-group">
+                <input type="checkbox" id="user_${i}" title="${addr[i]}" disabled>
+                <label for="user_${i}" title="${addr[i]}">User ${i} ${info}</label>
+            </div>
+            `)
+            $('#loan_users').append(`
+            <div class="involved_selection">
+            <div class="form-group">
+                <input type="radio" id="user_${i}" title="${addr[i]}" name="radio-group">
+                <label for="user_${i}" title="${addr[i]}">User ${i} ${info}</label>
+            </div>
+            `);
+
+            if (loanObj.approvalStatus[i] == true) {
+                $(`#user_${i}`).prop('checked', true);
+            }
+            else {
+                $(`#user_${i}`).prop('checked', false);
+            }
         }
-        $('.approval_check').append(` 
-        <div class="form-group">
-            <input type="checkbox" id="user_${i}" title="${addr[i]}" disabled>
-            <label for="user_1" title="${addr[i]}">User ${i} ${info}</label>
-        </div>
-        `)
-
-        if (loanObj.approvalStatus[i] == true) {
-            $(`#user_${i}`).prop('checked', true);
-        }
-        else {
-            $(`#user_${i}`).prop('checked', false);
-        }
-
+    }
+    catch (error) {
+        console.log(error);
     }
 }
-
 
 
 // MJ: Doing bunch of stuff, seemingly mostly for UI functionality
