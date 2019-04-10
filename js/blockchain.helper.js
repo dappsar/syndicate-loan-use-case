@@ -40,6 +40,16 @@ function getApprovalStatus(loanId)  {
     return storeContract.methods.getApprovalStatus(loanId).call(); 
 }
 
+
+function retrieveLoan(id) {
+    return storeContract.methods.loans(id).call();
+}
+
+function retrieveUserData(_address) {
+    return storeContract.methods.addressToUserData(_address).call();
+}
+
+
 // Retrieves userId in a loan
 function getUserToId(loanId, address) {
     return storeContract.methods.getUserToId(loanId, address).call(); 
@@ -48,14 +58,6 @@ function getUserToId(loanId, address) {
 // returns address array and number of all users
 function getUsersInLoan(loanId) {
     return storeContract.methods.getUsersInLoan(loanId).call();
-}
-
-function retrieveLoan(id) {
-    return storeContract.methods.loans(id).call();
-}
-
-function retrieveUserData(_address) {
-    return storeContract.methods.addressToUserData(_address).call();
 }
 
 // Retrieves the length of the user array
@@ -73,4 +75,12 @@ function storeUserData() {
         }
         sessionStorage.setItem(key, JSON.stringify(userObj));
     }
+}
+
+// Add user to loan (onlyRegistrar) --> .send tx
+function addUserToLoan() {
+    var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+    _address = $('#input_add_user').val();
+    console.log(_address);
+    storeContract.methods.addUserToLoan(loanObj.id, _address).send({from: userAccount});
 }

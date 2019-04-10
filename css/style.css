@@ -233,13 +233,22 @@ body {
     filter: alpha(opacity=100)
 }
 
+.modal .infotext {
+    padding: 10px;
+    text-align: center;
+    width: 90%;
+}
+
+
 #update .form-label-group,
-#applicationModal .form-label-group {
+#applicationModal .form-label-group,
+#add_loanuser_modal .form-label-group {
     margin: 36px 40px 40px 40px
 }
 
 #update .update_btn,
-#applicationModal .update_btn {
+#applicationModal .update_btn,
+#add_loanuser_modal .update_btn {
     text-align: center
 }
 

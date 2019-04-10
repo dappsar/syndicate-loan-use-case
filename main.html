@@ -298,8 +298,12 @@
                                                     <span class="valueHolder1" name="RoleType"></span>
                                                 </div>
                                             </div> -->
+                                            <div class="col-sm-12 mb-3 text-center">
+                                                <button data-toggle="modal" data-target="#add_loanuser_modal" type="button"
+                                                class="primary_btn">Add a new user</button>
+                                            </div>
                                             <div class="involved_selection" id="loan_users">
-                                                
+
                                                 <!-- Here, usersare added when loans are loaded -->
 
                                             </div>
@@ -505,7 +509,7 @@
                                 </div>
 
                                 <div class="reject_btn status_reject">
-                                    <a data-toggle="modal" onclick="alert('\'Reject\' is non-functional as of today'); rejectApplication()" data-target="#exampleModalCenter" href="">Reject
+                                    <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
                                         application</a>
                                 </div>
 
@@ -687,6 +691,42 @@
             </div>
         </div>
     </div>
+
+    <!------------- Add new User to loan modal ------------>
+
+    <!-- Modal -->
+    <div class="modal fade" id="add_loanuser_modal" tabindex="-1" role="dialog" aria-labelledby="add_loanuser_modal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="dialog">
+
+            <!-- Modal Content -->
+            <div class="modal-content">
+                <div class="modal_para">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3>Add a new user (participant) to the loan</h3>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-label-group float-lab">
+                        <input type="text" id="input_add_user" class="form-control"
+                            placeholder_x="Account address of user" name="input_add_user" required>
+                            <label for="input_add_user">Address</label>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            </button>
+                        <!-- <label for="comment">Term Sheet</label> -->
+                    </div>
+                    <div class="infotext">If you are the creator (registrar) of the loan, you can add new participants (e.g. other lenders)</div>
+                    <div class="update_btn"><button onclick="addUserToLoan()" type="button" data-dismiss="modal"
+                            class="primary_btn">Add User</button></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     
     <!------------- Comment Details Modal ------------>
 

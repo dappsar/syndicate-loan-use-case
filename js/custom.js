@@ -223,7 +223,8 @@ function loadLoan(htmlObject) {
         $('.heading_text').html(loanObj.name);
         $('#loanName').val(loanObj.name);
         $('#loanPurpose').val(loanObj.purpose);
-        $('#loanId').val(loanObj.id);
+        if (activeLoanId.includes('bc'))  $('#loanId').val(loanObj.id);
+        if (!activeLoanId.includes('bc'))  $('#loanId').val("Not yet registered on Blockchain");
         $('#state').val(loanObj.state);
         $('#revisionNumber').val(loanObj.revisionNumber);
         $('#regParty').val(loanObj.registeringParty);
