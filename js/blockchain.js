@@ -147,66 +147,55 @@ async function logLoans() {
 }
 
 
-function updateLoanOnChain() {
+async function updateLoanOnChain() {
 
-    txNotifyUI();
+    // Updates Loan in Browser-Storage according to current form values
+    updateLoanInBrowser();
 
     // Load active loan from JSON in Storage
     activeLoan = returnActiveLoan();
     console.log(activeLoan);
-    console.log('Loading loan with id: ' + activeLoanId);
 
-    // Updates Loan in Browser-Storage according to form values
-    updateLoanInBrowser();
+    // Load loan from blockchain
+    console.log('Loading loan from blockchain (id/key): ' + activeLoanId);
+    const loanBc = await retrieveLoan(activeLoanId);
 
     // Check if Form fields have really been updated
-    // if (tempLoan !== activeLoan) {
-    //     updateLoanInBrowser();
-    // }
-    // else {
-    //     alert("Your loan has not been changed");
-    //     return;
-    // }
-
-    
-    _name = activeLoan.name;
-    _id = activeLoan.id;
-    _purpose = activeLoan.purpose;
-    _date = activeLoan.date;
-
-
-    // if (!_name || !_purpose || !_date) {
-    //     alert('Some value have not been specified, aborting...');
-    //     return;
-    // }
-
-    window.web3 = new Web3(ethereum);
-
-    // Function that returns default account and sends Tx
-    const fn = async () => {
-        try {
-            const myAccounts = await web3.eth.getAccounts();
-
-            storeContract = new web3.eth.Contract(storeABI, storeAddress); 
-            console.log('Info: Calling updateLoan() on Smart Contract: ' + storeAddress); 
-            // console.log(storeContract);
-
-            storeContract.methods.updateLoan(_id, _name, _purpose)
-            .send({from: myAccounts[0]})
-            .on("receipt", function(receipt) {
-             $('#tx-status').text('Transaction confirmed');
-             console.log(receipt);
-            })
-            .on("error", function(error) {
-                // Do something to alert the user their transaction has failed
-                $("tx-status").text(error);
-            });
-        } 
-        catch (err) {
-            console.log(err);
-        }
+    if (activeLoan !== loanBc) {
+       _id = activeLoan.id;   
+       console.log(_id);
+       _name = activeLoan.name;
+       console.log(_name);
+       _purpose = activeLoan.purpose;
+       console.log(_purpose);
     }
-    fn(); // call send to contract 
+    else {
+        alert("Your loan has not been changed");
+        return;
+    }
+
+    // Make sure important values are specified
+    if (!_name || !_purpose ) {
+        alert('Some value have not been specified, aborting...');
+        return;
+    }
+
+    console.log('Info: Calling updateLoan() on Smart Contract: ' + storeAddress); 
+    console.log(storeContract);
+    txNotifyUI();
+
+    storeContract.methods.updateLoan(_name, _id, _purpose) // CHANGE WHEN CONTRACT IS UPDATED
+    .send({from: userAccount})
+    .on("receipt", function(receipt) {
+        $('#tx-status').text('Transaction confirmed');
+        console.log(receipt);
+    })
+    .on("error", function(error) {
+        // Do something to alert the user their transaction has failed
+        c
+        $("tx-status").text(error);
+    });
+
 }
 
 // Function to approve current (activeLoanId) Loan

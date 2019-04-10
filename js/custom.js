@@ -81,7 +81,8 @@ var activeLoanId;
 
 // Function to Update Loan Object (Save Changes from form fields) 
 // Function: Logic
-const updateLoanInBrowser = (name, purpose, registeringParty, date) => {
+const updateLoanInBrowser = () => {
+    // ### INCLUDE: Check if loan has changed
     alert('Saving changes to browser storage');
     // Load loan from array
     console.log('Saving loan with id: ' + activeLoanId);
@@ -94,9 +95,9 @@ const updateLoanInBrowser = (name, purpose, registeringParty, date) => {
     loanObj.purpose = $('#loanPurpose').val();
     loanObj.state = $('#state').val();
     loanObj.registeringParty = $('#regParty').val();
-    loanObj.date = $('#loanDate').val();
+    // loanObj.date = $('#loanDate').val();   // probably not necessary anymore
 
-    // Stores Updates to session storage
+    // saves changes to loan object in session storage
     sessionStorage.setItem(activeLoanId, JSON.stringify(loanObj));
 }
 
