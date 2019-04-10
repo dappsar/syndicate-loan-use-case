@@ -5,14 +5,14 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.1.9.5
+version 0.1.9.8
 creator: Marcel Jackisch
 */
 
 
 contract SynLoanData {
     
-    uint public loanId;         // a unique incrementing number to identify loans
+    uint public loanId;     // supposed to be a unique number
 
     LoanData[] public loans;
     
@@ -28,7 +28,6 @@ contract SynLoanData {
         bool[] approvalStatus;                  // Array to store approvals
         address[] userList; 
         uint8 numOfUsers;
-        bool valid;
     }
 
 /*
@@ -65,10 +64,17 @@ Struct user defines key data of participants such as banks and businesses -
     Function to add new users to a loan, checks if user has been added before
     */
     function addUserToLoan (uint _loanId, address _account) public onlyRegistrar(_loanId) returns (uint){
-        //  Require should work as follows: Check if uint mapped to account address is zero, if e.g. 1, an address can't be added twice
-        // Problem: First added user (Registrar) has userId 0, therefore, could be added twice 
-        // Standard value of mapping = 0, not 'undefined'
+        /*
+         Require should work as follows: Check if uint mapped to account address is zero, if e.g. 1, an address can't be added twice
+        Problem: First added user (Registrar) has userId 0, therefore, could be added twice 
+        Standard value of mapping = 0, not 'undefined'
+        
+        A workaround could be to add a unique number to the struct, so the loan creator can register himself just once.
+        
         require(loans[_loanId].userToId[_account] == 0 && _account != msg.sender, "User already exists in loan");
+        */
+        require(bytes32 (loans[_loanId].userToId[_account]).length == 0, "User already exists in loan!");
+        
         uint userNum = loans[_loanId].numOfUsers++;
         // Adds user to mapping of loan (analog to incremented numOfUsers)
         loans[_loanId].userToId[_account] = userNum;
@@ -89,9 +95,11 @@ Struct user defines key data of participants such as banks and businesses -
     function selfRegistration (string memory _name, string memory _role) public {
 
         // Conditions to ensure no ghost users are registered
+        require(bytes (_name).length > 0, "Name must be specified"); 
+        
         require(keccak256(abi.encode(_role)) == keccak256(abi.encode("lender")) || keccak256(abi.encode(_role)) == keccak256(abi.encode("borrower")), "Role must match 'lender' or 'borrower");
-        // require(addressToUserData[msg.sender].name == 0);
-        require(keccak256(abi.encode(_name)) != keccak256(abi.encode("")), "Name must be specified") ;
+        require(bytes (addressToUserData[msg.sender].name).length == 0, "User has been registered before");
+
         
         // Consider if populating array is necessary 
         userData memory u;
@@ -129,7 +137,7 @@ Struct user defines key data of participants such as banks and businesses -
         
         loans.push(ln);
         
-        // Add loan creator himself
+        // Add loan creator himself/herself
         addUserToLoan(loanId, msg.sender);
         loanId++;
     }
