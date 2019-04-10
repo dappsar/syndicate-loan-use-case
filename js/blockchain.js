@@ -156,23 +156,25 @@ async function updateLoanOnChain() {
     activeLoan = returnActiveLoan();
     console.log(activeLoan);
 
-    // Load loan from blockchain
+    // Load loan from blockchain (Necessary, only to check if differences exist)
     console.log('Loading loan from blockchain (id/key): ' + activeLoanId);
-    const loanBc = await retrieveLoan(activeLoanId);
+    const loanBc = await retrieveLoan(activeLoan.id);
 
-    // Check if Form fields have really been updated
-    if (activeLoan !== loanBc) {
-       _id = activeLoan.id;   
-       console.log(_id);
+    // Check if Form fields have really been updated (implementation difficult, and probaly unnecessary)
+    if (loanBc.name !== activeLoan.name || loanBc.purpose != activeLoan.purpose) {
+        console.log("Active loan has been changed");
        _name = activeLoan.name;
-       console.log(_name);
        _purpose = activeLoan.purpose;
-       console.log(_purpose);
     }
     else {
-        alert("Your loan has not been changed");
+        alert("Active loan has not been changed");
         return;
     }
+
+    // Here, pass all the updated fields for contract call
+    // _id = activeLoan.id;   
+    // _name = activeLoan.name;
+    // _purpose = activeLoan.purpose;
 
     // Make sure important values are specified
     if (!_name || !_purpose ) {
@@ -181,7 +183,7 @@ async function updateLoanOnChain() {
     }
 
     console.log('Info: Calling updateLoan() on Smart Contract: ' + storeAddress); 
-    console.log(storeContract);
+
     txNotifyUI();
 
     storeContract.methods.updateLoan(_name, _id, _purpose) // CHANGE WHEN CONTRACT IS UPDATED
@@ -195,7 +197,6 @@ async function updateLoanOnChain() {
         c
         $("tx-status").text(error);
     });
-
 }
 
 // Function to approve current (activeLoanId) Loan
