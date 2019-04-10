@@ -5,14 +5,14 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.1.9
+version 0.1.9.5
 creator: Marcel Jackisch
 */
 
 
 contract SynLoanData {
     
-    uint public loanId;     // supposed to be a unique number
+    uint public loanId;         // a unique incrementing number to identify loans
 
     LoanData[] public loans;
     
@@ -20,14 +20,15 @@ contract SynLoanData {
         uint id;                            // Loan ID
         string name;                        // Name of  the Loan
         uint revisionNumber;                // Shall increment with every update to the loan
-        address registeringParty;           // to record in struct who created the loan 
+        address registeringParty;           // to record in struct who created the loan --> make array 
         string purpose;             
         uint regTime;                           // UNIX Timestamp
         mapping (address => uint) userToId;     // Gets local user id belonging (mapped to) an address in loan
         uint[] loanAmounts;                     // corresponding to participants
         bool[] approvalStatus;                  // Array to store approvals
         address[] userList; 
-        uint8 numOfUsers; 
+        uint8 numOfUsers;
+        bool valid;
     }
 
 /*
@@ -69,7 +70,7 @@ Struct user defines key data of participants such as banks and businesses -
         // Standard value of mapping = 0, not 'undefined'
         require(loans[_loanId].userToId[_account] == 0 && _account != msg.sender, "User already exists in loan");
         uint userNum = loans[_loanId].numOfUsers++;
-        // Adds user to mapping (analog to incremented numOfUsers)
+        // Adds user to mapping of loan (analog to incremented numOfUsers)
         loans[_loanId].userToId[_account] = userNum;
         // Pushes address to userList array (to retrieve all users, iterate)
         loans[_loanId].userList.push(_account);
@@ -79,22 +80,38 @@ Struct user defines key data of participants such as banks and businesses -
         loans[_loanId].loanAmounts.length++;
         return userNum;
     }
+    
 
+    
     /*
-    Registration of User Accounts
-    */
-    function registerUser (string memory _name, string memory _role) public {
+    Self-Registration of a user account
+     */
+    function selfRegistration (string memory _name, string memory _role) public {
 
-        // Require arguments, otherwise ghost users possible
-        require(_role == 'lender' || _role == 'borrower' && _name);
-
-        // Self-registration: adds Userdata to user array
-        // users.push(userData(_name, _role, msg.sender));
+        // Conditions to ensure no ghost users are registered
+        require(keccak256(abi.encode(_role)) == keccak256(abi.encode("lender")) || keccak256(abi.encode(_role)) == keccak256(abi.encode("borrower")), "Role must match 'lender' or 'borrower");
+        // require(addressToUserData[msg.sender].name == 0);
+        require(keccak256(abi.encode(_name)) != keccak256(abi.encode("")), "Name must be specified") ;
         
-         // Self-registration: Mapping ---- (-1??)
-        addressToUserData[msg.sender] = userData(_name, _role, msg.sender);
+        // Consider if populating array is necessary 
+        userData memory u;
+        u.name = _name;
+        u.role = _role;
+        u.account = msg.sender;
+        users.push(u);
+    
+        // Self-registration: Mapping ---- (-1??)
+        addressToUserData[msg.sender] = u;
     }
 
+    // function getUserDataById(uint _usrId) public view returns(string memory) {
+    //     string memory name = string(users[_usrId].name);
+    //     return name;
+    // }
+    
+    function getUserDataByAddr(address _account) public view returns(userData memory) {
+        return addressToUserData[_account];
+    }
 
     function createLoan (string memory _name, string memory _purpose) public {
 
@@ -197,9 +214,16 @@ Struct user defines key data of participants such as banks and businesses -
     */
     function getArrLength() public view returns (uint256)
     {
-        return (loans.length) ;
+        return (loans.length);
     }
 
+    /*
+    Get the length of the user array
+    */
+    function getUserArrLength() public view returns (uint256)
+    {
+        return (users.length);
+    }
 
     /*
     The function should return an array with all the loans the user is involved in, disregarding any other permissioning like read-write requests

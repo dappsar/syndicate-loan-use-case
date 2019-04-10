@@ -2,8 +2,13 @@
 custom.js defines main functionality for User Interface and Browser Storage of Loans
 */
 
+// Start-up behavior
 console.log('Syndicate Loan dApp MVP sucessfully loaded: \n version 0.1.4')
 
+// Clear browser storage for testing purposes
+// localStorage ? localStorage.clear() : console.log('No local storage to be cleared');
+sessionStorage.clear();
+$('#approval_status').hide();
 
 // Arrays for Dropdown menus
 var select_arr = ['Lender', 'Borrower'];
@@ -13,9 +18,8 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
 
-// Clear browser storage for testing purposes
-// localStorage ? localStorage.clear() : console.log('No local storage to be cleared');
-sessionStorage.clear();
+
+
 
 // Loan Overview: Here you selected the loans from the left panel / column
 // #################### Does it need to be in .ready() ???? ##########################
@@ -33,10 +37,6 @@ $("body").on("click", ".appplication_section ul li", function () {
     $('#approval_status').show();
 });
 
-$('#approval_status').hide();
-
-
-
 
 // Object Literal Factory Function
 // Function: DataStorage / Logic  
@@ -45,7 +45,7 @@ const createLoan = (name, id, purpose, state, registeringParty, date, addresses,
         name,
         id,
         purpose,
-        state, //e.g. in Review
+        state,              // e.g. in Review
         registeringParty,
         date,
         addresses,

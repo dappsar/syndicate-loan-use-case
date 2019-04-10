@@ -6,3 +6,4 @@ node_modules
 
 .vscode
 .sass-cache
+out/linecount.txt
