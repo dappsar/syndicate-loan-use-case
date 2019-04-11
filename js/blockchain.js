@@ -89,11 +89,14 @@ async function logLoans() {
     // Looping through each loan-item of array 
     for (i = 0; i < loanIdsByUser.length; i++) {
         //console.log(retrieveLoan(i));
-        console.log('Logging SC loans: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
-
+        console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
 
         // loading the loan object from Blockchain
         const loan = await retrieveLoan(loanIdsByUser[i]);
+        if (loan.registeringParty.includes("0x000000000000")) {
+            console.log(`Loan ${i} was deleted`);
+            continue;
+        }
 
         // Set key to store loan in sessionStorage
         var bc_key = 'bc_' + loan.id;

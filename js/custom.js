@@ -259,6 +259,7 @@ function loadParties() {
 
         // Add check to see if user is YOU
         for (i = 0; i < addr.length; i++) {
+            // console.log("Approval Status:" + loanObj.approvalStatus[i]);
             info = "";
 
             if (i == loanObj.userId) {
@@ -271,11 +272,12 @@ function loadParties() {
                 <label for="user_${i}" title="${addr[i]}">User ${i} ${info}</label>
             </div>
             `)
+            // Add users to Involved Parties Tab 
             $('#loan_users').append(`
             <div class="involved_selection">
             <div class="form-group">
-                <input type="radio" id="user_${i}" title="${addr[i]}" name="radio-group">
-                <label for="user_${i}" title="${addr[i]}">User ${i} ${info}</label>
+                <input type="radio" id="pt_user_${i}" title="${addr[i]}" name="radio-group">
+                <label for="pt_user_${i}" title="${addr[i]}">User ${i} ${info}</label>
             </div>
             `);
 

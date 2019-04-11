@@ -90,7 +90,12 @@ function deleteLoan() {
         alert('The loan you are trying to delete is just a sample');
         return;
     }
-    storeContract.methods.deleteLoan(loanObj.id).send({from: userAccount});
+    txNotifyUI();
+    storeContract.methods.deleteLoan(loanObj.id).send({from: userAccount})
+    .on("receipt", function(receipt) {
+        $('#tx-status').text('Transaction confirmed');
+        console.log(receipt);
+    });
     // refreshSidePanel();
 }
 

@@ -112,6 +112,29 @@ Struct user defines key data of participants such as banks and businesses -
         addressToUserData[msg.sender] = u;
     }
 
+    /*
+    Registration of a user account by _anyone_ (public) 
+     */
+    function userRegistration (string memory _name, string memory _role, address _account) public {
+
+        // Conditions to ensure no ghost users are registered
+        require(bytes (_name).length > 0, "Name must be specified"); 
+
+        require(keccak256(abi.encode(_role)) == keccak256(abi.encode("lender")) || keccak256(abi.encode(_role)) == keccak256(abi.encode("borrower")), "Role must match 'lender' or 'borrower");
+        require(bytes (addressToUserData[_account].name).length == 0, "User has been registered before");
+
+
+        // Consider if populating array is necessary 
+        userData memory u;
+        u.name = _name;
+        u.role = _role;
+        u.account = _account;
+        users.push(u);
+
+        // Self-registration: Mapping ---- (-1??)
+        addressToUserData[_account] = u;
+    }
+
     // function getUserDataById(uint _usrId) public view returns(string memory) {
     //     string memory name = string(users[_usrId].name);
     //     return name;
