@@ -89,7 +89,7 @@ async function logLoans() {
     // Looping through each loan-item of array 
     for (i = 0; i < loanIdsByUser.length; i++) {
         //console.log(retrieveLoan(i));
-        console.log('Logging SC loans: for-loop: '+ i);
+        console.log('Logging SC loans: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
 
 
         // loading the loan object from Blockchain
@@ -98,14 +98,14 @@ async function logLoans() {
         // Set key to store loan in sessionStorage
         var bc_key = 'bc_' + loan.id;
 
-        const approvalArray = await getApprovalStatus(i);
+        const approvalArray = await getApprovalStatus(loanIdsByUser[i]);
         console.log(approvalArray); 
 
         // a check based on comparing userAccount (address) with array could achieve the same
-        const userId = await getUserToId(i, userAccount);
+        const userId = await getUserToId(loanIdsByUser[i], userAccount);
         console.log(userId);
 
-        const usersInLoanArray_ = await getUsersInLoan(i);
+        const usersInLoanArray_ = await getUsersInLoan(loanIdsByUser[i]);
         const usersInLoanArray = usersInLoanArray_[0];
         console.log(usersInLoanArray);
 
@@ -128,7 +128,7 @@ async function logLoans() {
                 addresses: usersInLoanArray,
                 userId: userId,
             };
-            console.log('Logging SC loans: key: '+ bc_key);
+            console.log('Storing loan under key: '+ bc_key);
 
             // INFO: not yet functional due to SC version
             // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
