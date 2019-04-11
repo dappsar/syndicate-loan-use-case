@@ -508,8 +508,8 @@
                                         class="ghost_btn">Approve</button>
                                 </div>
 
-                                <div class="reject_btn status_reject">
-                                    <a data-toggle="modal" onclick="rejectApplication()" data-target="#exampleModalCenter" href="">Reject
+                                <div class="reject_btn status_reject p-2">
+                                    <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject and delete loan
                                         application</a>
                                 </div>
 
@@ -627,11 +627,11 @@
             <div class="modal-content">
 
                 <div class="modal_para">
-                    <h3>Are you sure you want to reject the application?</h3>
+                    <h3>Are you sure you want to reject and delete the loan?</h3>
                 </div>
                 <div class="group_btns">
-                    <button type="button" class="primary_btn" aria-label="Close">Yes</button>
-                    <button type="button" class="ghost_btn" aria-label="Close">No</button>
+                    <button type="button" class="primary_btn" aria-label="Close" onclick="deleteLoan()">Yes</button>
+                    <button type="button" class="ghost_btn" data-dismiss="modal" aria-label="Close">No</button>
                 </div>
             </div>
         </div>

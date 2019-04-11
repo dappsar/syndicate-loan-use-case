@@ -82,3 +82,16 @@ function addUserToLoan() {
     console.log(_address);
     storeContract.methods.addUserToLoan(loanObj.id, _address).send({from: userAccount});
 }
+// Reject and delete loan, only registrar can call this function
+function deleteLoan() {
+    alert('Deleting loan on smart contract');
+    var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+    if(loanObj.id.includes("id_s")) {
+        alert('The loan you are trying to delete is just a sample');
+        return;
+    }
+    storeContract.methods.deleteLoan(loanObj.id).send({from: userAccount});
+    // refreshSidePanel();
+}
+
+
