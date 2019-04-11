@@ -5,14 +5,13 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.1.9.8
+version 0.2.0
 creator: Marcel Jackisch
 */
 
-
 contract SynLoanData {
     
-    uint public loanId;     // supposed to be a unique number
+    uint public loanId;     // A unique number that increments with every newly created loan
 
     LoanData[] public loans;
     
@@ -31,7 +30,7 @@ contract SynLoanData {
     }
 
 /*
-Struct user defines key data of participants such as banks and businesses -
+Struct user defines key data of participants such as banks and businesses
 */
     struct userData {
         string name;
@@ -68,12 +67,9 @@ Struct user defines key data of participants such as banks and businesses -
          Require should work as follows: Check if uint mapped to account address is zero, if e.g. 1, an address can't be added twice
         Problem: First added user (Registrar) has userId 0, therefore, could be added twice 
         Standard value of mapping = 0, not 'undefined'
-        
-        A workaround could be to add a unique number to the struct, so the loan creator can register himself just once.
-        
-        require(loans[_loanId].userToId[_account] == 0 && _account != msg.sender, "User already exists in loan");
         */
-        require(bytes32 (loans[_loanId].userToId[_account]).length == 0, "User already exists in loan!");
+
+        require(loans[_loanId].userToId[_account] == 0 && _account != msg.sender, "User already exists in loan");
         
         uint userNum = loans[_loanId].numOfUsers++;
         // Adds user to mapping of loan (analog to incremented numOfUsers)
@@ -87,7 +83,6 @@ Struct user defines key data of participants such as banks and businesses -
         return userNum;
     }
     
-
     
     /*
     Self-Registration of a user account
@@ -161,8 +156,19 @@ Struct user defines key data of participants such as banks and businesses -
         loans.push(ln);
         
         // Add loan creator himself/herself
-        addUserToLoan(loanId, msg.sender);
-        loanId++;
+        // addUserToLoan(loanId, msg.sender); // First fix the require, until then, below workaround
+        
+        uint userNum = loans[loanId].numOfUsers++;
+        // Adds user to mapping of loan (analog to incremented numOfUsers)
+        loans[loanId].userToId[msg.sender] = userNum;
+        // Pushes address to userList array (to retrieve all users, iterate)
+        loans[loanId].userList.push(msg.sender);
+        
+        // Let size of arrays that correspond with users grow in size
+        loans[loanId].approvalStatus.length++;
+        loans[loanId].loanAmounts.length++;
+        
+        loanId++; // Increment unique number
     }
 
 
