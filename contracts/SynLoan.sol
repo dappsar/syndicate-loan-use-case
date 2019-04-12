@@ -143,6 +143,9 @@ Struct user defines key data of participants such as banks and businesses
     //     return name;
     // }
     
+    /*
+    Helper function to retrieve data belonging to an address
+    */   
     function getUserDataByAddr(address _account) public view returns(userData memory) {
         return addressToUserData[_account];
     }
@@ -223,8 +226,8 @@ Struct user defines key data of participants such as banks and businesses
     /*
     Helper function to retrieve UserId from mapping inside struct
     */
-    function getUserToId(uint256 _id, address _address) public view returns (uint256) {
-        return loans[_id].userToId[_address];
+    function getUserToId(uint256 _loanId, address _address) public view returns (uint256) {
+        return loans[_loanId].userToId[_address];
     }
     
     /*
@@ -236,15 +239,7 @@ Struct user defines key data of participants such as banks and businesses
         uint userCount = loans[_loanId].numOfUsers;
         return (addrArr, userCount);
     }
-    
-    /*
-    Helper function to retrieve data belonging to an address
-    */   
-    function getAddressToUser(address _address) public view returns (userData memory) {
-        return addressToUserData[_address];
         
-    }
-    
     /*
     Helper function to retrieve approval status array
     */   

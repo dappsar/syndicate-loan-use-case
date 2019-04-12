@@ -83,12 +83,15 @@ Loads loans from blockchain and writes them as objects into browser storage
 async function logLoans() {
     // storeContract = new web3.eth.Contract(storeABI, storeAddress); 
 
+    // Refresh Current User List
+    retrieveUsers();
+
     // // Call function to get the length of the loan-array and pass it to for-loop
     const loanArrLength = await getArrLength();
     console.log(`Found ${loanArrLength} loans in Smart Contract`);
 
     const loanIdsByUser = await getLoansByUser(userAccount);
-    console.log(loanIdsByUser);
+    console.log(`Loans of this user: ${loanIdsByUser}`);
     console.log(loanIdsByUser.length);
     if (loanIdsByUser.length == 0) alert('You did not yet create any loans');
 
@@ -112,7 +115,7 @@ async function logLoans() {
 
         // a check based on comparing userAccount (address) with array could achieve the same
         const userId = await getUserToId(loanIdsByUser[i], userAccount);
-        console.log(userId);
+        console.log(`User ID in this loan: ${userId}`);
 
         const usersInLoanArray_ = await getUsersInLoan(loanIdsByUser[i]);
         const usersInLoanArray = usersInLoanArray_[0];
@@ -151,6 +154,7 @@ async function logLoans() {
             sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
 
             addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
+
         } // end if
     }
 }

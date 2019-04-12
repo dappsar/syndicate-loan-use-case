@@ -11,8 +11,10 @@ Note: Asynchronous JS functions are required in web3.js 1.x
 // var storeAddress = "0xdbaf48282120e0fAE89a447cbb7688fB35f68e61";     // Address of SC_v0.1.8
 var storeAddress = "0x0f203b23Cd02c9f35F3b75B58aC4d1B52e93d99A";     // Address of SC_v0.2.0
 
-
+// Currently active ethereum account
 var userAccount;
+// Array storing all users registered on contract
+var globalUserArray = [];
 
 // Loads loan (struct) from array 
 function retrieveLoan(id) {
@@ -47,7 +49,6 @@ function retrieveLoan(id) {
 function retrieveUserData(_address) {
     return storeContract.methods.addressToUserData(_address).call();
 }
-
 
 // Retrieves userId in a loan
 function getUserToId(loanId, address) {
@@ -97,6 +98,25 @@ function userRegistration(_name, _role, _account) {
 
 }
 
+// Retrieves userData struct from array
+function retrieveUser(i) {
+    return storeContract.methods.users(i).call();
+}
+
+
+async function retrieveUsers() {
+
+    const arrLenght = await getUserArrLength();
+    console.log(arrLenght);
+
+    for (i = 0; i < arrLenght; i++) {
+        // var user = {};
+        const user = await retrieveUser(i);
+        globalUserArray.push(user);
+
+    }
+    sessionStorage.setItem('users_bc', JSON.stringify(globalUserArray));
+}
 
 // Reject and delete loan, only registrar can call this function  [.send]
 function deleteLoan() {
