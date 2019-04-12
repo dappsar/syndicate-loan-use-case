@@ -83,9 +83,6 @@ Loads loans from blockchain and writes them as objects into browser storage
 async function logLoans() {
     // storeContract = new web3.eth.Contract(storeABI, storeAddress); 
 
-    // Refresh Current User List
-    retrieveUsers();
-
     // // Call function to get the length of the loan-array and pass it to for-loop
     const loanArrLength = await getArrLength();
     console.log(`Found ${loanArrLength} loans in Smart Contract`);
@@ -117,10 +114,8 @@ async function logLoans() {
         const userId = await getUserToId(loanIdsByUser[i], userAccount);
         console.log(`User ID in this loan: ${userId}`);
 
-        const usersInLoanArray_ = await getUsersInLoan(loanIdsByUser[i]);
-        const usersInLoanArray = usersInLoanArray_[0];
+        const usersInLoanArray = (await getUsersInLoan(loanIdsByUser[i]))[0];
         console.log(usersInLoanArray);
-
 
         // Retrieves all keys from the key-value browser storage (e.g. id_1)
         sessionKeys = Object.keys(sessionStorage);
@@ -157,6 +152,9 @@ async function logLoans() {
 
         } // end if
     }
+
+    // Refresh Current User List (when at top of function, stops for-loop after first iteration)
+    retrieveUsers();
 }
 
 
