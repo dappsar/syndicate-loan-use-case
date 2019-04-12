@@ -8,10 +8,11 @@ Note: Asynchronous JS functions are required in web3.js 1.x
 // var storeAddress = "0x25e74B41529C290dbEc47ab8E4fB067EB04d91E1";     // Address of SC_v0.1.2
 // var storeAddress = "0x42453BFd68e07b3563d7a8Fc89bEA260c9f5a501";     // Address of SC_v0.1.4
 // var storeAddress = "0x188D78ebED7E6C47B17d1Ba29cb741d67BFaA9B6";     // Address of SC_v0.1.6
-   var storeAddress = "0xdbaf48282120e0fAE89a447cbb7688fB35f68e61";     // Address of SC_v0.1.8
+// var storeAddress = "0xdbaf48282120e0fAE89a447cbb7688fB35f68e61";     // Address of SC_v0.1.8
+var storeAddress = "0x0f203b23Cd02c9f35F3b75B58aC4d1B52e93d99A";     // Address of SC_v0.2.0
+
 
 var userAccount;
-
 
 // Loads loan (struct) from array 
 function retrieveLoan(id) {
@@ -75,14 +76,29 @@ function storeUserData() {
     }
 }
 
-// Add user to loan (onlyRegistrar) --> .send tx
+// Add user to loan (onlyRegistrar) [.send]
 function addUserToLoan() {
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
     _address = $('#input_add_user').val();
     console.log(_address);
     storeContract.methods.addUserToLoan(loanObj.id, _address).send({from: userAccount});
 }
-// Reject and delete loan, only registrar can call this function
+
+// Registration of a new user account. Can be executed by _anyone_ (public)   [.send]
+function userRegistration(_name, _role, _account) {
+
+    _name = $('#modal_add_userName').val();
+    _role = $('input[name=radios_role]:checked').val();
+    _account = $('#modal_add_userAddr').val();
+    console.log(`Registering User: name=${_name}, role=${_role},  address=${_account}`);
+
+    txNotifyUI();
+    storeContract.methods.userRegistration(_name, _role, _account).send({from: userAccount});
+
+}
+
+
+// Reject and delete loan, only registrar can call this function  [.send]
 function deleteLoan() {
     alert('Deleting loan on smart contract');
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));

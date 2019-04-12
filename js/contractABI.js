@@ -3,43 +3,6 @@ storeABI = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_loanId",
-				"type": "uint256"
-			},
-			{
-				"name": "_account",
-				"type": "address"
-			}
-		],
-		"name": "addUserToLoan",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_id",
-				"type": "uint256"
-			}
-		],
-		"name": "approveLoan",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
 				"name": "_name",
 				"type": "string"
 			},
@@ -55,57 +18,54 @@ storeABI = [
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
+		"constant": true,
+		"inputs": [],
+		"name": "getUserArrLength",
+		"outputs": [
 			{
-				"name": "_id",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "deleteLoan",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
+		"constant": true,
+		"inputs": [],
+		"name": "getArrLength",
+		"outputs": [
 			{
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"name": "_role",
-				"type": "string"
+				"name": "",
+				"type": "uint256"
 			}
 		],
-		"name": "registerUser",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
-			{
-				"name": "_name",
-				"type": "string"
-			},
 			{
 				"name": "_id",
 				"type": "uint256"
 			},
 			{
-				"name": "_purpose",
-				"type": "string"
+				"name": "_address",
+				"type": "address"
 			}
 		],
-		"name": "updateLoan",
-		"outputs": [],
+		"name": "getUserToId",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -142,32 +102,40 @@ storeABI = [
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
 				"name": "_id",
 				"type": "uint256"
 			}
 		],
-		"name": "getApprovalStatus",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool[]"
-			}
-		],
+		"name": "deleteLoan",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"constant": true,
-		"inputs": [],
-		"name": "getArrLength",
-		"outputs": [
+		"inputs": [
 			{
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"name": "users",
+		"outputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "role",
+				"type": "string"
+			},
+			{
+				"name": "account",
+				"type": "address"
 			}
 		],
 		"payable": false,
@@ -187,6 +155,39 @@ storeABI = [
 			{
 				"name": "",
 				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_account",
+				"type": "address"
+			}
+		],
+		"name": "getUserDataByAddr",
+		"outputs": [
+			{
+				"components": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "role",
+						"type": "string"
+					},
+					{
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "",
+				"type": "tuple"
 			}
 		],
 		"payable": false,
@@ -217,26 +218,79 @@ storeABI = [
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_role",
+				"type": "string"
+			}
+		],
+		"name": "selfRegistration",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_loanId",
+				"type": "uint256"
+			}
+		],
+		"name": "approveLoan",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_role",
+				"type": "string"
+			},
+			{
+				"name": "_account",
+				"type": "address"
+			}
+		],
+		"name": "userRegistration",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [
 			{
 				"name": "_id",
 				"type": "uint256"
 			},
 			{
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "getUserToId",
-		"outputs": [
+				"name": "_name",
+				"type": "string"
+			},
 			{
-				"name": "",
-				"type": "uint256"
+				"name": "_purpose",
+				"type": "string"
 			}
 		],
+		"name": "updateLoan",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -257,6 +311,48 @@ storeABI = [
 		"constant": true,
 		"inputs": [
 			{
+				"name": "_loanId",
+				"type": "uint256"
+			}
+		],
+		"name": "getApprovalStatus",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_loanId",
+				"type": "uint256"
+			},
+			{
+				"name": "_account",
+				"type": "address"
+			}
+		],
+		"name": "addUserToLoan",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
 				"name": "",
 				"type": "uint256"
 			}
@@ -264,12 +360,12 @@ storeABI = [
 		"name": "loans",
 		"outputs": [
 			{
-				"name": "name",
-				"type": "string"
-			},
-			{
 				"name": "id",
 				"type": "uint256"
+			},
+			{
+				"name": "name",
+				"type": "string"
 			},
 			{
 				"name": "revisionNumber",
@@ -290,33 +386,6 @@ storeABI = [
 			{
 				"name": "numOfUsers",
 				"type": "uint8"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "users",
-		"outputs": [
-			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "role",
-				"type": "string"
-			},
-			{
-				"name": "account",
-				"type": "address"
 			}
 		],
 		"payable": false,

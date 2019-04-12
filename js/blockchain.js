@@ -67,7 +67,12 @@ function startdApp() {
 
     printNetwork();
     printAddress(userAccount);
+
+    storeContract = new web3.eth.Contract(storeABI, storeAddress); 
+    console.log(storeContract);
 }
+
+
 
 
 
@@ -76,7 +81,7 @@ Function called on clicking button "Retrieve Loans from Smart Contract"
 Loads loans from blockchain and writes them as objects into browser storage 
 */
 async function logLoans() {
-    storeContract = new web3.eth.Contract(storeABI, storeAddress); 
+    // storeContract = new web3.eth.Contract(storeABI, storeAddress); 
 
     // // Call function to get the length of the loan-array and pass it to for-loop
     const loanArrLength = await getArrLength();
@@ -85,6 +90,7 @@ async function logLoans() {
     const loanIdsByUser = await getLoansByUser(userAccount);
     console.log(loanIdsByUser);
     console.log(loanIdsByUser.length);
+    if (loanIdsByUser.length == 0) alert('You did not yet create any loans');
 
     // Looping through each loan-item of array 
     for (i = 0; i < loanIdsByUser.length; i++) {
@@ -163,7 +169,7 @@ async function updateLoanOnChain() {
     console.log('Loading loan from blockchain (id/key): ' + activeLoanId);
     const loanBc = await retrieveLoan(activeLoan.id);
 
-    // Check if Form fields have really been updated (implementation difficult, and probaly unnecessary)
+    // Check if form fields have really been updated (implementation difficult, and probaly unnecessary)
     if (loanBc.name !== activeLoan.name || loanBc.purpose != activeLoan.purpose) {
         console.log("Active loan has been changed");
        _name = activeLoan.name;
@@ -175,7 +181,6 @@ async function updateLoanOnChain() {
     }
 
     // Here, pass all the updated fields for contract call
-    // _id = activeLoan.id;   
     // _name = activeLoan.name;
     // _purpose = activeLoan.purpose;
 
@@ -185,19 +190,22 @@ async function updateLoanOnChain() {
         return;
     }
 
-    console.log('Info: Calling updateLoan() on Smart Contract: ' + storeAddress); 
-
+    console.log('Info: Calling updateLoan() on Smart Contract: '); 
     txNotifyUI();
-
-    storeContract.methods.updateLoan(_name, _id, _purpose) // CHANGE WHEN CONTRACT IS UPDATED
+    // Execute function on EVM:
+    storeContract.methods.updateLoan(activeLoan.id, _name, _purpose) // CHANGE WHEN CONTRACT IS UPDATED
     .send({from: userAccount})
     .on("receipt", function(receipt) {
         $('#tx-status').text('Transaction confirmed');
         console.log(receipt);
+        
+        // Delete locally stored loan from SessionStorage and retrieve from BC
+        sessionStorage.removeItem(activeLoanId);
+        deleteFromSidePanel(activeLoanId);
+        logLoans();
     })
     .on("error", function(error) {
         // Do something to alert the user their transaction has failed
-        c
         $("tx-status").text(error);
     });
 }
@@ -205,18 +213,21 @@ async function updateLoanOnChain() {
 // Function to approve current (activeLoanId) Loan
 async function approveLoan() {
 
-    const myAccounts = await web3.eth.getAccounts();
     // Load active loan object from browser storage
     activeLoan = returnActiveLoan();
 
-    txNotifyUI()
+    txNotifyUI();
+    // Execute function on EVM:
     storeContract.methods.approveLoan(activeLoan.id)
-    .send({from: myAccounts[0]})
+    .send({from: userAccount})
     .on("receipt", function(receipt) {
-     $('#tx-status').text('Transaction confirmed');
-     console.log(receipt);
-     activeLoan.approvalStatus = true;   // Must be an array 
+        $('#tx-status').text('Transaction confirmed');
+        console.log(receipt);
 
+        // Delete locally stored loan from SessionStorage and retrieve from BC
+        sessionStorage.removeItem(activeLoanId);
+        deleteFromSidePanel(activeLoanId);
+        logLoans();
     })
     .on("error", function(error) {
         // Do something to alert the user their transaction has failed
@@ -224,11 +235,9 @@ async function approveLoan() {
     });
 }
 
-
-
 // Function to create loan on smart contract and write it to the blockchain
 // Function: Logic (+some UI)
-function writeLoan() {
+async function writeLoan() {
 
     // Updates Loan in Browser-Storage
     updateLoanInBrowser();
@@ -236,9 +245,6 @@ function writeLoan() {
     // Load active loan from JSON in Storage
     activeLoan = returnActiveLoan();
     console.log(activeLoan);
-
-    console.log('Info: Writing Loan with id: ' + activeLoanId);
-
 
     _name = activeLoan.name;
     _purpose = activeLoan.purpose;
@@ -249,41 +255,31 @@ function writeLoan() {
         return;
     }
 
-    window.web3 = new Web3(ethereum);
+    try {
+        console.log('Info: Writing Loan with id: ' + activeLoanId);
+        txNotifyUI();
+        console.log('Info: Calling createLoan() on Smart Contract: '); 
 
-    // Function that returns default account and sends Tx
-    const fn = async () => {
-        try {
-            txNotifyUI();
-            const myAccounts = await web3.eth.getAccounts();
-
-            storeContract = new web3.eth.Contract(storeABI, storeAddress); 
-            console.log('Info: Calling createLoan() on Smart Contract: ' + storeAddress); 
-            // console.log(storeContract);
-
-            storeContract.methods.createLoan(_name, _purpose)
-            .send({from: myAccounts[0]})
-            .on("receipt", function(receipt) {
-             $('#tx-status').text('Transaction confirmed');
-             console.log(receipt);
-             // Delete locally stored loan from SessionStorage and retrieve from BC
-             sessionStorage.removeItem(activeLoanId);
-             deleteFromSidePanel(activeLoanId);
-             logLoans();
-            })
-            .on("error", function(error) {
-                // Do something to alert the user their transaction has failed
-                $("tx-status").text(error);
-            });
-        } 
-        catch (err) {
-            console.log(err);
-        }
+        // Execute function on EVM:
+        storeContract.methods.createLoan(_name, _purpose)
+        .send({from: userAccount})
+        .on("receipt", function(receipt) {
+            $('#tx-status').text('Transaction confirmed');
+            console.log(receipt);
+            // Delete locally stored loan from SessionStorage and retrieve from BC
+            sessionStorage.removeItem(activeLoanId);
+            deleteFromSidePanel(activeLoanId);
+            logLoans();
+        })
+        .on("error", function(error) {
+            // Do something to alert the user their transaction has failed
+            $("tx-status").text(error);
+        });
+    } 
+    catch (err) {
+        console.log(err);
     }
-
-    fn(); // call send to contract 
-} // End setNumber
-
+}
 
 
 /*  

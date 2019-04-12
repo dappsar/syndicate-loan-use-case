@@ -199,6 +199,7 @@ function returnActiveLoan() {
 function loadLoan(htmlObject) {
     $('#writeToChain').show();
     $('#updateToChain').hide();
+    $('#btn_approveLoan').hide();
     $('.approval_check').empty();
     $('#loan_users').empty();
     
@@ -207,6 +208,7 @@ function loadLoan(htmlObject) {
     if (activeLoanId.includes('bc')) {
         $('#writeToChain').hide();
         $('#updateToChain').show();
+        $('#btn_approveLoan').show();
     }
 
     // load loan from storage
@@ -276,7 +278,7 @@ function loadParties() {
             $('#loan_users').append(`
             <div class="involved_selection">
             <div class="form-group">
-                <input type="radio" id="pt_user_${i}" title="${addr[i]}" name="radio-group">
+                <input type="radio" id="pt_user_${i}" title="${addr[i]}" name="radios_involved">
                 <label for="pt_user_${i}" title="${addr[i]}">User ${i} ${info}</label>
             </div>
             `);

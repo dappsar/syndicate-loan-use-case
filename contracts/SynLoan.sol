@@ -29,6 +29,14 @@ contract SynLoanData {
         uint8 numOfUsers;
     }
 
+into struct:
+mapping (address => mapping (uint => bool) addressAssociated;
+
+into function:
+require(_account != address(0));
+require(!addressAssociated[_account][_loanId] && msg.sender != _account);
+addressAssociated[msg.sender][_loanId] = true;
+
 /*
 Struct user defines key data of participants such as banks and businesses
 */
