@@ -260,14 +260,24 @@ function loadLoan(htmlObject) {
 //     }
 // }
 
-function loadUserDetail () {
 
-}
+// Loads user data into form when selected in dropdown [Involved Parties Tab]
+function loadUserDetail (address) {
+
+    if (userMap[address]) {
+        userName = userMap[address].name;
+        userRole = userMap[address].role;
+    }
+    else {
+        userName = "Unregistered";
+        userRole = "Unknown";
+    }
+
+    $('#pt_address').val(address).closest('div').addClass('input_float_lbl');
+    $('#pt_role').val(userRole).closest('div').addClass('input_float_lbl');
+    $('#pt_name').val(userName).closest('div').addClass('input_float_lbl');
 
 
-$("#pt_user_1").on('click', function(e){
-    alert('test');
-});
 
 // $('input[name=radios_involved]:radio').on('click', function(e){
 //     console.log('test');
@@ -304,8 +314,6 @@ function loadParties() {
                 info = "(You)";
             }
 
-            // userName = checkRegisteredUser(addr[i])[0];
-            // userRole = checkRegisteredUser(addr[i])[1];
             console.log("addr[i] :" + addr[i]);
             console.log(typeof addr[i]);
             // console.log("userMap[addr[i]].name " + userMap[addr[i]].name);
@@ -317,11 +325,6 @@ function loadParties() {
                 userName = "Unregistered";
                 userRole = "";
             }
-            //  = (userMap[addr[i]].name != undefined || !userMap[addr[i]]) ? userMap[addr[i]].name : "unregistered";
-
-            // // console.log(userName);
-            // userRole = (userMap[addr[i]].role != undefined) ? userMap[addr[i]].role : "unregistered";
-
 
             // Add users to UI Approval Status Panel 
             $('.approval_check').append(` 
@@ -330,23 +333,10 @@ function loadParties() {
                 <label for="user_${i}" title="${addr[i]}">${userRole}: ${userName} (${i}) ${info}</label>
             </div>
             `)
-
-            // // Add users to Involved Parties Tab 
-            // $('#loan_users').append(`
-            // <div class="involved_selection">
-            // <div class="form-group">
-            //     <input type="radio" id="pt_user_${i}" title="${addr[i]}" name="radios_involved">
-            //     <label for="pt_user_${i}" title="${addr[i]}">${userRole}: ${userName} (${i}) ${info}</label>
-            // </div>
-            // `);
-
-            // loanUsersArr[i] = userName;
-            
                       
             menuItems += `<div class="dropOption" id="pt_user_${i}" title="${addr[i]}">${userName} (${i})</div>`;
             $('#involved_dropdown').html(menuItems);
             
-
             if (loanObj.approvalStatus[i] == true) {
                 $(`#user_${i}`).prop('checked', true);
             }
@@ -361,7 +351,6 @@ function loadParties() {
     }
 }
 
-
 function createDropdown() {
     var drop = $('#signUpDropDown');
     var i;
@@ -372,18 +361,6 @@ function createDropdown() {
     htmlString += '</div>';
     drop.append(htmlString);
 }
-
-// Wrote shorter and simpler (-_> Delete)
-// function createLoanUsersDropDown() {
-//     var drop = $('.customDropdown.dd_role');
-//     var i;
-//     var htmlString = '<div class="dropContainer">';
-//     for (i = 0; i < loanUsersArr.length; i += 1) {
-//         htmlString += '<div class="dropOption">' + loanUsersArr[i] + '</div>';
-//     }
-//     htmlString += '</div>';
-//     drop.append(htmlString);
-// }
 
 // MJ: Doing bunch of stuff, seemingly mostly for UI functionality
 $(document).ready(function () {
@@ -400,7 +377,8 @@ $(document).ready(function () {
         $(this).toggleClass('select_border');
         if (target.hasClass('dropOption')) {
             $(this).find('span.valueHolder1').text(target.text());
-            $(this).children('span.valueHolder').addClass('float-label')
+            loadUserDetail(target.attr("title"));
+            $(this).children('span.valueHolder').addClass('float-label input_float_lbl');
         }
     })
 
@@ -418,24 +396,8 @@ $(document).ready(function () {
 
         } else {
             $(this).parent().addClass('input_float_lbl');
-
         }
     })
-
-    // // Loan Overview: Here you selected the loans from the left panel / column
-    // // #################### Does it need to be in .ready() ???? ##########################
-
-    // $("body").on("click", ".appplication_section ul li", function () {
-    //     $('.appplication_section ul li.active').removeClass('active');
-    //     $(this).closest('li').addClass('active');      
-
-    //     // passes list element with data- attribute to loadLoan()
-    //     loadLoan(this);
-    //     $('#form-wrapper').removeClass('d-none');
-    //     $('#select-info').hide();     
-    // });
-
-
 
     $('.date_picker').datepicker({
         autoclose: true

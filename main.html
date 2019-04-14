@@ -298,15 +298,11 @@
                                         <form>
                                             <div class="form-label-group">
                                                 <div class="customDropdown dd_role" >
-                                                    <span class="valueHolder">Select Participant</span>
+                                                    <span class="valueHolder input_float_lbl float-lab" >Select Participant</span>
                                                     <span class="valueHolder1" name="part_selection"></span>
                                                     <div class="dropContainer" id="involved_dropdown"></div>
                                                 </div>
                                             </div> 
-                                            <div class="col-sm-12 mb-3 text-center">
-                                                <button data-toggle="modal" data-target="#add_loanuser_modal" type="button"
-                                                class="primary_btn">Add a new user</button>
-                                            </div>
                                             <div class="involved_selection" id="loan_users">
 
                                                 <!-- Here, usersare added when loans are loaded -->
@@ -319,21 +315,25 @@
                                                 </div> -->
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="Role" name="Role" class="form-control"
+                                                <input type="text" id="pt_role" name="pt_role" class="form-control"
                                                     required disabled>
-                                                <label for="Role">Role</label>
+                                                <label for="pt_role">Role</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="InName" name="Name" class="form-control"
+                                                <input type="text" id="pt_name" name="pt_name" class="form-control"
                                                     required disabled>
-                                                <label for="InName">Name</label>
+                                                <label for="pt_name">Name</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="InAddress" name="address" class="form-control"
+                                                <input type="text" id="pt_address" name="pt_address" class="form-control"
                                                     required disabled>
-                                                <label for="InAddress">Address</label>
+                                                <label for="pt_address">Address</label>
                                             </div>
                                         </form>
+                                        <div class="col-sm-12 mb-3 text-center">
+                                        <button data-toggle="modal" data-target="#add_loanuser_modal" type="button"
+                                        class="primary_btn">Add a new user</button>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -511,7 +511,7 @@
                                 <div class="group_btns">
 
                                     <button data-toggle_x="modal" data-target="#update" type="button"
-                                        class="primary_btn"
+                                        class="ghost_btn"
                                         onclick="updateLoanInBrowser()">Save Changes</button>
 
                                     <button onclick="approveLoan()" type="button"
@@ -524,10 +524,10 @@
                                 </div>
 
                                 <button data-toggle="modal" id="writeToChain" type="button" onclick="writeLoan()"
-                                class="primary_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Create Loan on Blockchain</button>
+                                class="ghost_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Create Loan on Blockchain</button>
                                 
                                 <button data-toggle="modal" id="updateToChain" type="button" onclick="updateLoanOnChain()"
-                                class="primary_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Update Loan on Blockchain</button>
+                                class="ghost_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Update Loan on Blockchain</button>
                             </div>                      
                     </div>
 
