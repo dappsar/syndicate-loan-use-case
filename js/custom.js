@@ -58,11 +58,11 @@ function createSampleLoans() {
     id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', 
     '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1/23/2019',
      ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xe972A893147F7C74176091da2d4848E6F6A9A076', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], 
-     [true, ,false, false]);
+     [true, , true , false]);
     id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff', '2/21/2019',
-     ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [true, false]);
+     ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [false, false]);
     id_s3 = createLoan('Exhibition Center East', 'id_s3', 'Building the foundations', 'review', '0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '3/2/2019',
-     ['0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [false, false]);
+     ['0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [false, true]);
     sessionStorage.setItem(`id_s1`, JSON.stringify(id_s1));
     sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
     sessionStorage.setItem(`id_s3`, JSON.stringify(id_s3));
@@ -281,26 +281,6 @@ function loadLoan(htmlObject) {
 //     }
 // }
 
-
-// Loads user data into form when selected in dropdown [Involved Parties Tab]
-function loadUserDetail (address) {
-
-    if (userMap[address]) {
-        userName = userMap[address].name;
-        userRole = userMap[address].role;
-    }
-    else {
-        userName = "Unregistered";
-        userRole = "Unknown";
-    }
-
-    $('#pt_address').val(address).closest('div').addClass('input_float_lbl');
-    $('#pt_role').val(userRole).closest('div').addClass('input_float_lbl');
-    $('#pt_name').val(userName).closest('div').addClass('input_float_lbl');
-
-};
-
-
 // Load all the parties belonging to the current Loan
 // Function: UI
 function loadParties() {
@@ -343,7 +323,7 @@ function loadParties() {
             $('.approval_check').append(` 
             <div class="form-group">
                 <input type="checkbox" id="user_${i}" title="${addr[i]}" disabled>
-                <label for="user_${i}" title="${addr[i]}">${userRole}: ${userName} (${i}) ${info}</label>
+                <label for="user_${i}" title="${addr[i]}">${userName} (${i}) ${info}</label>
             </div>
             `)
                       
@@ -363,6 +343,28 @@ function loadParties() {
         console.log(error);
     }
 }
+
+
+
+// Loads user data into form when selected in dropdown [Involved Parties Tab]
+function loadUserDetail (address) {
+
+    if (userMap[address]) {
+        userName = userMap[address].name;
+        userRole = userMap[address].role;
+    }
+    else {
+        userName = "Unregistered";
+        userRole = "Unknown";
+    }
+
+    $('#pt_address').val(address).closest('div').addClass('input_float_lbl');
+    $('#pt_role').val(userRole).closest('div').addClass('input_float_lbl');
+    $('#pt_name').val(userName).closest('div').addClass('input_float_lbl');
+
+};
+
+
 
 function createDropdown() {
     var drop = $('#signUpDropDown');
