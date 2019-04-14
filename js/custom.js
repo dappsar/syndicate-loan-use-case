@@ -50,11 +50,15 @@ const createLoan = (name, id, purpose, state, registeringParty, date, addresses,
     }
 }
 
+var userMap = {};
+
 // Create and store sample loans for users to show
 // Function: Logic
 function createSampleLoans() {
-    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1/23/2019',
-     ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [true, false]);
+    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', 
+    '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1/23/2019',
+     ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xe972A893147F7C74176091da2d4848E6F6A9A076', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], 
+     [true, ,false, false]);
     id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff', '2/21/2019',
      ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [true, false]);
     id_s3 = createLoan('Exhibition Center East', 'id_s3', 'Building the foundations', 'review', '0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '3/2/2019',
@@ -62,9 +66,17 @@ function createSampleLoans() {
     sessionStorage.setItem(`id_s1`, JSON.stringify(id_s1));
     sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
     sessionStorage.setItem(`id_s3`, JSON.stringify(id_s3));
+
+    userMap["0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7"] = {name: 'Berlin Investment Bank', role: 'lender'};
+    userMap["0xe972A893147F7C74176091da2d4848E6F6A9A076"] = {name: 'Infra Bank', role: 'lender'};
+    userMap["0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff"] = {name: 'Albrecht Real Estate', role: 'borrower'};
+
+    // For Sample Loan Toggle: standard behavior, samples hidden
     $('#sample_Loan1').hide();
     $('#sample_Loan2').hide();
     $('#sample_Loan3').hide();
+
+
 }
 // Reconsider page onLoad behavior: Should sample loans be auto-loaded or after pressing button?
 createSampleLoans();
@@ -201,6 +213,16 @@ function loadLoan(htmlObject) {
     $('#btn_approveLoan').hide();
     $('.approval_check').empty();
     $('#loan_users').empty();
+
+    // Hides user data input fields in Involved Parties tab when loan is loaded
+    $('#user_data_fields').hide();
+
+    // $('#pt_address').val('').hide();
+    // $('label[for=pt_address').hide();
+    // $('#pt_role').val('').hide();
+    // $('label[for=pt_role').hide();    
+    // $('#pt_name').val('').hide();
+    // $('label[for=pt_name').hide();
     
     activeLoanId = htmlObject.getAttribute("data-storage-key");
 
@@ -249,7 +271,6 @@ function loadLoan(htmlObject) {
 
 // function checkRegisteredUser(_address) {
 
-
 //     for (i = 0; i <globalUserArray.length; i++)  {
 //         if (globalUserArray[i].account == _address) {
 //             return [globalUserArray[i].name, globalUserArray[i].role];
@@ -277,15 +298,7 @@ function loadUserDetail (address) {
     $('#pt_role').val(userRole).closest('div').addClass('input_float_lbl');
     $('#pt_name').val(userName).closest('div').addClass('input_float_lbl');
 
-
-
-// $('input[name=radios_involved]:radio').on('click', function(e){
-//     console.log('test');
-// });
-
-$('label[for*=pt_user]').on('click', function(e){
-    console.log('test');
-});
+};
 
 
 // Load all the parties belonging to the current Loan
@@ -368,6 +381,7 @@ $(document).ready(function () {
     createDropdown();
     // createLoanUsersDropDown();
 
+    // Functionality for dropdown and loading user data (as of now conflicting with generic use (signup.html))
     $('.customDropdown').on('click', function (event) {
 
         var container = $(this).children('div.dropContainer');
@@ -378,6 +392,7 @@ $(document).ready(function () {
         if (target.hasClass('dropOption')) {
             $(this).find('span.valueHolder1').text(target.text());
             loadUserDetail(target.attr("title"));
+            $('#user_data_fields').show();
             $(this).children('span.valueHolder').addClass('float-label input_float_lbl');
         }
     })
@@ -440,13 +455,13 @@ let appendComment = (comment, user) => {
 // MJ: Function returns date as string, option: full, with month name, or regular
 getDateInFormat = (format, timestamp) => {
 
+    // check If UNIX timestamp is passed (e.g. for solidity date functions)
     if (timestamp) {
         var today = new Date(timestamp*1000);
     }
     else {
         var today = new Date();
     }
-
 
     if (format == 'full') {
         var dd = today.getDate();
@@ -515,8 +530,6 @@ calculateTotalAmount = () => {
     let total = (parseFloat(document.getElementById("loanAmount").value?document.getElementById("loanAmount").value:0) + parseFloat(document.getElementById("bank1").value?document.getElementById("bank1").value:0) + parseFloat(document.getElementById("bank2").value?document.getElementById("bank2").value:0))
     document.getElementById("Total_value").textContent = total + ' €';      //bind calculated value to UI
 }
-
-
 
 
 // custom file upload js 

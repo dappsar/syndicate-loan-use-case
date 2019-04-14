@@ -109,8 +109,6 @@ function storeUserData() {
     }
 }
 
-var userMap = {};
-
 // Store all user account objects in array (globalUserArray),  in sessionStorage and in mapping(userMap)
 async function retrieveUsers() {
     // So we can iterate through the user array on smart contract
@@ -122,7 +120,7 @@ async function retrieveUsers() {
         const currUser = await retrieveUser(i);
         globalUserArray.push(currUser);
         console.log(`logging users[i] object: ${currUser.name}`)
-        userMap[currUser.account] = {name: currUser.name, role: currUser.role,};
+        userMap[currUser.account] = {name: currUser.name, role: currUser.role};
 
     }
     sessionStorage.setItem('users_bc', JSON.stringify(globalUserArray));
