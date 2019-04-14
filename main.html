@@ -45,6 +45,7 @@
 
 </head>
 <body>
+
     <div class="container-fluid">
         <header>
             <nav>
@@ -295,12 +296,13 @@
                                     aria-labelledby="heading-B">
                                     <div class="loan_detail">
                                         <form>
-                                            <!-- <div class="form-label-group">
-                                                <div class="customDropdown dd_role">
-                                                    <span class="valueHolder">Role Type</span>
-                                                    <span class="valueHolder1" name="RoleType"></span>
+                                            <div class="form-label-group">
+                                                <div class="customDropdown dd_role" >
+                                                    <span class="valueHolder">Select Participant</span>
+                                                    <span class="valueHolder1" name="part_selection"></span>
+                                                    <div class="dropContainer" id="involved_dropdown"></div>
                                                 </div>
-                                            </div> -->
+                                            </div> 
                                             <div class="col-sm-12 mb-3 text-center">
                                                 <button data-toggle="modal" data-target="#add_loanuser_modal" type="button"
                                                 class="primary_btn">Add a new user</button>
@@ -311,10 +313,15 @@
 
                                             </div>
                                             <div class="form-label-group">
-                                                <div class="customDropdown">
+                                                <!-- <div class="customDropdown">
                                                     <span class="valueHolder">Role</span>
                                                     <span class="valueHolder1" name="Role"></span>
-                                                </div>
+                                                </div> -->
+                                            </div>
+                                            <div class="form-label-group float-lab">
+                                                <input type="text" id="Role" name="Role" class="form-control"
+                                                    required disabled>
+                                                <label for="Role">Role</label>
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="InName" name="Name" class="form-control"

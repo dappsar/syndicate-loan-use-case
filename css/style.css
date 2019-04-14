@@ -765,7 +765,7 @@ span.valueHolder1 {
     top: 55px;
     left: -1px;
     overflow-y: auto;
-    height: 170px;
+    height: auto;
     width: 100.5%;
     background-color: #fff;
     display: none;

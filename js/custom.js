@@ -12,7 +12,6 @@ $('#approval_status').hide();
 
 // Arrays for Dropdown menus
 var select_arr = ['Lender', 'Borrower'];
-var select_arr2 = ['Client', 'Bank#1', 'Bank#2'];
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -248,11 +247,48 @@ function loadLoan(htmlObject) {
     }
 }
 
+// function checkRegisteredUser(_address) {
+
+
+//     for (i = 0; i <globalUserArray.length; i++)  {
+//         if (globalUserArray[i].account == _address) {
+//             return [globalUserArray[i].name, globalUserArray[i].role];
+//         }
+//         else {
+//             return ""
+//         }
+//     }
+// }
+
+function loadUserDetail () {
+
+}
+
+
+$("#pt_user_1").on('click', function(e){
+    alert('test');
+});
+
+// $('input[name=radios_involved]:radio').on('click', function(e){
+//     console.log('test');
+// });
+
+$('label[for*=pt_user]').on('click', function(e){
+    console.log('test');
+});
+
+
+// Load all the parties belonging to the current Loan
 // Function: UI
 function loadParties() {
 
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
 
+    // html string for dropdown menu 
+    var menuItems = "";
+
+    // clear selected user from dropdown 
+    $('.valueHolder1').empty();
     // Check case that loan in creation has not any addresses
     try {
         if (!loanObj.addresses) throw "Error: No addresses in loan object found"
@@ -267,21 +303,49 @@ function loadParties() {
             if (i == loanObj.userId) {
                 info = "(You)";
             }
+
+            // userName = checkRegisteredUser(addr[i])[0];
+            // userRole = checkRegisteredUser(addr[i])[1];
+            console.log("addr[i] :" + addr[i]);
+            console.log(typeof addr[i]);
+            // console.log("userMap[addr[i]].name " + userMap[addr[i]].name);
+            if (userMap[addr[i]]) {
+                userName = userMap[addr[i]].name;
+                userRole = userMap[addr[i]].role;
+            }
+            else {
+                userName = "Unregistered";
+                userRole = "";
+            }
+            //  = (userMap[addr[i]].name != undefined || !userMap[addr[i]]) ? userMap[addr[i]].name : "unregistered";
+
+            // // console.log(userName);
+            // userRole = (userMap[addr[i]].role != undefined) ? userMap[addr[i]].role : "unregistered";
+
+
             // Add users to UI Approval Status Panel 
             $('.approval_check').append(` 
             <div class="form-group">
                 <input type="checkbox" id="user_${i}" title="${addr[i]}" disabled>
-                <label for="user_${i}" title="${addr[i]}">User ${i} ${info}</label>
+                <label for="user_${i}" title="${addr[i]}">${userRole}: ${userName} (${i}) ${info}</label>
             </div>
             `)
-            // Add users to Involved Parties Tab 
-            $('#loan_users').append(`
-            <div class="involved_selection">
-            <div class="form-group">
-                <input type="radio" id="pt_user_${i}" title="${addr[i]}" name="radios_involved">
-                <label for="pt_user_${i}" title="${addr[i]}">User ${i} ${info}</label>
-            </div>
-            `);
+
+            // // Add users to Involved Parties Tab 
+            // $('#loan_users').append(`
+            // <div class="involved_selection">
+            // <div class="form-group">
+            //     <input type="radio" id="pt_user_${i}" title="${addr[i]}" name="radios_involved">
+            //     <label for="pt_user_${i}" title="${addr[i]}">${userRole}: ${userName} (${i}) ${info}</label>
+            // </div>
+            // `);
+
+            // loanUsersArr[i] = userName;
+            
+                      
+            menuItems += `<div class="dropOption" id="pt_user_${i}" title="${addr[i]}">${userName} (${i})</div>`;
+            $('#involved_dropdown').html(menuItems);
+            
 
             if (loanObj.approvalStatus[i] == true) {
                 $(`#user_${i}`).prop('checked', true);
@@ -290,6 +354,7 @@ function loadParties() {
                 $(`#user_${i}`).prop('checked', false);
             }
         }
+
     }
     catch (error) {
         console.log(error);
@@ -297,30 +362,34 @@ function loadParties() {
 }
 
 
+function createDropdown() {
+    var drop = $('#signUpDropDown');
+    var i;
+    var htmlString = '<div class="dropContainer">';
+    for (i = 0; i < select_arr.length; i += 1) {
+        htmlString += '<div class="dropOption">' + select_arr[i] + '</div>';
+    }
+    htmlString += '</div>';
+    drop.append(htmlString);
+}
+
+// Wrote shorter and simpler (-_> Delete)
+// function createLoanUsersDropDown() {
+//     var drop = $('.customDropdown.dd_role');
+//     var i;
+//     var htmlString = '<div class="dropContainer">';
+//     for (i = 0; i < loanUsersArr.length; i += 1) {
+//         htmlString += '<div class="dropOption">' + loanUsersArr[i] + '</div>';
+//     }
+//     htmlString += '</div>';
+//     drop.append(htmlString);
+// }
+
 // MJ: Doing bunch of stuff, seemingly mostly for UI functionality
 $(document).ready(function () {
-    function createDropdown() {
-        var drop = $('.customDropdown');
-        var i;
-        var htmlString = '<div class="dropContainer">';
-        for (i = 0; i < select_arr.length; i += 1) {
-            htmlString += '<div class="dropOption">' + select_arr[i] + '</div>';
-        }
-        htmlString += '</div>';
-        drop.append(htmlString);
-    }
+
     createDropdown();
-    function createDropdownagain() {
-        var drop = $('.customDropdown.dd_role');
-        var i;
-        var htmlString = '<div class="dropContainer">';
-        for (i = 0; i < select_arr2.length; i += 1) {
-            htmlString += '<div class="dropOption">' + select_arr2[i] + '</div>';
-        }
-        htmlString += '</div>';
-        drop.append(htmlString);
-    }
-    createDropdownagain();
+    // createLoanUsersDropDown();
 
     $('.customDropdown').on('click', function (event) {
 

@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.2.0
+version 0.2.1
 creator: Marcel Jackisch
 */
 
@@ -29,13 +29,6 @@ contract SynLoanData {
         uint8 numOfUsers;
     }
 
-into struct:
-mapping (address => mapping (uint => bool) addressAssociated;
-
-into function:
-require(_account != address(0));
-require(!addressAssociated[_account][_loanId] && msg.sender != _account);
-addressAssociated[msg.sender][_loanId] = true;
 
 /*
 Struct user defines key data of participants such as banks and businesses
@@ -51,6 +44,9 @@ Struct user defines key data of participants such as banks and businesses
     
     // Dictionary to find account data
     mapping (address => userData) addressToUserData; 
+    
+    // Necessary to require user can only added to a loan once
+    mapping (address => mapping (uint => bool)) addressAssociated;
 
     // Map a loan id to an account address of user
     mapping (uint => address) loanToRegistrar; 
@@ -71,13 +67,11 @@ Struct user defines key data of participants such as banks and businesses
     Function to add new users to a loan, checks if user has been added before
     */
     function addUserToLoan (uint _loanId, address _account) public onlyRegistrar(_loanId) returns (uint){
-        /*
-         Require should work as follows: Check if uint mapped to account address is zero, if e.g. 1, an address can't be added twice
-        Problem: First added user (Registrar) has userId 0, therefore, could be added twice 
-        Standard value of mapping = 0, not 'undefined'
-        */
 
-        require(loans[_loanId].userToId[_account] == 0 && _account != msg.sender, "User already exists in loan");
+        // The following three lines check that the zero-address cant be added and prohibit double registration
+        require(_account != address(0));
+        require(addressAssociated[_account][_loanId] == false, "User already exists in loan");
+        addressAssociated[_account][_loanId] = true;
         
         uint userNum = loans[_loanId].numOfUsers++;
         // Adds user to mapping of loan (analog to incremented numOfUsers)
@@ -167,18 +161,7 @@ Struct user defines key data of participants such as banks and businesses
         loans.push(ln);
         
         // Add loan creator himself/herself
-        // addUserToLoan(loanId, msg.sender); // First fix the require, until then, below workaround
-        
-        uint userNum = loans[loanId].numOfUsers++;
-        // Adds user to mapping of loan (analog to incremented numOfUsers)
-        loans[loanId].userToId[msg.sender] = userNum;
-        // Pushes address to userList array (to retrieve all users, iterate)
-        loans[loanId].userList.push(msg.sender);
-        
-        // Let size of arrays that correspond with users grow in size
-        loans[loanId].approvalStatus.length++;
-        loans[loanId].loanAmounts.length++;
-        
+        addUserToLoan(loanId, msg.sender); 
         loanId++; // Increment unique number
     }
 

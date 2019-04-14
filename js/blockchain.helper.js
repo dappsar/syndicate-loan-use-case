@@ -65,17 +65,11 @@ function getUserArrLength() {
     return storeContract.methods.getUserArrLength().call();
 }
 
-// Store the data of all users in object
-function storeUserData() {
-    for (i = 0; i < users.length; i++) {
-        key = users[i].account;
-        userObj = {
-            name: users.name,
-            role: users.role,
-        }
-        sessionStorage.setItem(key, JSON.stringify(userObj));
-    }
+// Retrieves the corresponding userData struct object
+function getUserDataByAddr(_address) {
+    return storeContract.methods.getUserDataByAddr(_address).call();
 }
+
 
 // Add user to loan (onlyRegistrar) [.send]
 function addUserToLoan() {
@@ -103,16 +97,32 @@ function retrieveUser(i) {
     return storeContract.methods.users(i).call();
 }
 
+// Store the data of each user under his own key (NECESSARY?)
+function storeUserData() {
+    for (i = 0; i < globalUserArray.length; i++) {
+        key = globalUserArray[i].account;
+        userObj = {
+            name: globalUserArray[i].name,
+            role: globalUserArray[i].role,
+        }
+        sessionStorage.setItem(key, JSON.stringify(userObj));
+    }
+}
 
+var userMap = {};
+
+// Store all user account objects in array (globalUserArray),  in sessionStorage and in mapping(userMap)
 async function retrieveUsers() {
-
+    // So we can iterate through the user array on smart contract
     const arrLenght = await getUserArrLength();
     console.log(arrLenght);
 
     for (i = 0; i < arrLenght; i++) {
-        // var user = {};
-        const user = await retrieveUser(i);
-        globalUserArray.push(user);
+        // retrieve object from user array and 
+        const currUser = await retrieveUser(i);
+        globalUserArray.push(currUser);
+        console.log(`logging users[i] object: ${currUser.name}`)
+        userMap[currUser.account] = {name: currUser.name, role: currUser.role,};
 
     }
     sessionStorage.setItem('users_bc', JSON.stringify(globalUserArray));
