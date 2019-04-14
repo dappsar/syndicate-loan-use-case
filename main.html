@@ -9,6 +9,8 @@
 
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,600,600i,700,700i,800"
         rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 
@@ -69,10 +71,10 @@
                                 <div class="user"></div>
                                 <div class="user_text">My Profile</div>
                             </div>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Address: <span class="bc_address">undefined</span></a>
-                                <a class="dropdown-item" href="#">Edit</a>
-                            </div>
+                            <!-- <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" value="">Address: <span class="bc_address">undefined</span></a>
+                                <a class="dropdown-item" href="#" value="">Edit</a>
+                            </div>  -->
                         </div>
                     </div>
                     <div class="header_logout">
@@ -154,6 +156,22 @@
                                  <button type="button" class="btn btn-primary center-block m-3" aria-pressed="false" data-toggle="modal" data-target="#registerUser" >
                                         Register a new user 
                                  </button>
+
+                                 <!-- User Search Dropdown -->
+                                 <div class="user_dropdown">
+                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users" data-toggle="dropdown" aria-haspopup="true"
+                                         aria-expanded="false">
+                                         Show all users
+                                     </button>
+                                     <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_users">
+                                         <form class="px-4 py-2">
+                                             <input type="search" class="form-control" id="searchField" placeholder="Search" autofocus="autofocus">
+                                         </form>
+                                         <div id="menuItems"></div>
+                                         <div id="empty" class="dropdown-header">No users found</div>
+                                     </div>
+                                 </div>
+                                    
                                 </div>
                                 <div id="sc-loans"></div>
                             </div>
@@ -762,13 +780,28 @@
                 </div>
                 <div class="modal-body">
 
+                <!-- User Search Dropdown -->
+                <div class="user_dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users_2" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Search user by name
+                        </button>
+                        <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_users">
+                            <form class="px-4 py-2">
+                                <input type="search" class="form-control" id="searchField" placeholder="Search" autofocus="autofocus">
+                            </form>
+                            <div id="menuItems_2"></div>
+                            <div id="empty_2" class="dropdown-header">No users found</div>
+                        </div>
+                    </div>
+
                     <div class="form-label-group float-lab">
                         <input type="text" id="input_add_user" class="form-control"
                             placeholder_x="Account address of user" name="input_add_user" required>
                             <label for="input_add_user">Address</label>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             </button>
-                        <!-- <label for="comment">Term Sheet</label> -->
+
                     </div>
                     <div class="infotext">If you are the creator (registrar) of the loan, you can add new participants (e.g. other lenders)</div>
                     <div class="update_btn"><button onclick="addUserToLoan()" type="button" data-dismiss="modal"
@@ -820,6 +853,7 @@
 
     <script src="js/jquery.nicescroll.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/userDropDown.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
 
 </body>

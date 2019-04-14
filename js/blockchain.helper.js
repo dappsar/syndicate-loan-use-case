@@ -119,11 +119,12 @@ async function retrieveUsers() {
         // retrieve object from user array and 
         const currUser = await retrieveUser(i);
         globalUserArray.push(currUser);
-        console.log(`logging users[i] object: ${currUser.name}`)
+        console.log(`logging users[${i}] object: ${currUser.name}`)
         userMap[currUser.account] = {name: currUser.name, role: currUser.role};
 
     }
     sessionStorage.setItem('users_bc', JSON.stringify(globalUserArray));
+    fillUserArray(); // Fills array to be shown in global user list dropdown
 }
 
 // Reject and delete loan, only registrar can call this function  [.send]
