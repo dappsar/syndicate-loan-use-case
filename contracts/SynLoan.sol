@@ -59,7 +59,7 @@ Struct user defines key data of participants such as banks and businesses
     Modifier to check that sender is the registrar of the loan
     */
     modifier onlyRegistrar(uint _loanId) {
-      require(msg.sender == loanToRegistrar[_loanId]);
+      require(msg.sender == loanToRegistrar[_loanId], "Only the owner of the loan has permission for this action");
       _;
     }
     
@@ -67,7 +67,7 @@ Struct user defines key data of participants such as banks and businesses
     Modifier to check if sender is participant of a loan
     */
     modifier onlyParticipant (uint _loanId) {
-      require(loans[_loanId].userToId[msg.sender] != 0);
+      require(loans[_loanId].userToId[msg.sender] != 0 || loanToRegistrar[_loanId] == msg.sender, "You are not part of this loan");
       _;
     }
 
@@ -140,11 +140,6 @@ Struct user defines key data of participants such as banks and businesses
         // Self-registration: Mapping ---- (-1??)
         addressToUserData[_account] = u;
     }
-
-    // function getUserDataById(uint _usrId) public view returns(string memory) {
-    //     string memory name = string(users[_usrId].name);
-    //     return name;
-    // }
     
     /*
     Helper function to retrieve data belonging to an address
@@ -179,7 +174,7 @@ Struct user defines key data of participants such as banks and businesses
     Update Loan Data, increment version / revision number
     Here, all the other data like loan amount, start date and other conditions shall be filled
     */
-    function updateLoan(uint _loanId, string memory _name, string memory _purpose) 
+    function updateLoan(uint _loanId, string memory _name, string memory _purpose, uint _loanAmount) 
         public onlyParticipant(_loanId)
     {
         loans[_loanId].name = _name;
@@ -240,8 +235,16 @@ Struct user defines key data of participants such as banks and businesses
         bool[] memory array = loans[_loanId].approvalStatus; // approvalStatus is a bool array in a struct array 
         return array;
     }
-    
 
+    /*
+    Helper function to retrieve the loan amounts of the users from struct
+    */   
+    function getLoanAmounts(uint256 _loanId) public view returns (uint[] memory) {
+        uint[] memory array = loans[_loanId].loanAmounts; 
+        return array;
+    }
+
+    
     /*
     Get the length of the loan array
     */
@@ -274,8 +277,17 @@ Struct user defines key data of participants such as banks and businesses
                 result[counter] = i;
                 counter++;
             }
-            else { // Check if user is part of the loan but not registrar
-
+            // Check if user is part of the loan but not registrar
+            else { 
+                address[] memory _userArr = loans[i].userList;
+                
+                for (uint c = 0; c < _userArr.length; c++ ) {
+                    if (_userArr[c] == _user) {
+                    result[counter] = i;
+                    counter++;
+                    }
+                }
+                
             }
         }
         return result;

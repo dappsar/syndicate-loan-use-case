@@ -1,12 +1,37 @@
-// Initialize with the list of symbols
+// The two arrays to be populated
+var names = [];
+var addresses = [];
 
-let names = ["ING (Sample)", "Real Dev GmbH (Sample)", "Albrecht (Sample)"];
 
+// function fillUserArray() {
+//     for (i = 0; i < globalUserArray.length; i++) {
+//         names.push(globalUserArray[i].name);
+//         addresses.push(globalUserArray[i].addresses);
+//     }
+//     buildDropDown(names,addr);
+// }
+
+ // Fills array to be shown in global user list dropdown, called from retrieveUsers() 
 function fillUserArray() {
-    for (i = 0; i < globalUserArray.length; i++) {
-        names.push(globalUserArray[i].name);
+    mapLength = Object.keys(userMap).length;
+
+    if (mapLength > addresses.length) {
+        for (i = 0; i < mapLength; i++) {
+            // For loop iterates through keys of userMap object
+            key = Object.keys(userMap)[i];
+
+            // Check if address (=key) already exists is addresses array
+            if (!addresses.includes(key)) {
+                names.push(userMap[key].name);
+                addresses.push(key);
+            }
+        }
+        buildDropDown(names, addresses);
     }
-    buildDropDown(names);
+    else {
+        console.log("No additional users added, dropDown stays the same");
+        return;
+    }
 }
 
 
@@ -19,13 +44,14 @@ let items = document.getElementsByClassName("dropdown-item")
 // items.shift();
 // items.shift();
 
-function buildDropDown(values) {
+function buildDropDown(values, addresses) {
     // to avoid duplication of items
     $('[id^="menuItem"] .dropdown-item').remove();
 
     let contents = []
-    for (let name of values) {
-    contents.push('<input type="button" class="dropdown-item" type="button" value="' + name + '"/>')
+
+    for (i = 0; i < names.length; i++) {
+        contents.push(`<input type="button" class="dropdown-item" title="${addresses[i]}" "type="button" value="${names[i]}"/>`)
     }
     $('[id^="menuItem"]').append(contents.join(""))
 
@@ -37,7 +63,6 @@ function buildDropDown(values) {
 window.addEventListener('input', function () {
     filter(search.value.trim().toLowerCase())
 })
-
 
 
 //For every word entered by the user, check if the symbol starts with that word

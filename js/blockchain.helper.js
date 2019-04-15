@@ -41,7 +41,13 @@ function getApprovalStatus(loanId)  {
     return storeContract.methods.getApprovalStatus(loanId).call(); 
 }
 
+// Retrieves loan amount array
+function getLoanAmounts(loanId)  {
+    // return storeContract.methods.loanAmounts(loanId).call(); 
+    return [5,3,2];
+}
 
+// Retrieves loan from array at position (id)
 function retrieveLoan(id) {
     return storeContract.methods.loans(id).call();
 }
@@ -76,7 +82,8 @@ function addUserToLoan() {
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
     _address = $('#input_add_user').val();
     console.log(_address);
-    storeContract.methods.addUserToLoan(loanObj.id, _address).send({from: userAccount});
+    storeContract.methods.addUserToLoan(loanObj.id, _address)
+    .send({from: userAccount})
 }
 
 // Registration of a new user account. Can be executed by _anyone_ (public)   [.send]
@@ -103,17 +110,17 @@ function retrieveUser(i) {
     return storeContract.methods.users(i).call();
 }
 
-// Store the data of each user under his own key (NECESSARY?)
-function storeUserData() {
-    for (i = 0; i < globalUserArray.length; i++) {
-        key = globalUserArray[i].account;
-        userObj = {
-            name: globalUserArray[i].name,
-            role: globalUserArray[i].role,
-        }
-        sessionStorage.setItem(key, JSON.stringify(userObj));
-    }
-}
+// // Store the data of each user under his own key (NECESSARY?)
+// function storeUserData() {
+//     for (i = 0; i < globalUserArray.length; i++) {
+//         key = globalUserArray[i].account;
+//         userObj = {
+//             name: globalUserArray[i].name,
+//             role: globalUserArray[i].role,
+//         }
+//         sessionStorage.setItem(key, JSON.stringify(userObj));
+//     }
+// }
 
 // Store all user account objects in array (globalUserArray),  in sessionStorage and in mapping(userMap)
 async function retrieveUsers() {
@@ -125,13 +132,14 @@ async function retrieveUsers() {
         // retrieve object from user array and 
         const currUser = await retrieveUser(i);
         globalUserArray.push(currUser);
-        console.log(`logging users[${i}] object: ${currUser.name}`)
+        // console.log(`logging users[${i}] object: ${currUser.name}`)
         userMap[currUser.account] = {name: currUser.name, role: currUser.role};
 
     }
     sessionStorage.setItem('users_bc', JSON.stringify(globalUserArray));
     fillUserArray(); // Fills array to be shown in global user list dropdown
 }
+
 
 // Reject and delete loan, only registrar can call this function  [.send]
 function deleteLoan() {
@@ -146,6 +154,8 @@ function deleteLoan() {
     .on("receipt", function(receipt) {
         $('#tx-status').text('Transaction confirmed');
         console.log(receipt);
+        // After success, delete from UI
+        deleteFromSidePanel(activeLoanId);
     });
     // refreshSidePanel();
 }

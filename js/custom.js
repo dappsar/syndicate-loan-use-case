@@ -2,6 +2,9 @@
 custom.js defines main functionality for User Interface and Browser Storage of Loans
 */
 
+var devMode = true;
+var logMsgL1 = false;
+
 // Start-up behavior
 console.log('Syndicate Loan dApp MVP sucessfully loaded: \n version 0.1.4')
 
@@ -37,7 +40,7 @@ $("body").on("click", ".appplication_section ul li", function () {
 
 // Object Literal Factory Function
 // Function: DataStorage / Logic  
-const createLoan = (name, id, purpose, state, registeringParty, date, addresses, approvalStatus) => {
+const createLoan = (name, id, purpose, state, registeringParty, date, addresses, approvalStatus, loanAmounts) => {
     return {
         name,
         id,
@@ -47,6 +50,7 @@ const createLoan = (name, id, purpose, state, registeringParty, date, addresses,
         date,
         addresses,
         approvalStatus,
+        loanAmounts
     }
 }
 
@@ -58,18 +62,22 @@ function createSampleLoans() {
     id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', 
     '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1/23/2019',
      ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xe972A893147F7C74176091da2d4848E6F6A9A076', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], 
-     [true, , true , false]);
+     [true, true , false], [500000, 200000 , 700000]);
     id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff', '2/21/2019',
-     ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [false, false]);
+     ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xca35b7d915458ef540ade6068dfe2f44e8fa733c'], [false, false], [700000, 3500000]);
     id_s3 = createLoan('Exhibition Center East', 'id_s3', 'Building the foundations', 'review', '0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '3/2/2019',
-     ['0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], [false, true]);
+     ['0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '0x14723a09acff6d2a60dcdf7aa4aff308fddc160c'], [false, true], [300000, 2500000]);
     sessionStorage.setItem(`id_s1`, JSON.stringify(id_s1));
     sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
     sessionStorage.setItem(`id_s3`, JSON.stringify(id_s3));
 
-    userMap["0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7"] = {name: 'Berlin Investment Bank', role: 'lender'};
-    userMap["0xe972A893147F7C74176091da2d4848E6F6A9A076"] = {name: 'Infra Bank', role: 'lender'};
-    userMap["0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff"] = {name: 'Albrecht Real Estate', role: 'borrower'};
+    userMap["0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7"] = {name: 'Berlin Investment Bank (S)', role: 'lender'};
+    userMap["0xe972A893147F7C74176091da2d4848E6F6A9A076"] = {name: 'Infra Bank (S)', role: 'lender'};
+    userMap["0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff"] = {name: 'Albrecht Real Estate (S)', role: 'borrower'};
+    userMap["0xca35b7d915458ef540ade6068dfe2f44e8fa733c"] = {name: 'City Housing Co. (S)', role: 'borrower'};
+    userMap["0x14723a09acff6d2a60dcdf7aa4aff308fddc160c"] = {name: 'Berlin Estate (S)', role: 'borrower'};
+
+    fillUserArray();
 
     // For Sample Loan Toggle: standard behavior, samples hidden
     $('#sample_Loan1').hide();
@@ -92,7 +100,7 @@ var activeLoanId;
 // Function: Logic
 const updateLoanInBrowser = () => {
     // ### INCLUDE: Check if loan has changed
-    alert('Saving changes to browser storage');
+    if (devMode) alert('Saving changes to browser storage');
     // Load loan from array
     console.log('Saving loan with id: ' + activeLoanId);
  
@@ -104,6 +112,8 @@ const updateLoanInBrowser = () => {
     loanObj.purpose = $('#loanPurpose').val();
     loanObj.state = $('#state').val();
     loanObj.registeringParty = $('#regParty').val();
+    //loanObj.data = { interest_rate: "5%"; asjdhaskdhkja}
+    //loanObj.data
     // loanObj.date = $('#loanDate').val();   // probably not necessary anymore
 
     // saves changes to loan object in session storage
@@ -158,8 +168,9 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
             </div>
         </li>`);
 
-        // Triggers clicking on the created / loaded loan
-       // $('.appplication_section ul li.active').trigger('click');
+       // Triggers clicking on the created / loaded loan
+       $('li[data-storage-key="bc_3"]').trigger('click');
+
 }
 
 
@@ -205,18 +216,25 @@ function returnActiveLoan() {
     return activeLoan;
 }
 
-// loads loan and writes into html form
-// Function: UI + Logic (sets activeLoanId)
+
+/*
+Loads loan and writes data into html form
+Function: UI + Logic (sets activeLoanId)
+*/
 function loadLoan(htmlObject) {
     $('#writeToChain').show();
     $('#updateToChain').hide();
     $('#btn_approveLoan').hide();
-    $('.approval_check').empty();
+
     $('#loan_users').empty();
+    $('.approval_check').empty();
+    $('#loan_amounts').empty();
+    
 
     // Hides user data input fields in Involved Parties tab when loan is loaded
     $('#user_data_fields').hide();
 
+        // Not necessary anymore? Resetting is possible by using .html() ? 
     // $('#pt_address').val('').hide();
     // $('label[for=pt_address').hide();
     // $('#pt_role').val('').hide();
@@ -263,14 +281,6 @@ function loadLoan(htmlObject) {
             $('#registration_info').text("");
         }
 
-        // if (loanObj.approvalStatus[loanObj.userId]) {
-        //     $('#user_1').prop('checked', true);
-        // }
-        // else 
-        // {
-        //     $('#user_1').prop('checked', false);
-        // }
-
         // Loads parties (users in loan) with approval status
         loadParties();
     }
@@ -279,22 +289,10 @@ function loadLoan(htmlObject) {
     }
 }
 
-// function checkRegisteredUser(_address) {
-
-//     for (i = 0; i <globalUserArray.length; i++)  {
-//         if (globalUserArray[i].account == _address) {
-//             return [globalUserArray[i].name, globalUserArray[i].role];
-//         }
-//         else {
-//             return ""
-//         }
-//     }
-// }
 
 // Load all the parties belonging to the current Loan
 // Function: UI
 function loadParties() {
-
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
 
     // html string for dropdown menu 
@@ -317,7 +315,7 @@ function loadParties() {
                 info = "(You)";
             }
 
-            console.log("addr[i] :" + addr[i]);
+            // console.log("addr[i] :" + addr[i]);
             console.log(typeof addr[i]);
             // console.log("userMap[addr[i]].name " + userMap[addr[i]].name);
             if (userMap[addr[i]]) {
@@ -328,15 +326,27 @@ function loadParties() {
                 userName = "Unregistered";
                 userRole = "";
             }
+            
+            // Retrieves the loan amount of user at array position i, corresponding to address at position i
+            userLoanSum = loanObj.loanAmounts[i];
 
             // Add users to UI Approval Status Panel 
             $('.approval_check').append(` 
             <div class="form-group">
                 <input type="checkbox" id="user_${i}" title="${addr[i]}" disabled>
-                <label for="user_${i}" title="${addr[i]}">${userName} (${i}) ${info}</label>
+                <label for="user_${i}" title="${addr[i]}">${userName} ${info}</label>
             </div>
-            `)
+            `);
+
+            $('#loan_amounts').append(`
+            <div class="form-label-group float-lab input_float_lbl">
+                <input type="text" id="amount_user_${i}" class="form-control" name="amount_user_${i}" value="${userLoanSum}"
+                    required disabled>
+                <label for="amount_user_${i}"><span>${userName} (${i})</span></label>
+                <span class="euro">€</span>
+            </div>`);
                       
+            // Create dropdown items in involved parties tab ---> loading details (loadUserDetail) from document.ready
             menuItems += `<div class="dropOption" id="pt_user_${i}" title="${addr[i]}">${userName} (${i})</div>`;
             $('#involved_dropdown').html(menuItems);
             
@@ -356,7 +366,7 @@ function loadParties() {
 
 
 
-// Loads user data into form when selected in dropdown [Involved Parties Tab]
+// Loads user data into form <section id="user_data_fields"> when selected in dropdown [Involved Parties Tab]
 function loadUserDetail (address) {
 
     if (userMap[address]) {
@@ -387,7 +397,7 @@ function createDropdown() {
     drop.append(htmlString);
 }
 
-// MJ: Doing bunch of stuff, seemingly mostly for UI functionality
+// Function: UI
 $(document).ready(function () {
 
     createDropdown();
@@ -395,7 +405,6 @@ $(document).ready(function () {
 
     // Functionality for dropdown and loading user data (as of now conflicting with generic use (signup.html))
     $('.customDropdown').on('click', function (event) {
-
         var container = $(this).children('div.dropContainer');
         var target = $(event.target);
 
@@ -407,7 +416,7 @@ $(document).ready(function () {
             $('#user_data_fields').show();
             $(this).children('span.valueHolder').addClass('float-label input_float_lbl');
         }
-    })
+    });
 
     // Input floating label js
     // MJ: Function: UI
@@ -424,18 +433,20 @@ $(document).ready(function () {
         } else {
             $(this).parent().addClass('input_float_lbl');
         }
-    })
+    });
 
     $('.date_picker').datepicker({
         autoclose: true
     });
+
     $(".add_applications").click(function () {
         $('.appplication_section ul li.active').removeClass('active');
-    })
+    });
 
 }); // MJ: end of callback in document.reayd()
 
-// append comment
+
+
 // Comment functionality off
 let appendComment = (comment, user) => {
     $('.History_pannel ul').prepend(`<li>
@@ -465,6 +476,7 @@ let appendComment = (comment, user) => {
 
 
 // MJ: Function returns date as string, option: full, with month name, or regular
+// Function: UI
 getDateInFormat = (format, timestamp) => {
 
     // check If UNIX timestamp is passed (e.g. for solidity date functions)
@@ -492,9 +504,10 @@ getDateInFormat = (format, timestamp) => {
     }
 }
 
+// Function: Logic
 var submitFormData = () => {
     console.log('submitFormData() called');
-    alert('submitFormData() called');
+    if (devMode) alert('submitFormData() called');
     var userObj = {};
 
     userObj.company = $('#companyName').val();

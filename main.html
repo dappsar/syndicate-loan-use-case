@@ -23,6 +23,10 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
+    <!-- JS Load Overlay -->
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
+    
+
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/datepicker3.css">
@@ -128,7 +132,7 @@
                                                     <span></span>
                                                 </span>
                                             </span>
-                                            <p>Waiting for review</p>
+                                            <p>In review</p>
                                         </div>
                                         <span class="date">6 March 2019</span>
                                     </div>
@@ -137,7 +141,7 @@
                                     <div class="lists" >
                                         <h4>Housing Development Leipartstr</h4>
                                         <div class="status">
-                                            <p>Approved</p>
+                                            <p>In review</p>
                                         </div>
                                         <span class="date">1 Jan 2019</span>
                                     </div>
@@ -150,8 +154,8 @@
                                  <button type="button" class="btn btn-primary center-block" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
                                         Toggle Sample Loans
                                  </button>
-                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="logLoans()">
-                                        Retrieve your loans from Blockchain
+                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="loading ">
+                                        Refresh Loans <br> (Reload from Blockchain)
                                  </button>
                                  <button type="button" class="btn btn-primary center-block m-3" aria-pressed="false" data-toggle="modal" data-target="#registerUser" >
                                         Register a new user 
@@ -416,26 +420,8 @@
                                     aria-labelledby="heading-D">
                                     <div class="loan_detail">
                                         <form>
-                                            <div class="form-label-group float-lab">
-                                                <input type="text" id="loanAmount" class="form-control" name="Client"
-                                                    required disabled>
-                                                <label for="loanAmount"><span>Client</span>: Loan amount</label>
-                                                <span class="euro">€</span>
-                                                <!-- <span class="error_text">Text Error</span> -->
-                                            </div>
-                                            <div class="form-label-group float-lab">
-                                                <input type="text" id="bank1" class="form-control" name="Bank#1"
-                                                    required disabled>
-                                                <label for="bank1"><span>Bank #1</span>: Loan amount </label>
-                                                <span class="euro">€</span>
-                                                <!-- <span class="error_text">Text Error</span> -->
-                                            </div>
-                                            <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" class="form-control" name="Bank#2"
-                                                    required disabled>
-                                                <label for="bank2"><span>Bank #2</span>: Loan amount </label>
-                                                <span class="euro">€</span>
-                                                <!-- <span class="error_text">Text Error</span> -->
+                                            <div id="loan_amounts">
+  
                                             </div>
                                             <div class="Total">
                                                 <span>Total</span>
@@ -446,7 +432,7 @@
                                                     required disabled>
                                                 <label for="bank2">Interest rate</label>
                                                 <span class="euro">%</span>
-                                                <!-- <span class="error_text">Text Error</span> -->
+
                                             </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="bank2" name="Loan Payout Structure"
@@ -522,7 +508,7 @@
 
                         <div class="container">
                                 <h6 id="registration_info" class="text-center pt-3"></h6>
-                                <div class="group_btns">
+                                <div class="group_btns pl-4 pr-4">
                                     <button data-toggle_x="modal" data-target="#update" type="button"
                                         class="ghost_btn"
                                         onclick="updateLoanInBrowser()">Save Changes</button>
@@ -532,7 +518,7 @@
                                 </div>
 
                                 <div class="reject_btn status_reject p-2">
-                                    <a data-toggle="modal" data-target="#exampleModalCenter" href="">Reject and delete loan
+                                    <a data-toggle="modal" data-target="#delete_loan_modal" href="">Reject and delete loan
                                         application</a>
                                 </div>
 
@@ -679,10 +665,11 @@
                     </button>
                     <!-- <label for="comment">Term Sheet</label> -->
                 </div>
-                <div class="infotext">Here you can register new users on the smart contract, before they registered themselves</div>
+                <div class="infotext">Info: Here you can register new users on the smart contract,
+                     before they register themselves. </div>
                 <div class="update_btn">
                     <button onclick="userRegistration()" type="submit" data-dismiss="modal"
-                        class="primary_btn">Add User</button>
+                        class="primary_btn text-center">Register on Blockchain</button>
                     </div>
             </div>
             <div class="modal-footer">
@@ -692,8 +679,8 @@
     </form>
 
         <!------------- Delete Modal ------------>
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="delete_loan_modal" tabindex="-1" role="dialog"
+         aria-hidden="true">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -703,8 +690,8 @@
                 <div class="modal_para">
                     <h3>Are you sure you want to reject and delete the loan?</h3>
                 </div>
-                <div class="group_btns">
-                    <button type="button" class="primary_btn" aria-label="Close" onclick="deleteLoan()">Yes</button>
+                <div class="group_btns pl-4 pr-4">
+                    <button type="button" class="primary_btn" data-dismiss="modal" aria-label="Close" onclick="deleteLoan()">Yes</button>
                     <button type="button" class="ghost_btn" data-dismiss="modal" aria-label="Close">No</button>
                 </div>
             </div>
@@ -712,7 +699,7 @@
     </div>
 
     <!------------- Update Modal ------------>
-    <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <div class="modal fade" id="update" tabindex="-1" role="dialog"
         aria-hidden="true">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -736,7 +723,7 @@
     <!------------- Add / Propose / Create new Loan Modal ------------>
 
     <!-- Modal -->
-    <div class="modal fade" id="applicationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <div class="modal fade" id="applicationModal" tabindex="-1" role="dialog" 
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="dialog">
 
@@ -769,7 +756,7 @@
     <!------------- Add new User to loan modal ------------>
 
     <!-- Modal -->
-    <div class="modal fade" id="add_loanuser_modal" tabindex="-1" role="dialog" aria-labelledby="add_loanuser_modal"
+    <div class="modal fade" id="add_loanuser_modal" tabindex="-1" role="dialog" 
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="dialog">
 
@@ -800,13 +787,13 @@
                         <input type="text" id="input_add_user" class="form-control"
                             placeholder_x="Account address of user" name="input_add_user" required>
                             <label for="input_add_user">Address</label>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            </button>
-
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="infotext">If you are the creator (registrar) of the loan, you can add new participants (e.g. other lenders)</div>
-                    <div class="update_btn"><button onclick="addUserToLoan()" type="button" data-dismiss="modal"
-                            class="primary_btn">Add User</button></div>
+                    <div class="update_btn">
+                        <button onclick="addUserToLoan()" type="button" data-dismiss="modal"
+                            class="primary_btn">Add User</button>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -853,8 +840,8 @@
     </script>
 
     <script src="js/jquery.nicescroll.js"></script>
-    <script src="js/custom.js"></script>
     <script src="js/userDropDown.js"></script>
+    <script src="js/custom.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
 
 </body>

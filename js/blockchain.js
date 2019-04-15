@@ -70,9 +70,9 @@ function startdApp() {
 
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
     console.log(storeContract);
+
+    logLoans();
 }
-
-
 
 
 
@@ -81,8 +81,10 @@ Function called on clicking button "Retrieve Loans from Smart Contract"
 Loads loans from blockchain and writes them as objects into browser storage 
 */
 async function logLoans() {
-    // storeContract = new web3.eth.Contract(storeABI, storeAddress); 
 
+    $.LoadingOverlay("show", {
+        background  : "rgba(40, 40, 40, 0.7)"
+    });
     // // Call function to get the length of the loan-array and pass it to for-loop
     const loanArrLength = await getArrLength();
     console.log(`Found ${loanArrLength} loans in Smart Contract`);
@@ -94,21 +96,21 @@ async function logLoans() {
 
     // Looping through each loan-item of array 
     for (i = 0; i < loanIdsByUser.length; i++) {
-        //console.log(retrieveLoan(i));
-        console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
-
+        // console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
         // loading the loan object from Blockchain
         const loan = await retrieveLoan(loanIdsByUser[i]);
+
+        // console.log(loan);
+        // Check in place, in case the loan was deleted
         if (loan.registeringParty.includes("0x000000000000")) {
             console.log(`Loan ${i} was deleted`);
             continue;
         }
-
-        // Set key to store loan in sessionStorage
-        var bc_key = 'bc_' + loan.id;
-
         const approvalArray = await getApprovalStatus(loanIdsByUser[i]);
         console.log(approvalArray); 
+
+        const amountsArray = await getLoanAmounts(loanIdsByUser[i]);
+        console.log(amountsArray); 
 
         // a check based on comparing userAccount (address) with array could achieve the same
         const userId = await getUserToId(loanIdsByUser[i], userAccount);
@@ -117,10 +119,18 @@ async function logLoans() {
         const usersInLoanArray = (await getUsersInLoan(loanIdsByUser[i]))[0];
         console.log(usersInLoanArray);
 
+        // Set key to store loan in sessionStorage
+        var bc_key = 'bc_' + loan.id;
+
         // Retrieves all keys from the key-value browser storage (e.g. id_1)
         sessionKeys = Object.keys(sessionStorage);
 
-        // Check if key (object) already exists
+        // // Check if key (object) already exists, if so, delete
+        // if (sessionKeys.includes(bc_key)) {
+        //     sessionStorage.removeItem(bc_key);
+        // }
+
+
         if (!sessionKeys.includes(bc_key)) {
             // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
             var bc_loan = {
@@ -131,32 +141,30 @@ async function logLoans() {
                 registeringParty: loan.registeringParty,
                 revisionNumber: loan.revisionNumber,
                 state: 'review',
+                loanAmounts: amountsArray,
                 approvalStatus: approvalArray,
                 addresses: usersInLoanArray,
                 userId: userId,
             };
             console.log('Storing loan under key: '+ bc_key);
 
-            // INFO: not yet functional due to SC version
-            // if (retrieveLoanToRegistrar(loan.id) == userAccount) {
-            //     console.log('This loan is yours');
-            // }
-            // else {
-            //     console.log('This loan isnt yours');
-            // }
-
             //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
             sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
 
             addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
 
-        } // end if
+        }
     }
-
+    $.LoadingOverlay("hide");
     // Refresh Current User List (when at top of function, stops for-loop after first iteration)
     retrieveUsers();
+
 }
 
+var test = {
+    key1: "bla",
+    key2: "bla"
+};
 
 async function updateLoanOnChain() {
 
@@ -172,10 +180,11 @@ async function updateLoanOnChain() {
     const loanBc = await retrieveLoan(activeLoan.id);
 
     // Check if form fields have really been updated (implementation difficult, and probaly unnecessary)
-    if (loanBc.name !== activeLoan.name || loanBc.purpose != activeLoan.purpose) {
+    if (loanBc.name != activeLoan.name || loanBc.purpose != activeLoan.purpose) {
         console.log("Active loan has been changed");
        _name = activeLoan.name;
-       _purpose = activeLoan.purpose;
+       _purpose = test;
+       console.log(_purpose);
     }
     else {
         alert("Active loan has not been changed");
@@ -297,7 +306,7 @@ function printAddress(_address) {
 
 // Notification currently popping up in History Panel
 function txNotifyUI() {
-    alert("Sending Transaction on Ropston Network...");
+    if (devMode) alert("Sending Transaction on Ropston Network...");
     $('#tx-status').text('Sending transaction to the Blockchain Network');
     $('#tx-date').text(getDateInFormat('full'));
     $('#tx-status').closest('li').removeClass('d-none');
@@ -305,31 +314,30 @@ function txNotifyUI() {
 
 // Prints Network to Front-End (Header) and reacts dynamically to changes
 function printNetwork () {
-    console.log("printNetwork() called");
     web3.eth.net.getId().then( (netId) => {
         switch (netId) {
             case 1:
-            console.log('This is Mainnet');
+            // console.log('This is Mainnet');
             ($('#bc_network').html("Ethereum Mainnet <span class=\"warning\"> - Please switch to Ropston - </span>"));
             break
             case 2:
-            console.log('This is the deprecated Morden test network.');
+            // console.log('This is the deprecated Morden test network.');
             ($('#bc_network').html("Morden <span class=\"warning\"> - Please switch to Ropston - </span>"));
             break
             case 3:
-            console.log('This is the Ropsten test network.');
+            // console.log('This is the Ropsten test network.');
             ($('#bc_network').html("Ropsten"));
             break
             case 4:
-            console.log('This is the Rinkeby test network.');
+            // console.log('This is the Rinkeby test network.');
             ($('#bc_network').html("Rinkeby <span class=\"warning\"> - Please switch to Ropston - </span>"));
             break
             case 5:
-            console.log('This is the network with ID 5');
+            // console.log('This is the network with ID 5');
             ($('#bc_network').html(netId));
             break
             default:
-            console.log('This is an unknown network.');
+            // console.log('This is an unknown network.');
             ($('#bc_network').html("Unkown <span class=\"warning\"> - Please switch to Ropston - </span>"));
             }
         })
