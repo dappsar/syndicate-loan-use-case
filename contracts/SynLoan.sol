@@ -19,7 +19,7 @@ contract SynLoanData {
         uint id;                            // Loan ID
         string name;                        // Name of  the Loan
         uint revisionNumber;                // Shall increment with every update to the loan
-        address registeringParty;           // to record in struct who created the loan --> make array 
+        address registeringParty;           // Party who registered the loan. Possible unnecessary because of mapping  loanToRegistrar
         string purpose;             
         uint regTime;                           // UNIX Timestamp
         mapping (address => uint) userToId;     // Gets local user id belonging (mapped to) an address in loan
@@ -48,7 +48,7 @@ Struct user defines key data of participants such as banks and businesses
     // Necessary to require user can only added to a loan once
     mapping (address => mapping (uint => bool)) addressAssociated;
 
-    // Map a loan id to an account address of user
+    // Map a loan id to an account address of registrating user
     mapping (uint => address) loanToRegistrar; 
 
     // counts the amount of loans belonging to the address
@@ -56,12 +56,21 @@ Struct user defines key data of participants such as banks and businesses
 
 
     /*
-    Modifier to make sure only registrar of loan can update
+    Modifier to check that sender is the registrar of the loan
     */
     modifier onlyRegistrar(uint _loanId) {
       require(msg.sender == loanToRegistrar[_loanId]);
       _;
     }
+    
+    /*
+    Modifier to check if sender is participant of a loan
+    */
+    modifier onlyParticipant (uint _loanId) {
+      require(loans[_loanId].userToId[msg.sender] != 0);
+      _;
+    }
+
 
     /*
     Function to add new users to a loan, checks if user has been added before
@@ -170,14 +179,14 @@ Struct user defines key data of participants such as banks and businesses
     Update Loan Data, increment version / revision number
     Here, all the other data like loan amount, start date and other conditions shall be filled
     */
-    function updateLoan(uint _id, string memory _name, string memory _purpose) 
-        public onlyRegistrar(_id)
+    function updateLoan(uint _loanId, string memory _name, string memory _purpose) 
+        public onlyParticipant(_loanId)
     {
-        loans[_id].name = _name;
-        loans[_id].purpose = _purpose;
+        loans[_loanId].name = _name;
+        loans[_loanId].purpose = _purpose;
 
-        loans[_id].revisionNumber++;
-        resetApprovals(_id);
+        loans[_loanId].revisionNumber++;
+        resetApprovals(_loanId);
     }
 
     /*
@@ -191,8 +200,9 @@ Struct user defines key data of participants such as banks and businesses
     /*
     Approves Loan: each participant of Loan can give his approval
     */
-    function approveLoan(uint _loanId) public  {
+    function approveLoan(uint _loanId, uint _revisionNumber) public  {
         uint userId = loans[_loanId].userToId[msg.sender];
+        require(loans[_loanId].revisionNumber == _revisionNumber, "Versions of the loan do not match");
         loans[_loanId].approvalStatus[userId] = true;
     }
 
@@ -250,7 +260,9 @@ Struct user defines key data of participants such as banks and businesses
 
     /*
     The function should return an array with all the loans the user is involved in, disregarding any other permissioning like read-write requests
+    Important to log all the loans by the user
     As of now, only the registrar mapping is applied, a loan belonging to multiple users cannot be created yet
+    Info: mapping (uint => address) loanToRegistrar; 
     */
     function getLoansByUser(address _user) external view returns(uint[] memory) {
         // Create a new array with as many entries as Loans belong to the user
@@ -262,10 +274,11 @@ Struct user defines key data of participants such as banks and businesses
                 result[counter] = i;
                 counter++;
             }
+            else { // Check if user is part of the loan but not registrar
+
+            }
         }
         return result;
     }
 
-
-
-}
+  }

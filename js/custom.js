@@ -253,6 +253,16 @@ function loadLoan(htmlObject) {
         // $('#loanDate').val(loanObj.date);        
         $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
+        if (loanObj.userId == 0) {
+            $('#registration_info').text("You registered this loan and have special permissions");
+        }
+        else if (loanObj.userId) {
+            $('#registration_info').text("You are part of this loan");
+        }
+        else {
+            $('#registration_info').text("");
+        }
+
         // if (loanObj.approvalStatus[loanObj.userId]) {
         //     $('#user_1').prop('checked', true);
         // }

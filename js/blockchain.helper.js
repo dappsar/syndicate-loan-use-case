@@ -88,7 +88,13 @@ function userRegistration(_name, _role, _account) {
     console.log(`Registering User: name=${_name}, role=${_role},  address=${_account}`);
 
     txNotifyUI();
-    storeContract.methods.userRegistration(_name, _role, _account).send({from: userAccount});
+    storeContract.methods.userRegistration(_name, _role, _account)
+    .send({from: userAccount})
+    .on("error", function(error) {
+        console.log(error);
+        console.log(typof(error));
+        // $("tx-status").text(error);  
+    });
 
 }
 
