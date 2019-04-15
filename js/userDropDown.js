@@ -34,12 +34,17 @@ function fillUserArray() {
     }
 }
 
+function truncate(str, max) {
+  return str.length > max ? str.substr(0, max-1) + '…' : str;
+}
+
 
 //Find the input search box
 let search = document.getElementById("searchField")
 
 //Find every item inside the dropdown
 let items = document.getElementsByClassName("dropdown-item")
+
 // An idea, as [My Profile] uses the same class, which causes problems
 // items.shift();
 // items.shift();
@@ -51,7 +56,10 @@ function buildDropDown(values, addresses) {
     let contents = []
 
     for (i = 0; i < names.length; i++) {
-        contents.push(`<input type="button" class="dropdown-item" title="${addresses[i]}" "type="button" value="${names[i]}"/>`)
+
+        var addr_trunc = truncate(addresses[i], 8);
+
+        contents.push(`<input type="button" class="dropdown-item" title="${addresses[i]}" "type="button" value="${names[i]} (${addr_trunc})"/>`)
     }
     $('[id^="menuItem"]').append(contents.join(""))
 
@@ -94,8 +102,10 @@ function filter(word) {
 
 //If the user clicks on any item, set the title of the button as the text of the item
 $('[id^="menuItem"]').on('click', '.dropdown-item', function(){
-    $('[id^="dropdown_users"]').text($(this)[0].value)
+    $('[id^="dropdown_users"]').text($(this)[0].value);
     $('[id^="dropdown_users"]').dropdown('toggle');
+    $('#input_add_user').val($(this)[0].title);
+    $('#input_add_user').closest('div').addClass('input_float_lbl');
 })
 
 buildDropDown(names);

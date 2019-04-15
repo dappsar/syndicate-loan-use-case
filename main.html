@@ -154,7 +154,7 @@
                                  <button type="button" class="btn btn-primary center-block" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
                                         Toggle Sample Loans
                                  </button>
-                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="loading ">
+                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="logLoans()">
                                         Refresh Loans <br> (Reload from Blockchain)
                                  </button>
                                  <button type="button" class="btn btn-primary center-block m-3" aria-pressed="false" data-toggle="modal" data-target="#registerUser" >
@@ -162,7 +162,7 @@
                                  </button>
 
                                  <!-- User Search Dropdown -->
-                                 <div class="user_dropdown">
+                                 <!-- <div class="user_dropdown">
                                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users" data-toggle="dropdown" aria-haspopup="true"
                                          aria-expanded="false">
                                          Show all users
@@ -174,7 +174,7 @@
                                          <div id="menuItems"></div>
                                          <div id="empty" class="dropdown-header">No users found</div>
                                      </div>
-                                 </div>
+                                 </div> -->
                                     
                                 </div>
                                 <div id="sc-loans"></div>
@@ -246,8 +246,7 @@
                                     <h5 class="mb-0">
                                         <!-- Note: `data-parent` removed from here -->
                                         <a data-toggle="collapse" href="#collapse-A" aria-expanded="true"
-                                            aria-controls="collapse-A">
-                                            Key Data [TEST]                                                                                   
+                                            aria-controls="collapse-A">                                                                            
                                         </a>
                                     </h5>
                                 </div>
@@ -792,7 +791,7 @@
                     <div class="infotext">If you are the creator (registrar) of the loan, you can add new participants (e.g. other lenders)</div>
                     <div class="update_btn">
                         <button onclick="addUserToLoan()" type="button" data-dismiss="modal"
-                            class="primary_btn">Add User</button>
+                            class="primary_btn">Add User to Loan (on Blockchain)</button>
                     </div>
                 </div>
                 <div class="modal-footer">
