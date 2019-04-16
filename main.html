@@ -148,7 +148,7 @@
                         <div class="token_section">
                             <div class="container-fluid">
                                 <div class="col-sm-12 text-center">
-                                 <button type="button" class="btn btn-primary center-block" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
+                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
                                         Toggle Sample Loans
                                  </button>
                                  <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="logLoans()">
@@ -364,32 +364,32 @@
                                     aria-labelledby="heading-C">
                                     <div class="loan_detail">
                                         <form>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="object_descript" class="form-control"
                                                     name="object_descript" required>
                                                 <label for="object_descript">Description of the object</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="total_area" class="form-control"
                                                     name="total_area" required>
                                                 <label for="total_area">Total area outdoor + indoor</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="usable_area" name="usable_area"
                                                     class="form-control" required>
                                                 <label for="usable_area">Usable area (net floor space)</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="outdoor_area" class="form-control"
                                                     name="outdoor_area" required>
                                                 <label for="outdoor_area">Total area outdoor</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="object_price" class="form-control"
                                                     name="object_price" required>
                                                 <label for="object_price">Purchase price of object</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="price_sqm" class="form-control"
                                                     name="price_sqm" required>
                                                 <label for="price_sqm">Price per square meter</label>
@@ -671,9 +671,6 @@
                     </div>
                   </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
         </div>
     </form>
 
@@ -743,9 +740,6 @@
                 </div>
                 <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal"
                         class="primary_btn">Add</button></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
 
             </div>
