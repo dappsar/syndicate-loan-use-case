@@ -94,6 +94,7 @@ function addUserToLoan() {
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
         logLoans();
+    });
 }
 
 // Registration of a new user account. Can be executed by _anyone_ (public)   [.send]
