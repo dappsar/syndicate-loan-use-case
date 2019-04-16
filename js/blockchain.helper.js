@@ -112,7 +112,7 @@ function userRegistration(_name, _role, _account) {
         $('#tx-status').text('Transaction confirmed');
         // Refresh Current User List (when at top of function, stops for-loop after first iteration)
         retrieveUsers();
-    });
+    })
     .on("error", function(error) {
         console.log(error);
         console.log(typof(error));
