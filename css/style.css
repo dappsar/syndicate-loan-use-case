@@ -35,7 +35,7 @@ body {
 }
 
 
-.warning { 
+.warning {
     color: #A00;
     font-weight: bold;
 }
@@ -222,7 +222,7 @@ body {
 
 .modal-content .button {
     width:100px !important;
-} 
+}
 
 .modal button.close {
     top: 10px;
@@ -1221,7 +1221,7 @@ span.valueHolder1 {
     bottom: auto;
     left: -40px;
     position: absolute;
-    box-shadow: 0 2px 6px 0 rgba(28, 111, 172, 0.58), 2px 0 4px 0 rgba(0, 0, 0, 0.5) 
+    box-shadow: 0 2px 6px 0 rgba(28, 111, 172, 0.58), 2px 0 4px 0 rgba(0, 0, 0, 0.5)
 } */
 
 .effect1 {
@@ -1519,6 +1519,7 @@ span.valueHolder1 {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
+    flex-direction: column;
     -webkit-justify-content: center;
     -moz-justify-content: center;
     -ms-justify-content: center;
@@ -1560,6 +1561,15 @@ span.valueHolder1 {
 .approval_check .form-group input:checked+label:before {
     content: '';
     background: #FF8737
+}
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 [type="radio"]:checked,

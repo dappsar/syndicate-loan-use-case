@@ -25,7 +25,7 @@
 
     <!-- JS Load Overlay -->
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
-    
+
 
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
@@ -34,7 +34,7 @@
     <!-- Favicon icon -->
     <link rel="icon" href="images/fab_icon.png" type="image/png" sizes="16x16">
 
-    
+
     <!-- _____________________ Blockchain related files _____________________ -->
     <!-- Blockchain js file, includes major blockchain functionality -->
     <script src="js/blockchain.js"></script>
@@ -44,7 +44,7 @@
     <script language="javascript" type="text/javascript" src="js\contractABI.js"></script>
 
     <!-- Web3 min js file beta.37 -->
-    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
 
     <!-- Web3 min js file beta.50
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.50/packages/web3/src/Web3.js"></script> -->
@@ -62,23 +62,20 @@
                 </div>
                 <div class="header_content">
                     <div class="header_mid">
-                        <div class="header_heading">
-                            <h3>Real Estate Syndicate Loans MVP</h3>
-                        </div>
 
                         <div class="header_network">
                            <span class="bold"> Blockchain Network: </span><span id="bc_network">None</span>
                         </div>
 
                         <div class="dropdown">
-                            <div class="user_profile dropdown-toggle" data-toggle="dropdown">
+                            <div class="user_profile dropdown-toggle" id="myProfileButton" data-toggle="dropdown">
                                 <div class="user"></div>
                                 <div class="user_text">My Profile</div>
                             </div>
-                            <!-- <div class="dropdown-menu">
+                             <div class="dropdown-menu" aria-labelledby="myProfileButton">
                                 <a class="dropdown-item" href="#" value="">Address: <span class="bc_address">undefined</span></a>
                                 <a class="dropdown-item" href="#" value="">Edit</a>
-                            </div>  -->
+                            </div>
                         </div>
                     </div>
                     <div class="header_logout">
@@ -111,7 +108,7 @@
                             <h4>Propose New Loan</h4>
                         </div>
                         <!-- List of Loans / Applications -->
-                        <div class="appplication_section">  
+                        <div class="appplication_section">
                             <p class="head">Loan Overview</p>
                             <ul class="nicescroll-box">
                                 <li class="in_review" data-storage-key="id_s1" id="sample_Loan1">
@@ -151,18 +148,18 @@
                         <div class="token_section">
                             <div class="container-fluid">
                                 <div class="col-sm-12 text-center">
-                                 <button type="button" class="btn btn-primary center-block" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
+                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
                                         Toggle Sample Loans
                                  </button>
                                  <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="logLoans()">
                                         Refresh Loans <br> (Reload from Blockchain)
                                  </button>
                                  <button type="button" class="btn btn-primary center-block m-3" aria-pressed="false" data-toggle="modal" data-target="#registerUser" >
-                                        Register a new user 
+                                        Register a new user
                                  </button>
 
                                  <!-- User Search Dropdown -->
-                                 <!-- <div class="user_dropdown">
+                                  <div class="user_dropdown">
                                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users" data-toggle="dropdown" aria-haspopup="true"
                                          aria-expanded="false">
                                          Show all users
@@ -174,13 +171,13 @@
                                          <div id="menuItems"></div>
                                          <div id="empty" class="dropdown-header">No users found</div>
                                      </div>
-                                 </div> -->
-                                    
+                                 </div>
+
                                 </div>
                                 <div id="sc-loans"></div>
                             </div>
 
-                            <!-- <ul> 
+                            <!-- <ul>
                                 <li>
                                     <div class="active_token">
                                         <h4>Housing Complex Wilmersdorf</h4>
@@ -213,7 +210,7 @@
                 <div class="col-sm-5 no-padding">
                     <h3 id="select-info" class="text-center mt-5">Please select a loan from the panel on the left.</h3>
 
-                    <div id="form-wrapper" class="main_application d-none"> 
+                    <div id="form-wrapper" class="main_application d-none">
 
                         <h3>Loan Data: <span class="heading_text"></span></h3>
 
@@ -246,7 +243,7 @@
                                     <h5 class="mb-0">
                                         <!-- Note: `data-parent` removed from here -->
                                         <a data-toggle="collapse" href="#collapse-A" aria-expanded="true"
-                                            aria-controls="collapse-A">                                                                            
+                                            aria-controls="collapse-A">
                                         </a>
                                     </h5>
                                 </div>
@@ -293,12 +290,12 @@
                                                 <label for="regParty">Registering party</label>
                                             </div>
 
-                                            
+
                                             <div class="form-label-group float-lab input_float_lbl">
                                                   <input type="text" id="loanDate" class="form-control"
                                                       name="loanDate" required disabled>
                                                   <label for="loanDate">Date of Registration</label>
-                                              </div>                                           
+                                              </div>
                                         </form>
                                     </div>
                                 </div>
@@ -310,7 +307,7 @@
                                     <h5 class="mb-0">
                                         <a class="collapsed" data-toggle="collapse" href="#collapse-B"
                                             aria-expanded="false" aria-controls="collapse-B">
-                                            Involved Parties                                                                
+                                            Involved Parties
                                         </a>
                                     </h5>
                                 </div>
@@ -324,7 +321,7 @@
                                                     <span class="valueHolder1" name="part_selection"></span>
                                                     <div class="dropContainer" id="involved_dropdown"></div>
                                                 </div>
-                                            </div> 
+                                            </div>
                                             <!-- <div class="involved_selection" id="loan_users">
                                                 Here, usersare added when loans are loaded
                                             </div> -->
@@ -367,32 +364,32 @@
                                     aria-labelledby="heading-C">
                                     <div class="loan_detail">
                                         <form>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="object_descript" class="form-control"
                                                     name="object_descript" required>
                                                 <label for="object_descript">Description of the object</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="total_area" class="form-control"
                                                     name="total_area" required>
                                                 <label for="total_area">Total area outdoor + indoor</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="usable_area" name="usable_area"
                                                     class="form-control" required>
                                                 <label for="usable_area">Usable area (net floor space)</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="outdoor_area" class="form-control"
                                                     name="outdoor_area" required>
                                                 <label for="outdoor_area">Total area outdoor</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="object_price" class="form-control"
                                                     name="object_price" required>
                                                 <label for="object_price">Purchase price of object</label>
                                             </div>
-                                            <div class="form-label-group float-lab">
+                                            <div class="form-label-group float-lab input_float_lbl">
                                                 <input type="text" id="price_sqm" class="form-control"
                                                     name="price_sqm" required>
                                                 <label for="price_sqm">Price per square meter</label>
@@ -457,13 +454,13 @@
                                                 <label for="loan_duration">Loan Duration</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
- 
+
                                         </form>
                                     </div>
 
                                 </div>
                             </div>
-                            
+
                              <!-- ---- ---- [E] ---- ---- -->
                             <div id="pane-E" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-E">
                                 <div class="card-header" role="tab" id="heading-E">
@@ -486,10 +483,10 @@
                                             <div class="file-upload">
                                                 <div class="file-select">
                                                     <div class="file-select-button" id="fileName">Upload Term Sheet</div>
-                                                    <div class="file-select-name" id="noFile">No file chosen...</div> 
+                                                    <div class="file-select-name" id="noFile">No file chosen...</div>
                                                     <input type="file" name="Time Sheet" id="chooseFile">
                                                 </div>
-                                            </div>                                            
+                                            </div>
                                             <div class="form-label-group float-lab">
                                                 <input type="text" id="addocuments" class="form-control"
                                                     name="Additional document" required disabled>
@@ -523,17 +520,17 @@
 
                                 <button data-toggle="modal" id="writeToChain" type="button" onclick="writeLoan()"
                                 class="ghost_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Create Loan on Blockchain</button>
-                                
+
                                 <button data-toggle="modal" id="updateToChain" type="button" onclick="updateLoanOnChain()"
                                 class="ghost_btn" style="margin: 0 auto; display:block; margin-bottom: 1rem;">Update Loan on Blockchain</button>
-                            </div>                      
+                            </div>
                     </div>
 
                 </div>
 
 
  <!------------- Right Column ------------>
-                
+
                 <div class="col-sm-4 no-padding">
                     <div class="approval " id="approval_status">
                         <h3>Approval Status</h3>
@@ -547,7 +544,7 @@
                     <div class="History_pannel">
                         <h3>Transaction Status </h3>
                         <ul>
-                             
+
                             <li class="d-none">
                                 <div class="histroy_detail">
                                     <div class="top_section">
@@ -579,7 +576,7 @@
                                     </div>
                                     <p class="banks"><span>Bank#1.</span> <span>Application approved.</span></p>
                                 </div>
-                            </li>  
+                            </li>
 
                             <li>-->
                                 <!-- <div class="histroy_detail">
@@ -588,8 +585,8 @@
                                     </div>
                                     <div class="status">
                                         <p> In review</p>
-                                    </div> 
-                                    <p class="banks_application">Change loan application</p> 
+                                    </div>
+                                    <p class="banks_application">Change loan application</p>
                                     <div class="change_loan">
                                         <p class="change-amt-head">Change Loan Amount </p>
                                         <div class="change_amount">
@@ -599,7 +596,7 @@
                                                 <span class="amount">450,000 €</span>
                                             </p>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div id="commentSection">
                                         <div class="comments_feild">
                                             <p>Due to low creditworthiness of the borrower, we must lower the amount to
@@ -638,6 +635,7 @@
             <div class="modal_para">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h3>Register a new user</h3>
+            <br>
             </div>
             <div class="modal-body">
 
@@ -646,14 +644,14 @@
                     name="modal_add_userName" required>
                     <label for="modal_add_userName">Name</label>
                 </div>
-
+                <div style="margin-bottom:20px;">
                     <input type="radio" id="modal_add_userRole_lender"  name="radios_role" value="lender" required>
                     <label for="modal_add_userRole_lender">Lender</label>
 
 
                     <input type="radio" id="modal_add_userRole_borrower"  name="radios_role" value="borrower" required>
                     <label for="modal_add_userRole_borrower">Borrower</label>
-
+                </div>
                 <div class="form-label-group float-lab">
                     <input type="text" id="modal_add_userAddr" class="form-control"
                     placeholder_x="" name="modal_add_userAddr" required>
@@ -664,15 +662,14 @@
                     </button>
                     <!-- <label for="comment">Term Sheet</label> -->
                 </div>
+                <div style="display:flex;align-items:center;flex-direction:column;">
                 <div class="infotext">Info: Here you can register new users on the smart contract,
                      before they register themselves. </div>
                 <div class="update_btn">
                     <button onclick="userRegistration()" type="submit" data-dismiss="modal"
                         class="primary_btn text-center">Register on Blockchain</button>
                     </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
             </div>
         </div>
     </form>
@@ -722,7 +719,7 @@
     <!------------- Add / Propose / Create new Loan Modal ------------>
 
     <!-- Modal -->
-    <div class="modal fade" id="applicationModal" tabindex="-1" role="dialog" 
+    <div class="modal fade" id="applicationModal" tabindex="-1" role="dialog"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="dialog">
 
@@ -744,9 +741,6 @@
                 <div class="update_btn"><button onclick="addItem()" type="button" data-dismiss="modal"
                         class="primary_btn">Add</button></div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
 
             </div>
         </div>
@@ -755,7 +749,7 @@
     <!------------- Add new User to loan modal ------------>
 
     <!-- Modal -->
-    <div class="modal fade" id="add_loanuser_modal" tabindex="-1" role="dialog" 
+    <div class="modal fade" id="add_loanuser_modal" tabindex="-1" role="dialog"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="dialog">
 
@@ -802,7 +796,7 @@
         </div>
     </div>
 
-    
+
     <!------------- Comment Details Modal ------------>
 
     <div class="modal fade" id="commentpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -820,7 +814,7 @@
                         comments
                     </p>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -828,14 +822,14 @@
 
     <!-- Custom js file -->
     <script>
-        
+
         $(function () {
             $(".nicescroll-box").niceScroll({
                 scrollspeed: 40
                 //A smaller value increases the scroll speed. A larger value makes the scroll speed slower.
 
             });
-        });      
+        });
     </script>
 
     <script src="js/jquery.nicescroll.js"></script>
