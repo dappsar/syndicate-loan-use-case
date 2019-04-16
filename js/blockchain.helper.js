@@ -10,7 +10,7 @@ Note: Asynchronous JS functions are required in web3.js 1.x
 // var storeAddress = "0x188D78ebED7E6C47B17d1Ba29cb741d67BFaA9B6";     // Address of SC_v0.1.6
 // var storeAddress = "0xdbaf48282120e0fAE89a447cbb7688fB35f68e61";     // Address of SC_v0.1.8
 // var storeAddress = "0x0f203b23Cd02c9f35F3b75B58aC4d1B52e93d99A";     // Address of SC_v0.2.0
-var storeAddress = "0xA22245501b10454Db05ae56d5faA113D8f71f712";     // Address of SC_v0.2.2
+var storeAddress = "0xfF2b860fc1E06eF2c0f2c7C055b64f6B11c2E0cd";     // Address of SC_v0.2.3
 
 // Currently active ethereum account
 var userAccount;
@@ -34,6 +34,7 @@ function getArrLength() {
 
 // Retrieves an array of all the loans the user (registrar) has created
 function getLoansByUser(address) {
+    console.log(`getLoansByUser(${address}) called`);
     return storeContract.methods.getLoansByUser(address).call(); 
 }
 
@@ -44,6 +45,7 @@ function getApprovalStatus(loanId)  {
 
 // Retrieves loan amount array
 function getLoanAmounts(loanId)  {
+    console.log(`getLoanAmounts(${loanId}) called`);
     return storeContract.methods.getLoanAmounts(loanId).call(); 
 }
 

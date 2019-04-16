@@ -98,7 +98,7 @@ var activeLoanId;
 
 // Function to Update Loan Object (Save Changes from form fields) 
 // Function: Logic
-const updateLoanInBrowser = () => {
+const updateLoanInBrowser = (yetExist) => {
     // ### INCLUDE: Check if loan has changed
     if (devMode) alert('Saving changes to browser storage');
     // Load loan from array
@@ -113,18 +113,21 @@ const updateLoanInBrowser = () => {
     loanObj.name = $('#loanName').val();
     loanObj.state = $('#state').val();
     loanObj.registeringParty = $('#regParty').val();
-    
-    // Getting the loan amount from user's field, which is not disabled, and store it in local object
-    loanObj.loanAmounts[id] = $(`#amount_user_${id}`).val();
 
-   // Store all the field values in an object 
-    dataStringObj.purpose = $('#loanPurpose').val();
-    dataStringObj.descript = $('#object_descript').val();
-    dataStringObj.total_area = $('#total_area').val();
-    dataStringObj.usable_area = $('#usable_area').val();
-    dataStringObj.outdoor_area = $('#outdoor_area').val();
-    dataStringObj.object_price = $('#object_price').val();
-    dataStringObj.price_sqm = $('#price_sqm').val();
+    // Check if loan was called from writeLoan()
+    if (yetExist) {
+        // Getting the loan amount from user's field, which is not disabled, and store it in local object
+        initialloanObj.loanAmounts[id] = $(`#amount_user_${id}`).val();
+
+    // Store all the field values in an object 
+        dataStringObj.purpose = $('#loanPurpose').val();
+        dataStringObj.descript = $('#object_descript').val();
+        dataStringObj.total_area = $('#total_area').val();
+        dataStringObj.usable_area = $('#usable_area').val();
+        dataStringObj.outdoor_area = $('#outdoor_area').val();
+        dataStringObj.object_price = $('#object_price').val();
+        dataStringObj.price_sqm = $('#price_sqm').val();
+    }
 
     loanObj.dataStringObj = dataStringObj;
     // Store Object with all field values as string, so it can be stored on smart contract

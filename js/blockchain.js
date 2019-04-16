@@ -50,7 +50,7 @@ function startdApp() {
 
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
     console.log(storeContract);
-    logLoans();
+    // logLoans();
 }
 
 
@@ -77,92 +77,95 @@ async function logLoans() {
     $.LoadingOverlay("show", {
         background  : "rgba(40, 40, 40, 0.7)"
     });
-    // // Call function to get the length of the loan-array and pass it to for-loop
-    const loanArrLength = await getArrLength();
-    console.log(`Found ${loanArrLength} loans in Smart Contract`);
+    try {
+        // // Call function to get the length of the loan-array and pass it to for-loop
+        const loanArrLength = await getArrLength();
+        console.log(`Found ${loanArrLength} loans in Smart Contract`);
 
-    const loanIdsByUser = await getLoansByUser(userAccount);
-    console.log(`Loans of this user: ${loanIdsByUser}`);
-    console.log(loanIdsByUser.length);
-    if (loanIdsByUser.length == 0) alert('You did not yet create any loans');
+        const loanIdsByUser = await getLoansByUser(userAccount);
+        console.log(`Loans of this user: ${loanIdsByUser}`);
+        console.log(loanIdsByUser.length);
+        if (loanIdsByUser.length == 0) alert('You did not yet create any loans');
 
-    // Declare key for sessionStorage
-    var bc_key;
+        // Declare key for sessionStorage
+        var bc_key;
 
-    // Looping through each loan-item of array 
-    for (i = 0; i < loanIdsByUser.length; i++) {
-        console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
-        // loading the loan object from Blockchain
-        const loan = await retrieveLoan(loanIdsByUser[i]);
+        // Looping through each loan-item of array 
+        for (i = 0; i < loanIdsByUser.length; i++) {
+            console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
+            // loading the loan object from Blockchain
+            const loan = await retrieveLoan(loanIdsByUser[i]);
 
-        // console.log(loan);
-        // Check in place, in case the loan was deleted
-        if (loan.registeringParty.includes("0x000000000000")) {
-            console.log(`Loan ${i} was deleted`);
-            continue;
-        }
-        const approvalArray = await getApprovalStatus(loanIdsByUser[i]);
-        // console.log(approvalArray); 
+            // console.log(loan);
+            // Check in place, in case the loan was deleted
+            if (loan.registeringParty.includes("0x000000000000")) {
+                console.log(`Loan ${i} was deleted`);
+                continue;
+            }
+            const approvalArray = await getApprovalStatus(loanIdsByUser[i]);
+            console.log(approvalArray); 
 
-        const amountsArray = await getLoanAmounts(loanIdsByUser[i]);
-        // console.log(amountsArray); 
+            // const amountsArray = await getLoanAmounts(loanIdsByUser[i]);
+            // console.log(amountsArray); 
 
-        // a check based on comparing userAccount (address) with array could achieve the same
-        const userId = await getUserToId(loanIdsByUser[i], userAccount);
-        console.log(`User ID in this loan: ${userId}`);
+            // a check based on comparing userAccount (address) with array could achieve the same
+            const userId = await getUserToId(loanIdsByUser[i], userAccount);
+            console.log(`User ID in this loan: ${userId}`);
 
-        const usersInLoanArray = (await getUsersInLoan(loanIdsByUser[i]))[0];
-        // console.log(usersInLoanArray);
+            const usersInLoanArray = (await getUsersInLoan(loanIdsByUser[i]))[0];
+            // console.log(usersInLoanArray);
 
-        // Set key to store loan in sessionStorage
-        bc_key = 'bc_' + loan.id;
+            // Set key to store loan in sessionStorage
+            bc_key = 'bc_' + loan.id;
 
-        // Retrieves all keys from the key-value browser storage (e.g. id_1)
-        sessionKeys = Object.keys(sessionStorage);
+            // Retrieves all keys from the key-value browser storage (e.g. id_1)
+            sessionKeys = Object.keys(sessionStorage);
 
-        // // Check if key (object) already exists, if so, delete
-        // if (sessionKeys.includes(bc_key)) {
-        //     sessionStorage.removeItem(bc_key);
-        // }
+            // // Check if key (object) already exists, if so, delete
+            // if (sessionKeys.includes(bc_key)) {
+            //     sessionStorage.removeItem(bc_key);
+            // }
 
-        var dataStringObj = {};
+            var dataStringObj = {};
 
-        if (loan.dataString && isJson(loan.dataString)) {
-                dataStringObj = JSON.parse(loan.dataString);     // Store parsed, so object key-value pairs can be read  
-                console.log(dataStringObj);          
-        }
-        
-        
+            if (loan.dataString && isJson(loan.dataString)) {
+                    dataStringObj = JSON.parse(loan.dataString);     // Store parsed, so object key-value pairs can be read  
+                    console.log(dataStringObj);          
+            }
+            
 
-        if (!sessionKeys.includes(bc_key)) {
-            // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
-            var bc_loan = {
-                id: loan.id,
-                name: loan.name,
-                revisionNumber: loan.revisionNumber,
-                registeringParty: loan.registeringParty,
-                dataString: loan.dataString,                    // As stored in 'string dataString'
-                dataStringObj: dataStringObj,
-                date: loan.regTime, 
-                state: 'review',            // Not yet in struct 
-                loanAmounts: amountsArray,
-                approvalStatus: approvalArray,
-                addresses: usersInLoanArray,
-                userId: userId,
-            };
+            // if (!sessionKeys.includes(bc_key)) {
+            //     // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
+            //     var bc_loan = {
+            //         id: loan.id,
+            //         name: loan.name,
+            //         revisionNumber: loan.revisionNumber,
+            //         registeringParty: loan.registeringParty,
+            //         dataString: loan.dataString,                    // As stored in 'string dataString'
+            //         dataStringObj: dataStringObj,
+            //         date: loan.regTime, 
+            //         state: 'review',            // Not yet in struct 
+            //         loanAmounts: amountsArray,
+            //         approvalStatus: approvalArray,
+            //         addresses: usersInLoanArray,
+            //         userId: userId,
+            //     };
 
+            //     console.log('Storing loan under key: '+ bc_key);
 
+            //     //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
+            //     sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
 
-            console.log('Storing loan under key: '+ bc_key);
+            //     addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
 
-            //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
-            sessionStorage.setItem(bc_key, JSON.stringify(bc_loan));
-
-            addLoanToSidePanel(loan.id, loan.name, loan.regTime, 'bc');
-
+            // }
         }
     }
-    $.LoadingOverlay("hide");
+    catch (error) {
+        console.log(error);
+        $.LoadingOverlay("hide");
+    }
+    
     // Refresh Current User List (when at top of function, stops for-loop after first iteration)
     retrieveUsers();
     // Trigger to click and load the last added loan in the side menu
@@ -176,7 +179,7 @@ async function logLoans() {
 async function updateLoanOnChain() {
 
     // Updates Loan in Browser-Storage according to current form values
-    updateLoanInBrowser();
+    updateLoanInBrowser(true);
 
     // Load active loan from JSON in Storage
     activeLoan = returnActiveLoan();
@@ -231,7 +234,7 @@ async function updateLoanOnChain() {
 async function writeLoan() {
 
     // Updates Loan in Browser-Storage
-    updateLoanInBrowser();
+    updateLoanInBrowser(false);
 
     // Load active loan from JSON in Storage
     activeLoan = returnActiveLoan();

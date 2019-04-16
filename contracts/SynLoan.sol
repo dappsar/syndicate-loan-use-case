@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.2.2
+version 0.2.3
 creator: Marcel Jackisch
 */
 
@@ -71,12 +71,9 @@ Struct user defines key data of participants such as banks and businesses
       _;
     }
 
-/*
-1. createLoan
-2. updateLoan
-3...
-*/
 
+
+            
 
     function createLoan (string memory _name, string memory _dataString) public {
 
@@ -157,6 +154,7 @@ Struct user defines key data of participants such as banks and businesses
         require(addressAssociated[_account][_loanId] == false, "User already exists in loan");
         addressAssociated[_account][_loanId] = true;
         
+        userLoanCount[_account]++;
         uint userNum = loans[_loanId].numOfUsers++;
         // Adds user to mapping of loan (analog to incremented numOfUsers)
         loans[_loanId].userToId[_account] = userNum;
@@ -212,8 +210,22 @@ Struct user defines key data of participants such as banks and businesses
         u.account = _account;
         users.push(u);
 
-        // Self-registration: Mapping ---- (-1??)
         addressToUserData[_account] = u;
+    }
+    
+    
+    /*
+    Helper function to retrieve [mapping userLoanCount]
+    */   
+    function getUserLoanCount(address _addr) public view returns(uint) {
+        return userLoanCount[_addr];
+    }
+    
+    /*
+    Helper function to retrieve [mapping loanToRegistrar]
+    */   
+    function getloanToRegistrar(uint _loanId) public view returns(address) {
+        return loanToRegistrar[_loanId];
     }
     
     /*
@@ -232,7 +244,6 @@ Struct user defines key data of participants such as banks and businesses
 
     /*
     Helper function to retrieve List of all registered Addresses in Loan 
-    Add: Their position / id (index of array == userId?)
     */   
     function getUsersInLoan (uint256 _loanId) public view returns (address[] memory, uint) {
         address[] memory addrArr = loans[_loanId].userList;
