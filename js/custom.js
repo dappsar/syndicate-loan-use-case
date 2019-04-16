@@ -106,12 +106,16 @@ const updateLoanInBrowser = () => {
  
     // Loads currently active loan
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+    id = loanObj.userId;
     var dataStringObj = {}; 
 
     // Reads current form values from HTML and saves them to loaded loan Object
     loanObj.name = $('#loanName').val();
     loanObj.state = $('#state').val();
     loanObj.registeringParty = $('#regParty').val();
+    
+    // Getting the loan amount from user's field, which is not disabled, and store it in local object
+    loanObj.loanAmounts[id] = $(`#amount_user_${id}`).val();
 
    // Store all the field values in an object 
     dataStringObj.purpose = $('#loanPurpose').val();
@@ -359,9 +363,11 @@ function loadParties() {
         for (i = 0; i < addr.length; i++) {
             // console.log("Approval Status:" + loanObj.approvalStatus[i]);
             info = "";
+            disable = true;
 
             if (i == loanObj.userId) {
                 info = "(You)";
+                disable = false;
             }
 
             // console.log("addr[i] :" + addr[i]);
@@ -394,6 +400,7 @@ function loadParties() {
                 <label for="amount_user_${i}"><span>${userName} (${i})</span></label>
                 <span class="euro">€</span>
             </div>`);
+            if (!disable) $(`#amount_user_${i}`).prop('disabled', false);
                       
             // Create dropdown items in involved parties tab ---> loading details (loadUserDetail) from document.ready
             menuItems += `<div class="dropOption" id="pt_user_${i}" title="${addr[i]}">${userName} (${i})</div>`;

@@ -187,20 +187,18 @@ async function updateLoanOnChain() {
     const loanBc = await retrieveLoan(activeLoan.id);
 
     // Check if form fields have really been updated (implementation difficult, and probaly unnecessary)
-    if (loanBc.name != activeLoan.name || loanBc.dataString != activeLoan.dataString) {
+    // Check if loan amount has changed
+    if (loanBc.name != activeLoan.name || loanBc.dataString != activeLoan.dataString ) {
         console.log("Active loan has been changed");
        _name = activeLoan.name;
        _dataString = activeLoan.dataString;
-       console.log(_purpose);
+       _loanAmount = activeLoan.loanAmounts[activeLoan.userId];
+       console.log(_dataString);
     }
     else {
         alert("Active loan has not been changed");
         return;
     }
-
-    // Here, pass all the updated fields for contract call
-    // _name = activeLoan.name;
-    // _purpose = activeLoan.purpose;
 
     // Make sure important values are specified
     if (!_name || !_dataString ) {
@@ -211,7 +209,7 @@ async function updateLoanOnChain() {
     console.log('Info: Calling updateLoan() on Smart Contract: '); 
     txNotifyUI();
     // Execute function on EVM:
-    storeContract.methods.updateLoan(activeLoan.id, _name, _dataString) // CHANGE WHEN CONTRACT IS UPDATED
+    storeContract.methods.updateLoan(activeLoan.id, _name, _dataString, _loanAmount) 
     .send({from: userAccount})
     .on("receipt", function(receipt) {
         $('#tx-status').text('Transaction confirmed');

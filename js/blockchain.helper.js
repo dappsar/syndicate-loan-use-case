@@ -44,8 +44,7 @@ function getApprovalStatus(loanId)  {
 
 // Retrieves loan amount array
 function getLoanAmounts(loanId)  {
-    // return storeContract.methods.loanAmounts(loanId).call(); 
-    return [5,3,2];
+    return storeContract.methods.getLoanAmounts(loanId).call(); 
 }
 
 // Retrieves loan from array at position (id)
