@@ -20,7 +20,7 @@ contract SynLoanData {
         string name;                        // Name of  the Loan
         uint revisionNumber;                // Shall increment with every update to the loan
         address registeringParty;           // Party who registered the loan. Possible unnecessary because of mapping  loanToRegistrar
-        string purpose;             
+        string dataString;                        // formerly "purpose", now general data string
         uint regTime;                           // UNIX Timestamp
         mapping (address => uint) userToId;     // Gets local user id belonging (mapped to) an address in loan
         uint[] loanAmounts;                     // corresponding to participants
@@ -148,7 +148,7 @@ Struct user defines key data of participants such as banks and businesses
         return addressToUserData[_account];
     }
 
-    function createLoan (string memory _name, string memory _purpose) public {
+    function createLoan (string memory _name, string memory _dataString) public {
 
         loanToRegistrar[loanId] = msg.sender;   // Store the address of the user in mapping
         userLoanCount[msg.sender]++;            // necessary for array to count loans registered by user
@@ -159,7 +159,7 @@ Struct user defines key data of participants such as banks and businesses
         ln.name = _name;
         ln.revisionNumber = 0;
         ln.registeringParty = msg.sender;
-        ln.purpose = _purpose;
+        ln.datdataString = _dataString;
         ln.regTime = now;
         
         loans.push(ln);
@@ -174,11 +174,11 @@ Struct user defines key data of participants such as banks and businesses
     Update Loan Data, increment version / revision number
     Here, all the other data like loan amount, start date and other conditions shall be filled
     */
-    function updateLoan(uint _loanId, string memory _name, string memory _purpose, uint _loanAmount) 
+    function updateLoan(uint _loanId, string memory _name, string memory _dataString, uint _loanAmount) 
         public onlyParticipant(_loanId)
     {
         loans[_loanId].name = _name;
-        loans[_loanId].purpose = _purpose;
+        loans[_loanId].dataString = _dataString;
 
         loans[_loanId].revisionNumber++;
         resetApprovals(_loanId);

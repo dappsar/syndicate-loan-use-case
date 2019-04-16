@@ -132,8 +132,9 @@ async function retrieveUsers() {
         // retrieve object from user array and 
         const currUser = await retrieveUser(i);
         globalUserArray.push(currUser);
-        // console.log(`logging users[${i}] object: ${currUser.name}`)
+        // console.log(`logging users[${i}] object: ${currUser.name}`);
         userMap[currUser.account] = {name: currUser.name, role: currUser.role};
+        // console.log(userMap[currUser.account]);
 
     }
     sessionStorage.setItem('users_bc', JSON.stringify(globalUserArray));

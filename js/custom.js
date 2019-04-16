@@ -149,12 +149,12 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
     {
         loanIdAttr = 'bc_'+_loanId;
         date = getDateInFormat(undefined, _date)
-        bc_info = ' | loaded from Blockchain';
+        bc_info = ' | from blockchain';
     }
     else {
         loanIdAttr = 'id_'+_loanId;
         date = getDateInFormat('full');
-        bc_info = '';
+        bc_info = ' | locally stored';
     }
 
     $(".appplication_section ul").prepend(
@@ -168,8 +168,8 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
             </div>
         </li>`);
 
-       // Triggers clicking on the created / loaded loan
-       $('li[data-storage-key="bc_3"]').trigger('click');
+       // Triggers clicking on the created / loaded loan ## CANT BE HERE BECAUSE IT BREAKS LOGLOANS
+    //    $(`li[data-storage-key="${loanIdAttr}"]`).trigger('click');
 
 }
 
@@ -197,6 +197,7 @@ var addItem = () => {
 
     // call function that adds loan to UI side panel
     addLoanToSidePanel(tempLoanId, loanName);
+    $(`li[data-storage-key="${activeLoanId}"]`).trigger('click');
 
     tempLoanId++;
 }
@@ -226,6 +227,10 @@ function loadLoan(htmlObject) {
     $('#updateToChain').hide();
     $('#btn_approveLoan').hide();
 
+    // Making tabs inaccessible for local loans
+    $('#tab-B, #tab-C, #tab-D, #tab-E').hide();
+
+    // Clearing from other loans in panel
     $('#loan_users').empty();
     $('.approval_check').empty();
     $('#loan_amounts').empty();
@@ -248,6 +253,9 @@ function loadLoan(htmlObject) {
         $('#writeToChain').hide();
         $('#updateToChain').show();
         $('#btn_approveLoan').show();
+
+        // Making tabs accessible for local loans
+        $('#tab-B, #tab-C, #tab-D, #tab-E').show();
     }
 
     // load loan from storage
@@ -316,7 +324,7 @@ function loadParties() {
             }
 
             // console.log("addr[i] :" + addr[i]);
-            console.log(typeof addr[i]);
+            // console.log(typeof addr[i]);
             // console.log("userMap[addr[i]].name " + userMap[addr[i]].name);
             if (userMap[addr[i]]) {
                 userName = userMap[addr[i]].name;
@@ -367,6 +375,7 @@ function loadParties() {
 
 
 // Loads user data into form <section id="user_data_fields"> when selected in dropdown [Involved Parties Tab]
+// called from document.ready
 function loadUserDetail (address) {
 
     if (userMap[address]) {

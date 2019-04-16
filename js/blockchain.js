@@ -94,9 +94,12 @@ async function logLoans() {
     console.log(loanIdsByUser.length);
     if (loanIdsByUser.length == 0) alert('You did not yet create any loans');
 
+    // Declare key for sessionStorage
+    var bc_key;
+
     // Looping through each loan-item of array 
     for (i = 0; i < loanIdsByUser.length; i++) {
-        // console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
+        console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
         // loading the loan object from Blockchain
         const loan = await retrieveLoan(loanIdsByUser[i]);
 
@@ -120,7 +123,7 @@ async function logLoans() {
         console.log(usersInLoanArray);
 
         // Set key to store loan in sessionStorage
-        var bc_key = 'bc_' + loan.id;
+        bc_key = 'bc_' + loan.id;
 
         // Retrieves all keys from the key-value browser storage (e.g. id_1)
         sessionKeys = Object.keys(sessionStorage);
@@ -158,13 +161,13 @@ async function logLoans() {
     $.LoadingOverlay("hide");
     // Refresh Current User List (when at top of function, stops for-loop after first iteration)
     retrieveUsers();
+    // Trigger to click and load the last added loan in the side menu
 
+    setTimeout(function(){
+        $(`li[data-storage-key="${bc_key}"]`).trigger('click');
+    },1000);
 }
 
-var test = {
-    key1: "bla",
-    key2: "bla"
-};
 
 async function updateLoanOnChain() {
 
@@ -259,9 +262,8 @@ async function writeLoan() {
 
     _name = activeLoan.name;
     _purpose = activeLoan.purpose;
-    _date = activeLoan.date;
 
-    if (!_name || !_purpose || !_date) {
+    if (!_name || !_purpose) {
         alert('Some value have not been specified, aborting...');
         return;
     }
