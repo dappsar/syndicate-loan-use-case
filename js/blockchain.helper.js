@@ -84,8 +84,17 @@ function addUserToLoan() {
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
     _address = $('#input_add_user').val();
     console.log(_address);
+
+    txNotifyUI();
     storeContract.methods.addUserToLoan(loanObj.id, _address)
     .send({from: userAccount})
+    .on("receipt", function(receipt) {
+        $('#tx-status').text('Transaction confirmed');
+        console.log(receipt);
+        sessionStorage.removeItem(activeLoanId);
+        deleteFromSidePanel(activeLoanId);
+        logLoans();
+    });
 }
 
 // Registration of a new user account. Can be executed by _anyone_ (public)   [.send]
@@ -99,6 +108,11 @@ function userRegistration(_name, _role, _account) {
     txNotifyUI();
     storeContract.methods.userRegistration(_name, _role, _account)
     .send({from: userAccount})
+    .on("receipt", function(receipt) {
+        $('#tx-status').text('Transaction confirmed');
+        // Refresh Current User List (when at top of function, stops for-loop after first iteration)
+        retrieveUsers();
+    })
     .on("error", function(error) {
         console.log(error);
         console.log(typof(error));

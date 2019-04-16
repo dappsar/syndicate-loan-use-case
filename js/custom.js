@@ -98,7 +98,7 @@ var activeLoanId;
 
 // Function to Update Loan Object (Save Changes from form fields) 
 // Function: Logic
-const updateLoanInBrowser = (yetExist) => {
+const updateLoanInBrowser = () => {
     // ### INCLUDE: Check if loan has changed
     if (devMode) alert('Saving changes to browser storage');
     // Load loan from array
@@ -107,20 +107,24 @@ const updateLoanInBrowser = (yetExist) => {
     // Loads currently active loan
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
     id = loanObj.userId;
-    var dataStringObj = {}; 
 
-    // Reads current form values from HTML and saves them to loaded loan Object
+
+
+    // Reads current form values from HTML and saves them to loaded loan Object directly
     loanObj.name = $('#loanName').val();
     loanObj.state = $('#state').val();
     loanObj.registeringParty = $('#regParty').val();
 
-    // Check if loan was called from writeLoan()
-    if (yetExist) {
-        // Getting the loan amount from user's field, which is not disabled, and store it in local object
-        initialloanObj.loanAmounts[id] = $(`#amount_user_${id}`).val();
+    // dataObject where most values will be stored
+    var dataStringObj = {}; 
+    dataStringObj.purpose = $('#loanPurpose').val(); // Purpose is on keydata tab
 
-    // Store all the field values in an object 
-        dataStringObj.purpose = $('#loanPurpose').val();
+    // Check if loan already exists on blockchain (only then additional tabs shall be active)
+    if (activeLoanId.includes('bc')) {
+        // Getting the loan amount from user's field, which is not disabled, and store it in local object
+        loanObj.loanAmounts[id] = $(`#amount_user_${id}`).val();
+
+        // Store all the field values in an object 
         dataStringObj.descript = $('#object_descript').val();
         dataStringObj.total_area = $('#total_area').val();
         dataStringObj.usable_area = $('#usable_area').val();
@@ -247,6 +251,8 @@ Function: UI + Logic (sets activeLoanId)
 function loadLoan(htmlObject) {
     // if (devMode) alert(`loadLoan() called`);
 
+    $('#tab-A').trigger('click');
+
     $('#writeToChain').show();
     $('#updateToChain').hide();
     $('#btn_approveLoan').hide();
@@ -309,11 +315,10 @@ function loadLoan(htmlObject) {
         // $('#loanDate').val(loanObj.date);        
         $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
-        // // Check if JSON dataString exists and then fill fields
-        console.log(loanObj.dataStringObj);
+        // Check if JSON dataString exists and then fill fields
         if(loanObj.dataStringObj) {
             var o = loanObj.dataStringObj;
-            console.log(o);
+            // console.log(o);
             console.log(loanObj.dataStringObj.purpose);
             if (o.purpose) $('#loanPurpose').val(loanObj.dataStringObj.purpose);
             if (o.descript) $('#object_descript').val(loanObj.dataStringObj.descript);
