@@ -50,7 +50,7 @@ const createLoan = (name, id, purpose, state, registeringParty, date, addresses,
         date,
         addresses,
         approvalStatus,
-        loanAmounts
+        loanAmounts,
     }
 }
 
@@ -98,7 +98,7 @@ var activeLoanId;
 
 // Function to Update Loan Object (Save Changes from form fields) 
 // Function: Logic
-const updateLoanInBrowser = () => {
+const updateLoanInBrowser = (yetExist) => {
     // ### INCLUDE: Check if loan has changed
     if (devMode) alert('Saving changes to browser storage');
     // Load loan from array
@@ -106,6 +106,7 @@ const updateLoanInBrowser = () => {
  
     // Loads currently active loan
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+    id = loanObj.userId;
     var dataStringObj = {}; 
 
     // Reads current form values from HTML and saves them to loaded loan Object
@@ -113,19 +114,24 @@ const updateLoanInBrowser = () => {
     loanObj.state = $('#state').val();
     loanObj.registeringParty = $('#regParty').val();
 
-   // Store all the field values in an object 
-    dataStringObj.purpose = $('#loanPurpose').val();
-    dataStringObj.descript = $('#object_descript').val();
-    dataStringObj.total_area = $('#total_area').val();
-    dataStringObj.usable_area = $('#usable_area').val();
-    dataStringObj.outdoor_area = $('#outdoor_area').val();
-    dataStringObj.object_price = $('#object_price').val();
-    dataStringObj.price_sqm = $('#price_sqm').val();
+    // Check if loan was called from writeLoan()
+    if (yetExist) {
+        // Getting the loan amount from user's field, which is not disabled, and store it in local object
+        initialloanObj.loanAmounts[id] = $(`#amount_user_${id}`).val();
+
+    // Store all the field values in an object 
+        dataStringObj.purpose = $('#loanPurpose').val();
+        dataStringObj.descript = $('#object_descript').val();
+        dataStringObj.total_area = $('#total_area').val();
+        dataStringObj.usable_area = $('#usable_area').val();
+        dataStringObj.outdoor_area = $('#outdoor_area').val();
+        dataStringObj.object_price = $('#object_price').val();
+        dataStringObj.price_sqm = $('#price_sqm').val();
+    }
 
     loanObj.dataStringObj = dataStringObj;
     // Store Object with all field values as string, so it can be stored on smart contract
-    let dataStringVal = JSON.stringify(dataStringObj);
-    loanObj.dataString = dataStringVal;
+    loanObj.dataString = JSON.stringify(dataStringObj);
 
 
     // loanObj.date = $('#loanDate').val();   // probably not necessary anymore
@@ -303,16 +309,19 @@ function loadLoan(htmlObject) {
         // $('#loanDate').val(loanObj.date);        
         $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
-        // Check if JSON dataString exists and then fill fields
-        if(loanObj.dataString) {
-            $('#loanPurpose').val(loanObj.dataStringObj.purpose);
-            $('#loanPurpose').val(loanObj.dataStringObj.purpose)
-            $('#object_descript').val(loanObj.dataStringObj.descript);
-            $('#total_area').val(loanObj.dataStringObj.total_area);
-            $('#usable_area').val(loanObj.dataStringObj.usable_area);
-            $('#outdoor_area').val(loanObj.dataStringObj.outdoor_area);
-            $('#object_price').val(loanObj.dataStringObj.object_price);
-            $('#price_sqm').val(loanObj.dataStringObj.price_sqm);
+        // // Check if JSON dataString exists and then fill fields
+        console.log(loanObj.dataStringObj);
+        if(loanObj.dataStringObj) {
+            var o = loanObj.dataStringObj;
+            console.log(o);
+            console.log(loanObj.dataStringObj.purpose);
+            if (o.purpose) $('#loanPurpose').val(loanObj.dataStringObj.purpose);
+            if (o.descript) $('#object_descript').val(loanObj.dataStringObj.descript);
+            if (o.total_area) $('#total_area').val(loanObj.dataStringObj.total_area);
+            if (o.usable_area) $('#usable_area').val(loanObj.dataStringObj.usable_area);
+            if (o.outdoor_area) $('#outdoor_area').val(loanObj.dataStringObj.outdoor_area);
+            if (o.object_price) $('#object_price').val(loanObj.dataStringObj.object_price);
+            if (o.price_sqm) $('#price_sqm').val(loanObj.dataStringObj.price_sqm);
         }
 
 
@@ -357,9 +366,11 @@ function loadParties() {
         for (i = 0; i < addr.length; i++) {
             // console.log("Approval Status:" + loanObj.approvalStatus[i]);
             info = "";
+            disable = true;
 
             if (i == loanObj.userId) {
                 info = "(You)";
+                disable = false;
             }
 
             // console.log("addr[i] :" + addr[i]);
@@ -392,6 +403,7 @@ function loadParties() {
                 <label for="amount_user_${i}"><span>${userName} (${i})</span></label>
                 <span class="euro">€</span>
             </div>`);
+            if (!disable) $(`#amount_user_${i}`).prop('disabled', false);
                       
             // Create dropdown items in involved parties tab ---> loading details (loadUserDetail) from document.ready
             menuItems += `<div class="dropOption" id="pt_user_${i}" title="${addr[i]}">${userName} (${i})</div>`;
