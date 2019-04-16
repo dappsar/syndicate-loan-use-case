@@ -50,7 +50,7 @@ const createLoan = (name, id, purpose, state, registeringParty, date, addresses,
         date,
         addresses,
         approvalStatus,
-        loanAmounts
+        loanAmounts,
     }
 }
 
@@ -124,8 +124,7 @@ const updateLoanInBrowser = () => {
 
     loanObj.dataStringObj = dataStringObj;
     // Store Object with all field values as string, so it can be stored on smart contract
-    let dataStringVal = JSON.stringify(dataStringObj);
-    loanObj.dataString = dataStringVal;
+    loanObj.dataString = JSON.stringify(dataStringObj);
 
 
     // loanObj.date = $('#loanDate').val();   // probably not necessary anymore
@@ -303,16 +302,19 @@ function loadLoan(htmlObject) {
         // $('#loanDate').val(loanObj.date);        
         $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
-        // Check if JSON dataString exists and then fill fields
-        if(loanObj.dataString) {
-            $('#loanPurpose').val(loanObj.dataStringObj.purpose);
-            $('#loanPurpose').val(loanObj.dataStringObj.purpose)
-            $('#object_descript').val(loanObj.dataStringObj.descript);
-            $('#total_area').val(loanObj.dataStringObj.total_area);
-            $('#usable_area').val(loanObj.dataStringObj.usable_area);
-            $('#outdoor_area').val(loanObj.dataStringObj.outdoor_area);
-            $('#object_price').val(loanObj.dataStringObj.object_price);
-            $('#price_sqm').val(loanObj.dataStringObj.price_sqm);
+        // // Check if JSON dataString exists and then fill fields
+        console.log(loanObj.dataStringObj);
+        if(loanObj.dataStringObj) {
+            var o = loanObj.dataStringObj;
+            console.log(o);
+            console.log(loanObj.dataStringObj.purpose);
+            if (o.purpose) $('#loanPurpose').val(loanObj.dataStringObj.purpose);
+            if (o.descript) $('#object_descript').val(loanObj.dataStringObj.descript);
+            if (o.total_area) $('#total_area').val(loanObj.dataStringObj.total_area);
+            if (o.usable_area) $('#usable_area').val(loanObj.dataStringObj.usable_area);
+            if (o.outdoor_area) $('#outdoor_area').val(loanObj.dataStringObj.outdoor_area);
+            if (o.object_price) $('#object_price').val(loanObj.dataStringObj.object_price);
+            if (o.price_sqm) $('#price_sqm').val(loanObj.dataStringObj.price_sqm);
         }
 
 

@@ -54,6 +54,20 @@ function startdApp() {
 }
 
 
+function isJson(str) {
+    console.log('checking if JSON')
+    try {
+        JSON.parse(str);
+        console.log(str);
+    } catch (e) {
+        console.log('No JSON')
+        return false;
+    }
+    console.log('is a valid JSON, returning true');
+    return true;
+}
+
+
 /* 
 Function called on clicking button "Retrieve Loans from Smart Contract"
 Loads loans from blockchain and writes them as objects into browser storage 
@@ -88,17 +102,17 @@ async function logLoans() {
             continue;
         }
         const approvalArray = await getApprovalStatus(loanIdsByUser[i]);
-        console.log(approvalArray); 
+        // console.log(approvalArray); 
 
         const amountsArray = await getLoanAmounts(loanIdsByUser[i]);
-        console.log(amountsArray); 
+        // console.log(amountsArray); 
 
         // a check based on comparing userAccount (address) with array could achieve the same
         const userId = await getUserToId(loanIdsByUser[i], userAccount);
         console.log(`User ID in this loan: ${userId}`);
 
         const usersInLoanArray = (await getUsersInLoan(loanIdsByUser[i]))[0];
-        console.log(usersInLoanArray);
+        // console.log(usersInLoanArray);
 
         // Set key to store loan in sessionStorage
         bc_key = 'bc_' + loan.id;
@@ -111,22 +125,34 @@ async function logLoans() {
         //     sessionStorage.removeItem(bc_key);
         // }
 
+        var dataStringObj = {};
+
+        if (loan.dataString && isJson(loan.dataString)) {
+                dataStringObj = JSON.parse(loan.dataString);     // Store parsed, so object key-value pairs can be read  
+                console.log(dataStringObj);          
+        }
+        
+        
 
         if (!sessionKeys.includes(bc_key)) {
             // Create new object (with less key-val pairs) based on loan object retrieved from Smart Contract
             var bc_loan = {
                 id: loan.id,
                 name: loan.name,
-                purpose: loan.purpose,
-                date: loan.regTime,
-                registeringParty: loan.registeringParty,
                 revisionNumber: loan.revisionNumber,
-                state: 'review',
+                registeringParty: loan.registeringParty,
+                dataString: loan.dataString,                    // As stored in 'string dataString'
+                dataStringObj: dataStringObj,
+                date: loan.regTime, 
+                state: 'review',            // Not yet in struct 
                 loanAmounts: amountsArray,
                 approvalStatus: approvalArray,
                 addresses: usersInLoanArray,
                 userId: userId,
             };
+
+
+
             console.log('Storing loan under key: '+ bc_key);
 
             //  Saves object in browser storage (different data structure than locally created loans, [0]: name etc.)
@@ -161,10 +187,10 @@ async function updateLoanOnChain() {
     const loanBc = await retrieveLoan(activeLoan.id);
 
     // Check if form fields have really been updated (implementation difficult, and probaly unnecessary)
-    if (loanBc.name != activeLoan.name || loanBc.purpose != activeLoan.purpose) {
+    if (loanBc.name != activeLoan.name || loanBc.dataString != activeLoan.dataString) {
         console.log("Active loan has been changed");
        _name = activeLoan.name;
-       _purpose = test;
+       _dataString = activeLoan.dataString;
        console.log(_purpose);
     }
     else {
@@ -177,7 +203,7 @@ async function updateLoanOnChain() {
     // _purpose = activeLoan.purpose;
 
     // Make sure important values are specified
-    if (!_name || !_purpose ) {
+    if (!_name || !_dataString ) {
         alert('Some value have not been specified, aborting...');
         return;
     }
@@ -185,7 +211,7 @@ async function updateLoanOnChain() {
     console.log('Info: Calling updateLoan() on Smart Contract: '); 
     txNotifyUI();
     // Execute function on EVM:
-    storeContract.methods.updateLoan(activeLoan.id, _name, _purpose) // CHANGE WHEN CONTRACT IS UPDATED
+    storeContract.methods.updateLoan(activeLoan.id, _name, _dataString) // CHANGE WHEN CONTRACT IS UPDATED
     .send({from: userAccount})
     .on("receipt", function(receipt) {
         $('#tx-status').text('Transaction confirmed');
@@ -214,9 +240,10 @@ async function writeLoan() {
     console.log(activeLoan);
 
     _name = activeLoan.name;
-    _dataString = activeLoan.dataStringObj.purpose;
+    _dataString = activeLoan.dataString;
 
-    if (!_name || !_purpose) {
+    // When first writing loan, make sure these values are non-zero
+    if (!_name || !_dataString) {
         alert('Some value have not been specified, aborting...');
         return;
     }
