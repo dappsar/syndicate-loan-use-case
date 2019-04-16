@@ -110,8 +110,9 @@ function userRegistration(_name, _role, _account) {
     .send({from: userAccount})
     .on("receipt", function(receipt) {
         $('#tx-status').text('Transaction confirmed');
-        // Refresh Current User List (when at top of function, stops for-loop after first iteration)
-        retrieveUsers();
+        sessionStorage.removeItem(activeLoanId);
+        deleteFromSidePanel(activeLoanId);
+        logLoans();
     })
     .on("error", function(error) {
         console.log(error);
