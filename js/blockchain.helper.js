@@ -84,8 +84,16 @@ function addUserToLoan() {
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
     _address = $('#input_add_user').val();
     console.log(_address);
+
+    txNotifyUI();
     storeContract.methods.addUserToLoan(loanObj.id, _address)
     .send({from: userAccount})
+    .on("receipt", function(receipt) {
+        $('#tx-status').text('Transaction confirmed');
+        console.log(receipt);
+        sessionStorage.removeItem(activeLoanId);
+        deleteFromSidePanel(activeLoanId);
+        logLoans();
 }
 
 // Registration of a new user account. Can be executed by _anyone_ (public)   [.send]

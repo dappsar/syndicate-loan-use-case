@@ -280,7 +280,7 @@ async function approveLoan() {
 
     txNotifyUI();
     // Execute function on EVM:
-    storeContract.methods.approveLoan(activeLoan.id)
+    storeContract.methods.approveLoan(activeLoan.id, activeLoan.revisionNumber)
     .send({from: userAccount})
     .on("receipt", function(receipt) {
         $('#tx-status').text('Transaction confirmed');

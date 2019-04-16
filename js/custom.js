@@ -315,11 +315,10 @@ function loadLoan(htmlObject) {
         // $('#loanDate').val(loanObj.date);        
         $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
-        // // Check if JSON dataString exists and then fill fields
-        console.log(loanObj.dataStringObj);
+        // Check if JSON dataString exists and then fill fields
         if(loanObj.dataStringObj) {
             var o = loanObj.dataStringObj;
-            console.log(o);
+            // console.log(o);
             console.log(loanObj.dataStringObj.purpose);
             if (o.purpose) $('#loanPurpose').val(loanObj.dataStringObj.purpose);
             if (o.descript) $('#object_descript').val(loanObj.dataStringObj.descript);
