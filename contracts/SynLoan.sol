@@ -16,11 +16,11 @@ contract SynLoanData {
     LoanData[] public loans;
     
     struct LoanData {
-        uint id;                            // Loan ID
-        string name;                        // Name of  the Loan
-        uint revisionNumber;                // Shall increment with every update to the loan
-        address registeringParty;           // Party who registered the loan. Possible unnecessary because of mapping  loanToRegistrar
-        string dataString;                        // formerly "purpose", now general data string
+        uint id;                                // Loan ID
+        string name;                            // Name of  the Loan
+        uint revisionNumber;                    // Shall increment with every update to the loan
+        address registeringParty;               // Party who registered the loan. Possible unnecessary because of mapping  loanToRegistrar
+        string dataString;                      // formerly "purpose", now general data string
         uint regTime;                           // UNIX Timestamp
         mapping (address => uint) userToId;     // Gets local user id belonging (mapped to) an address in loan
         uint[] loanAmounts;                     // corresponding to participants
@@ -70,6 +70,81 @@ Struct user defines key data of participants such as banks and businesses
       require(loans[_loanId].userToId[msg.sender] != 0 || loanToRegistrar[_loanId] == msg.sender, "You are not part of this loan");
       _;
     }
+
+/*
+1. createLoan
+2. updateLoan
+3...
+*/
+
+
+    function createLoan (string memory _name, string memory _dataString) public {
+
+        loanToRegistrar[loanId] = msg.sender;   // Store the address of the user in mapping
+        userLoanCount[msg.sender]++;            // necessary for array to count loans registered by user
+        
+        // create LoanData instance in memory, later populate array
+        LoanData memory ln;
+        ln.id = loanId;        
+        ln.name = _name;
+        ln.revisionNumber = 0;
+        ln.registeringParty = msg.sender;
+        ln.datdataString = _dataString;
+        ln.regTime = now;
+        
+        loans.push(ln);
+        
+        // Add loan creator himself/herself
+        addUserToLoan(loanId, msg.sender); 
+        loanId++; // Increment unique number
+    }
+
+
+    /*
+    Update Loan Data, increment version / revision number
+    Here, all the other data like loan amount, start date and other conditions shall be filled
+    */
+    function updateLoan(uint _loanId, string memory _name, string memory _dataString, uint _loanAmount) 
+        public onlyParticipant(_loanId)
+    {
+        loans[_loanId].name = _name;
+        loans[_loanId].dataString = _dataString;
+
+        // Save specified loan amount in array corresponding to user index
+        uint userId = loans[_loanId].userToId[msg.sender];
+        loans[_loanId].loanAmounts[userId] = _loanAmount;
+
+        loans[_loanId].revisionNumber++;
+        resetApprovals(_loanId);
+    }
+
+    /*
+    Functionality to delete loan
+    */   
+    function deleteLoan(uint _id) public onlyRegistrar(_id) {
+        delete loans[_id];
+    }
+
+
+    /*
+    Approves Loan: each participant of Loan can give his approval
+    */
+    function approveLoan(uint _loanId, uint _revisionNumber) public  {
+        uint userId = loans[_loanId].userToId[msg.sender];
+        require(loans[_loanId].revisionNumber == _revisionNumber, "Versions of the loan do not match");
+        loans[_loanId].approvalStatus[userId] = true;
+    }
+
+    /*
+    Function to reset approvals called after loan has been updated
+    */
+    function resetApprovals(uint _loanId) internal {
+        uint n = loans[_loanId].approvalStatus.length;
+        for (uint i=0; i < n; i++) {
+            loans[_loanId].approvalStatus[i] = false;
+        }
+    }
+
 
 
     /*
@@ -142,82 +217,19 @@ Struct user defines key data of participants such as banks and businesses
     }
     
     /*
-    Helper function to retrieve data belonging to an address
-    */   
-    function getUserDataByAddr(address _account) public view returns(userData memory) {
-        return addressToUserData[_account];
-    }
-
-    function createLoan (string memory _name, string memory _dataString) public {
-
-        loanToRegistrar[loanId] = msg.sender;   // Store the address of the user in mapping
-        userLoanCount[msg.sender]++;            // necessary for array to count loans registered by user
-        
-        // create LoanData instance in memory, later populate array
-        LoanData memory ln;
-        ln.id = loanId;        
-        ln.name = _name;
-        ln.revisionNumber = 0;
-        ln.registeringParty = msg.sender;
-        ln.datdataString = _dataString;
-        ln.regTime = now;
-        
-        loans.push(ln);
-        
-        // Add loan creator himself/herself
-        addUserToLoan(loanId, msg.sender); 
-        loanId++; // Increment unique number
-    }
-
-
-    /*
-    Update Loan Data, increment version / revision number
-    Here, all the other data like loan amount, start date and other conditions shall be filled
-    */
-    function updateLoan(uint _loanId, string memory _name, string memory _dataString, uint _loanAmount) 
-        public onlyParticipant(_loanId)
-    {
-        loans[_loanId].name = _name;
-        loans[_loanId].dataString = _dataString;
-
-        loans[_loanId].revisionNumber++;
-        resetApprovals(_loanId);
-    }
-
-    /*
-    Functionality to delete loan
-    */   
-    function deleteLoan(uint _id) public onlyRegistrar(_id) {
-        delete loans[_id];
-    }
-
-
-    /*
-    Approves Loan: each participant of Loan can give his approval
-    */
-    function approveLoan(uint _loanId, uint _revisionNumber) public  {
-        uint userId = loans[_loanId].userToId[msg.sender];
-        require(loans[_loanId].revisionNumber == _revisionNumber, "Versions of the loan do not match");
-        loans[_loanId].approvalStatus[userId] = true;
-    }
-
-    /*
-    Function to reset approvals called after loan has been updated
-    */
-    function resetApprovals(uint _loanId) internal {
-        uint n = loans[_loanId].approvalStatus.length;
-        for (uint i=0; i < n; i++) {
-            loans[_loanId].approvalStatus[i] = false;
-        }
-    }
-
-    /*
     Helper function to retrieve UserId from mapping inside struct
     */
     function getUserToId(uint256 _loanId, address _address) public view returns (uint256) {
         return loans[_loanId].userToId[_address];
     }
     
+    /*
+    Helper function to retrieve data belonging to an address
+    */   
+    function getUserDataByAddr(address _account) public view returns(userData memory) {
+        return addressToUserData[_account];
+    }
+
     /*
     Helper function to retrieve List of all registered Addresses in Loan 
     Add: Their position / id (index of array == userId?)
@@ -237,6 +249,15 @@ Struct user defines key data of participants such as banks and businesses
     }
 
     /*
+    Helper function to retrieve loan amounts  array
+    */   
+    function getLoanAnounts(uint256 _loanId) public view returns (uint[] memory) {
+        bool[] memory array = loans[_loanId].approvalStatus; // approvalStatus is a bool array in a struct array 
+        return array;
+    }
+
+
+    /*
     Helper function to retrieve the loan amounts of the users from struct
     */   
     function getLoanAmounts(uint256 _loanId) public view returns (uint[] memory) {
@@ -244,7 +265,6 @@ Struct user defines key data of participants such as banks and businesses
         return array;
     }
 
-    
     /*
     Get the length of the loan array
     */

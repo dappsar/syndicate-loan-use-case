@@ -236,7 +236,7 @@
                         </ul>
 
                         <!------------- Tab Content  (Forms:  A B C D E) ------------>
-                        <div id="content" class="tab-content" role="tablist">
+                        <div id="tab_contents" class="tab-content" role="tablist">
 
                             <!-- Info: CSS Bootstrap Classes determine which tab to show, predefined in html -->
 
@@ -368,34 +368,34 @@
                                     <div class="loan_detail">
                                         <form>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="Description" class="form-control"
-                                                    name="Description" required>
-                                                <label for="Description">Description</label>
+                                                <input type="text" id="object_descript" class="form-control"
+                                                    name="object_descript" required>
+                                                <label for="object_descript">Description of the object</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="area" class="form-control"
-                                                    name="Total Area Outdoor+Indoor" required>
-                                                <label for="area">Total area Outdoor+Indoor</label>
+                                                <input type="text" id="total_area" class="form-control"
+                                                    name="total_area" required>
+                                                <label for="total_area">Total area outdoor + indoor</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="usablearea" name="Usable Area Net Floor Space"
+                                                <input type="text" id="usable_area" name="usable_area"
                                                     class="form-control" required>
-                                                <label for="usablearea">Usable area (net floor space)</label>
+                                                <label for="usable_area">Usable area (net floor space)</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="Outdoor" class="form-control"
-                                                    name="Total Area Outdoor" required>
-                                                <label for="Outdoor">Total area Outdoor</label>
+                                                <input type="text" id="outdoor_area" class="form-control"
+                                                    name="outdoor_area" required>
+                                                <label for="outdoor_area">Total area outdoor</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="Purchase" class="form-control"
-                                                    name="Purchase Price" required>
-                                                <label for="Purchase">Purchase Price</label>
+                                                <input type="text" id="object_price" class="form-control"
+                                                    name="object_price" required>
+                                                <label for="object_price">Purchase price of object</label>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="meter" class="form-control"
-                                                    name="Price Per Sqaure Meter" required>
-                                                <label for="meter">Price per Square meter</label>
+                                                <input type="text" id="price_sqm" class="form-control"
+                                                    name="price_sqm" required>
+                                                <label for="price_sqm">Price per square meter</label>
                                             </div>
 
                                         </form>
@@ -427,34 +427,34 @@
                                                 <span class="Total_value" id="Total_value"> €</span>
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" name="Interest Rate" class="form-control"
-                                                    required disabled>
-                                                <label for="bank2">Interest rate</label>
+                                                <input type="number" id="interest_rate" name="interest_rate" class="form-control"
+                                                    required>
+                                                <label for="interest_rate">Interest rate</label>
                                                 <span class="euro">%</span>
 
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" name="Loan Payout Structure"
-                                                    class="form-control" required disabled>
-                                                <label for="bank2">Loan Payout Structure</label>
+                                                <input type="text" id="payout_structure" name="payout_structure"
+                                                    class="form-control" required>
+                                                <label for="payout_structure">Loan Payout Structure</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" class="form-control"
-                                                    name="Load Repayment Structure" required disabled>
-                                                <label for="bank2">Loan Repayment Structure</label>
+                                                <input type="text" id="repay_structure" class="form-control"
+                                                    name="repay_structure" required>
+                                                <label for="repay_structure">Loan Repayment Structure</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" class="form-control date_picker"
-                                                    name="Loan Start" required disabled>
-                                                <label for="bank2">Loan Start</label>
+                                                <input type="text" id="loan_start" class="form-control date_picker"
+                                                    name="loan_start" required>
+                                                <label for="loan_start">Loan Start</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
                                             <div class="form-label-group float-lab">
-                                                <input type="text" id="bank2" class="form-control" name="Loan Duration"
-                                                    required disabled>
-                                                <label for="bank2">Loan Duration</label>
+                                                <input type="text" id="loan_duration" class="form-control" name="loan_duration"
+                                                    required>
+                                                <label for="loan_duration">Loan Duration</label>
                                                 <!-- <span class="error_text">Text Error</span> -->
                                             </div>
  

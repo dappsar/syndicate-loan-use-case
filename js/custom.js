@@ -106,14 +106,28 @@ const updateLoanInBrowser = () => {
  
     // Loads currently active loan
     var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+    var dataStringObj = {}; 
 
     // Reads current form values from HTML and saves them to loaded loan Object
     loanObj.name = $('#loanName').val();
-    loanObj.purpose = $('#loanPurpose').val();
     loanObj.state = $('#state').val();
     loanObj.registeringParty = $('#regParty').val();
-    //loanObj.data = { interest_rate: "5%"; asjdhaskdhkja}
-    //loanObj.data
+
+   // Store all the field values in an object 
+    dataStringObj.purpose = $('#loanPurpose').val();
+    dataStringObj.descript = $('#object_descript').val();
+    dataStringObj.total_area = $('#total_area').val();
+    dataStringObj.usable_area = $('#usable_area').val();
+    dataStringObj.outdoor_area = $('#outdoor_area').val();
+    dataStringObj.object_price = $('#object_price').val();
+    dataStringObj.price_sqm = $('#price_sqm').val();
+
+    loanObj.dataStringObj = dataStringObj;
+    // Store Object with all field values as string, so it can be stored on smart contract
+    let dataStringVal = JSON.stringify(dataStringObj);
+    loanObj.dataString = dataStringVal;
+
+
     // loanObj.date = $('#loanDate').val();   // probably not necessary anymore
 
     // saves changes to loan object in session storage
@@ -180,7 +194,8 @@ var addItem = () => {
     // MJ: Retrieve value of loan name from Create-Loan-Modal
     loanName = $("#add_Loan").val();
     // Set the field of in the modal to the standard value   
-    $("#add_Loan").val('Name of loan');
+    // $("#add_Loan").val('Name of loan');
+    $("#add_Loan").val('');
 
     // Set active Loan, to determine, where to write Updates to and what to display
     activeLoanId = 'id_'+tempLoanId;
@@ -198,7 +213,8 @@ var addItem = () => {
     // call function that adds loan to UI side panel
     addLoanToSidePanel(tempLoanId, loanName);
     $(`li[data-storage-key="${activeLoanId}"]`).trigger('click');
-
+    $('#tab-A').trigger('click');
+    
     tempLoanId++;
 }
 
@@ -223,6 +239,8 @@ Loads loan and writes data into html form
 Function: UI + Logic (sets activeLoanId)
 */
 function loadLoan(htmlObject) {
+    // if (devMode) alert(`loadLoan() called`);
+
     $('#writeToChain').show();
     $('#updateToChain').hide();
     $('#btn_approveLoan').hide();
@@ -234,9 +252,12 @@ function loadLoan(htmlObject) {
     $('#loan_users').empty();
     $('.approval_check').empty();
     $('#loan_amounts').empty();
-    
 
-    // Hides user data input fields in Involved Parties tab when loan is loaded
+    // Clear all input fields
+    $('#tab_contents input').val('');
+   
+
+    // Hides user data fields (name, role...) in Involved Parties tab when loan is loaded
     $('#user_data_fields').hide();
 
         // Not necessary anymore? Resetting is possible by using .html() ? 
@@ -270,7 +291,10 @@ function loadLoan(htmlObject) {
     if (loanObj) {
         $('.heading_text').html(loanObj.name);
         $('#loanName').val(loanObj.name);
+
         $('#loanPurpose').val(loanObj.purpose);
+
+
         if (activeLoanId.includes('bc'))  $('#loanId').val(loanObj.id);
         if (!activeLoanId.includes('bc'))  $('#loanId').val("Not yet registered on Blockchain");
         $('#state').val(loanObj.state);
@@ -279,6 +303,21 @@ function loadLoan(htmlObject) {
         // $('#loanDate').val(loanObj.date);        
         $('#loanDate').val(getDateInFormat(undefined, loanObj.date));
 
+        // Check if JSON dataString exists and then fill fields
+        if(loanObj.dataString) {
+            $('#loanPurpose').val(loanObj.dataStringObj.purpose);
+            $('#loanPurpose').val(loanObj.dataStringObj.purpose)
+            $('#object_descript').val(loanObj.dataStringObj.descript);
+            $('#total_area').val(loanObj.dataStringObj.total_area);
+            $('#usable_area').val(loanObj.dataStringObj.usable_area);
+            $('#outdoor_area').val(loanObj.dataStringObj.outdoor_area);
+            $('#object_price').val(loanObj.dataStringObj.object_price);
+            $('#price_sqm').val(loanObj.dataStringObj.price_sqm);
+        }
+
+
+
+        // Checking the id and owner status of current user
         if (loanObj.userId == 0) {
             $('#registration_info').text("You registered this loan and have special permissions");
         }

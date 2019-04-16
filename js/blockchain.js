@@ -1,26 +1,8 @@
-
 /* 
 Code by Marcel Jackisch / marcel.jackisch@lition.de
 Written with web3.js 1.x library
 Note: Asynchronous JS functions are required in web3.js 1.x 
  */
-
-// // web3.eth.accounts[0] works only before the DOM is loaded
-// // console.log('Loading blockchain.j
-// function logAcc() {
-//     console.log(web3.eth.accounts[0]);
-//     $(document).ready(() => {
-//         try { 
-//             console.log(web3.eth.accounts[0]);
-//         }
-//             catch (err) {
-//                 console.log('error: accounts[0] is undefined');
-//             }
-//     });
-// }
-
-// logAcc();
-
 
 /* 
 Onload event listener: asks permission to access accounts (metamask) 
@@ -49,12 +31,11 @@ window.addEventListener('load', async () => {
         window.web3 = new Web3(web3.currentProvider);
         // Acccounts always exposed
     }
-    // Non-dapp browsers...
+    // For non-dapp browsers...
     else {
         console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
         $('#errMsg').html("<b>Non-Ethereum browser detected.</b> You should consider trying MetaMask!");
     }
-
     // Consider storing all logic in this wrapper function
     startdApp();
 
@@ -64,16 +45,13 @@ window.addEventListener('load', async () => {
 function startdApp() {
     console.log('startdApp() called, web3 interface running');
     console.log(userAccount);
-
     printNetwork();
     printAddress(userAccount);
 
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
     console.log(storeContract);
-
     logLoans();
 }
-
 
 
 /* 
@@ -224,6 +202,52 @@ async function updateLoanOnChain() {
     });
 }
 
+// Function to create loan on smart contract and write it to the blockchain
+// Function: Logic (+some UI)
+async function writeLoan() {
+
+    // Updates Loan in Browser-Storage
+    updateLoanInBrowser();
+
+    // Load active loan from JSON in Storage
+    activeLoan = returnActiveLoan();
+    console.log(activeLoan);
+
+    _name = activeLoan.name;
+    _dataString = activeLoan.dataStringObj.purpose;
+
+    if (!_name || !_purpose) {
+        alert('Some value have not been specified, aborting...');
+        return;
+    }
+
+    try {
+        console.log('Info: Writing Loan with id: ' + activeLoanId);
+        txNotifyUI();
+        console.log('Info: Calling createLoan() on Smart Contract: '); 
+
+        // Execute function on EVM:
+        storeContract.methods.createLoan(_name, _dataString)
+        .send({from: userAccount})
+        .on("receipt", function(receipt) {
+            $('#tx-status').text('Transaction confirmed');
+            console.log(receipt);
+            // Delete locally stored loan from SessionStorage and retrieve from BC
+            sessionStorage.removeItem(activeLoanId);
+            deleteFromSidePanel(activeLoanId);
+            logLoans();
+        })
+        .on("error", function(error) {
+            // Do something to alert the user their transaction has failed
+            $("tx-status").text(error);
+        });
+    } 
+    catch (err) {
+        console.log(err);
+    }
+}
+
+
 // Function to approve current (activeLoanId) Loan
 async function approveLoan() {
 
@@ -247,51 +271,6 @@ async function approveLoan() {
         // Do something to alert the user their transaction has failed
         $("tx-status").text(error);
     });
-}
-
-// Function to create loan on smart contract and write it to the blockchain
-// Function: Logic (+some UI)
-async function writeLoan() {
-
-    // Updates Loan in Browser-Storage
-    updateLoanInBrowser();
-
-    // Load active loan from JSON in Storage
-    activeLoan = returnActiveLoan();
-    console.log(activeLoan);
-
-    _name = activeLoan.name;
-    _purpose = activeLoan.purpose;
-
-    if (!_name || !_purpose) {
-        alert('Some value have not been specified, aborting...');
-        return;
-    }
-
-    try {
-        console.log('Info: Writing Loan with id: ' + activeLoanId);
-        txNotifyUI();
-        console.log('Info: Calling createLoan() on Smart Contract: '); 
-
-        // Execute function on EVM:
-        storeContract.methods.createLoan(_name, _purpose)
-        .send({from: userAccount})
-        .on("receipt", function(receipt) {
-            $('#tx-status').text('Transaction confirmed');
-            console.log(receipt);
-            // Delete locally stored loan from SessionStorage and retrieve from BC
-            sessionStorage.removeItem(activeLoanId);
-            deleteFromSidePanel(activeLoanId);
-            logLoans();
-        })
-        .on("error", function(error) {
-            // Do something to alert the user their transaction has failed
-            $("tx-status").text(error);
-        });
-    } 
-    catch (err) {
-        console.log(err);
-    }
 }
 
 
