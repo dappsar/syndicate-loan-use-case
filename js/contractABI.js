@@ -7,7 +7,7 @@ storeABI = [
 				"type": "string"
 			},
 			{
-				"name": "_purpose",
+				"name": "_dataString",
 				"type": "string"
 			}
 		],
@@ -15,6 +15,25 @@ storeABI = [
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_loanId",
+				"type": "uint256"
+			}
+		],
+		"name": "getLoanAmounts",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -29,6 +48,32 @@ storeABI = [
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_loanId",
+				"type": "uint256"
+			},
+			{
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_dataString",
+				"type": "string"
+			},
+			{
+				"name": "_loanAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "updateLoan",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -49,7 +94,7 @@ storeABI = [
 		"constant": true,
 		"inputs": [
 			{
-				"name": "_id",
+				"name": "_loanId",
 				"type": "uint256"
 			},
 			{
@@ -62,39 +107,6 @@ storeABI = [
 			{
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "getAddressToUser",
-		"outputs": [
-			{
-				"components": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "role",
-						"type": "string"
-					},
-					{
-						"name": "account",
-						"type": "address"
-					}
-				],
-				"name": "",
-				"type": "tuple"
 			}
 		],
 		"payable": false,
@@ -221,15 +233,15 @@ storeABI = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_name",
-				"type": "string"
+				"name": "_loanId",
+				"type": "uint256"
 			},
 			{
-				"name": "_role",
-				"type": "string"
+				"name": "_revisionNumber",
+				"type": "uint256"
 			}
 		],
-		"name": "selfRegistration",
+		"name": "approveLoan",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -239,11 +251,15 @@ storeABI = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_loanId",
-				"type": "uint256"
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_role",
+				"type": "string"
 			}
 		],
-		"name": "approveLoan",
+		"name": "selfRegistration",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -266,28 +282,6 @@ storeABI = [
 			}
 		],
 		"name": "userRegistration",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_id",
-				"type": "uint256"
-			},
-			{
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"name": "_purpose",
-				"type": "string"
-			}
-		],
-		"name": "updateLoan",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -376,7 +370,7 @@ storeABI = [
 				"type": "address"
 			},
 			{
-				"name": "purpose",
+				"name": "dataString",
 				"type": "string"
 			},
 			{

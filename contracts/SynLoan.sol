@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.2.1
+version 0.2.2
 creator: Marcel Jackisch
 */
 
@@ -89,7 +89,7 @@ Struct user defines key data of participants such as banks and businesses
         ln.name = _name;
         ln.revisionNumber = 0;
         ln.registeringParty = msg.sender;
-        ln.datdataString = _dataString;
+        ln.dataString = _dataString;
         ln.regTime = now;
         
         loans.push(ln);
@@ -247,15 +247,6 @@ Struct user defines key data of participants such as banks and businesses
         bool[] memory array = loans[_loanId].approvalStatus; // approvalStatus is a bool array in a struct array 
         return array;
     }
-
-    /*
-    Helper function to retrieve loan amounts  array
-    */   
-    function getLoanAnounts(uint256 _loanId) public view returns (uint[] memory) {
-        bool[] memory array = loans[_loanId].approvalStatus; // approvalStatus is a bool array in a struct array 
-        return array;
-    }
-
 
     /*
     Helper function to retrieve the loan amounts of the users from struct
