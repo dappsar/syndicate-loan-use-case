@@ -635,6 +635,7 @@
             <div class="modal_para">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h3>Register a new user</h3>
+            <br>
             </div>
             <div class="modal-body">
 
@@ -643,14 +644,14 @@
                     name="modal_add_userName" required>
                     <label for="modal_add_userName">Name</label>
                 </div>
-
+                <div style="margin-bottom:20px;">
                     <input type="radio" id="modal_add_userRole_lender"  name="radios_role" value="lender" required>
                     <label for="modal_add_userRole_lender">Lender</label>
 
 
                     <input type="radio" id="modal_add_userRole_borrower"  name="radios_role" value="borrower" required>
                     <label for="modal_add_userRole_borrower">Borrower</label>
-
+                </div>
                 <div class="form-label-group float-lab">
                     <input type="text" id="modal_add_userAddr" class="form-control"
                     placeholder_x="" name="modal_add_userAddr" required>
@@ -661,12 +662,14 @@
                     </button>
                     <!-- <label for="comment">Term Sheet</label> -->
                 </div>
+                <div style="display:flex;align-items:center;flex-direction:column;">
                 <div class="infotext">Info: Here you can register new users on the smart contract,
                      before they register themselves. </div>
                 <div class="update_btn">
                     <button onclick="userRegistration()" type="submit" data-dismiss="modal"
                         class="primary_btn text-center">Register on Blockchain</button>
                     </div>
+                  </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
