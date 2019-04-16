@@ -444,6 +444,11 @@ header nav .header_logo:before {
     background: #E7EAF3
 }
 
+@media only screen and (max-width: 576px) {
+  .header_network {
+      display:none;
+  }
+}
 @media only screen and (max-width: 1199px) {
     header nav .header_logo .navbar-brand img {
         max-width: 215px
@@ -1209,6 +1214,12 @@ span.valueHolder1 {
 .token_section ul li .active_token .token_detail p span {
     font-weight: 600;
     color: #fff
+}
+
+@media screen and (max-width: 576px) {
+    .token_section {
+      padding-bottom: 20px;
+    }
 }
 
 /* .token_section ul li:before {

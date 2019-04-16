@@ -89,7 +89,7 @@
             <div class="row">
 
  <!------------- Left Column ------------>
-                <div class="col-sm-3 no-padding" style="min-height:100%; display:block; ">
+                <div class="col-sm-4 no-padding" style="min-height:100%; display:block; ">
 
                     <!-- Left Panel: Loans (Overview) -->
 
@@ -148,17 +148,18 @@
                         <div class="token_section">
                             <div class="container-fluid">
                                 <div class="col-sm-12 text-center">
-                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
+                                 <button type="button" class="btn btn-primary center-block" style="width:90%;margin-bottom:20px;" data-toggle="button" aria-pressed="false" onclick="toggleLoans()">
                                         Toggle Sample Loans
                                  </button>
-                                 <button type="button" class="btn btn-primary center-block m-3" data-toggle_x="button" aria-pressed="false" onclick="logLoans()">
+                                 <button type="button" class="btn btn-primary center-block" style="width:90%;margin-bottom:20px;" data-toggle_x="button" aria-pressed="false" onclick="logLoans()">
                                         Refresh Loans <br> (Reload from Blockchain)
                                  </button>
-                                 <button type="button" class="btn btn-primary center-block m-3" aria-pressed="false" data-toggle="modal" data-target="#registerUser" >
+                                 <button type="button" class="btn btn-primary center-block" style="width:90%;margin-bottom:20px;" aria-pressed="false" data-toggle="modal" data-target="#registerUser" >
                                         Register a new user
                                  </button>
 
                                  <!-- User Search Dropdown -->
+                                 <!--
                                   <div class="user_dropdown">
                                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users" data-toggle="dropdown" aria-haspopup="true"
                                          aria-expanded="false">
@@ -172,7 +173,7 @@
                                          <div id="empty" class="dropdown-header">No users found</div>
                                      </div>
                                  </div>
-
+                               -->
                                 </div>
                                 <div id="sc-loans"></div>
                             </div>
@@ -204,10 +205,11 @@
                 </div>
 
  <!------------- Center Column ------------>
-
+  <div class="col-sm-8 ">
+    <div class="row">
                  <!------------- Tab Menu ------------>
                 <!-- In this section the tabs for the central column are defined -->
-                <div class="col-sm-5 no-padding">
+                <div class="col-sm-12 col-md-7 no-padding">
                     <h3 id="select-info" class="text-center mt-5">Please select a loan from the panel on the left.</h3>
 
                     <div id="form-wrapper" class="main_application d-none">
@@ -528,10 +530,9 @@
 
                 </div>
 
-
  <!------------- Right Column ------------>
 
-                <div class="col-sm-4 no-padding">
+                <div class="col-sm-12 col-md-5 no-padding">
                     <div class="approval " id="approval_status">
                         <h3>Approval Status</h3>
 
@@ -618,7 +619,8 @@
             </div>
         </main>
     </div>
-
+</div>
+  </div>
     <!------------------------------------------------------------>
     <!-------------------------  Modals  ------------------------->
     <!------------------------------------------------------------>
@@ -762,6 +764,7 @@
                 <div class="modal-body">
 
                 <!-- User Search Dropdown -->
+                <!--
                 <div class="user_dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users_2" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -775,7 +778,7 @@
                             <div id="empty_2" class="dropdown-header">No users found</div>
                         </div>
                     </div>
-
+-->
                     <div class="form-label-group float-lab">
                         <input type="text" id="input_add_user" class="form-control"
                             placeholder_x="Account address of user" name="input_add_user" required>
