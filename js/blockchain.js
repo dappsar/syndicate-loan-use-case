@@ -206,12 +206,12 @@ async function updateLoanOnChain() {
     }
 
     console.log('Info: Calling updateLoan() on Smart Contract: '); 
-    txNotifyUI();
+    txNotifyUI('send', 'update');
     // Execute function on EVM:
     storeContract.methods.updateLoan(activeLoan.id, _name, _dataString, _loanAmount) 
     .send({from: userAccount})
     .on("receipt", function(receipt) {
-        $('#tx-status').text('Transaction confirmed');
+        txNotifyUI('conf', 'update');
         console.log(receipt);
         
         // Delete locally stored loan from SessionStorage and retrieve from BC
@@ -247,14 +247,14 @@ async function writeLoan() {
 
     try {
         console.log('Info: Writing Loan with id: ' + activeLoanId);
-        txNotifyUI();
         console.log('Info: Calling createLoan() on Smart Contract: '); 
 
+        txNotifyUI('send', 'create');
         // Execute function on EVM:
         storeContract.methods.createLoan(_name, _dataString)
         .send({from: userAccount})
         .on("receipt", function(receipt) {
-            $('#tx-status').text('Transaction confirmed');
+            txNotifyUI('conf', 'create');
             console.log(receipt);
             // Delete locally stored loan from SessionStorage and retrieve from BC
             sessionStorage.removeItem(activeLoanId);
@@ -274,16 +274,17 @@ async function writeLoan() {
 
 // Function to approve current (activeLoanId) Loan
 async function approveLoan() {
+    if (devMode) alert("ApproveLoan() called");
 
     // Load active loan object from browser storage
     activeLoan = returnActiveLoan();
 
-    txNotifyUI();
+    txNotifyUI('send', 'approve');
     // Execute function on EVM:
     storeContract.methods.approveLoan(activeLoan.id, activeLoan.revisionNumber)
     .send({from: userAccount})
     .on("receipt", function(receipt) {
-        $('#tx-status').text('Transaction confirmed');
+        txNotifyUI('conf', 'approve')
         console.log(receipt);
 
         // Delete locally stored loan from SessionStorage and retrieve from BC
@@ -309,62 +310,100 @@ function printAddress(_address) {
     userAccount = _address;
 }
 
+
+var localTxHistory = [];
+localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
+var txCounter;
+
 // Notification currently popping up in History Panel
 function txNotifyUI(event, caller) {
-    if (devMode) alert("Sending Transaction on Ropston Network...");
+
+    $('#tx_current').removeClass('d-none');
+    if (devMode) alert("called txNotifyUI");
+
+    let date = getDateInFormat();
+    let time = getDateInFormat('time');
+
+
+    if (event == 'send') {
+        switch (caller) {
+        case 'write':
+            message = '<strong>Creating loan...</strong>';
+        break
+        case 'update':
+            message = '<strong>Updating loan...</strong>';
+        break
+        case 'approve':
+            message = '<strong>Approving loan...</strong>';
+        break
+        case 'register':
+            message = '<strong>Registering user...</strong>';
+        break
+        case 'add':
+            message = '<strong>Adding user to loan...</strong>';
+    }
+
+        $('#tx_text').html('Sending transaction to the Blockchain Network. ' + message);
+
+        $('#tx-date').html(`
+        ${date}<span class="time" id="tx-time">${time}</span>
+        `)
+    }
+    else if (event == 'conf') {
 
         switch (caller) {
         case 'write':
-            message = 'Creating loan...';
+            message = 'Loan successfully created.';
         break
         case 'update':
-            message = 'Updating loan...';
+            message = 'Loan successfully updated';
         break
         case 'approve':
-            message = 'Approving loan...';
+            message = 'Loan successfully approved';
         break
-        case 'Register':
-            message = 'Registering User...';
+        case 'register':
+            message = '<strong>Registering user...</strong>';
+        break
+        case 'add':
+            message = '<strong>Adding user to loan...</strong>';
+    }
+        $('#tx_text').html('Transaction confirmed. ' + message);
+
+        $('#tx-date').html(`
+        ${date}<span class="time" id="tx-time">${time}</span>
+        `)
+     }
 
 
-    if (event == 'Send') {
-        $('#tx_current').text('Sending transaction to the Blockchain Network' + message);
-        $('#tx-date').text(getDateInFormat('full'));
-        $('#tx_current').closest('li').removeClass('d-none');
-    }
-    else if (event == 'Confirmed') {
-        $('#tx_current').text('Transaction confirmed');
-    }
 }
 
-var localTxHistory = {};
-var txCounter;
 
-function txNotifyUI_2() {
-    
-    if (devMode) alert("Sending Transaction on Ropston Network...");
-    
-    let status = 'Sending transaction to the Blockchain Network';
-    let now = (getDateInFormat('full');
+function writeTxHistory(caller, date) {
 
-
-    writeTxHistory();
-    $('#tx-history').html(`
-    <li>
-        <div class="histroy_detail">
-            <div class="top_section">
-                <p class="date" id="tx-date"><span class="time" id="tx-time">${now}</span></p>
-            </div>
-            <p class="banks_application" id="tx-status">${status}</p>
-        </div>
-    </li>`)
-}
-
-function writeTxHistory(elem) {
     localTxHistory = localStorage.getItem('tx_hist');
-    localTxHistory.txCounter = elem;
-    localStorage.setItem('tx_hist', localTxHistory);
+
+    localTxHistory = [];
+    entry = {"Tx Type": caller, "Date": date};
+    localTxHistory.push(entry);
+
+    localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
 }
+
+// function loadTxHistory() {
+    
+//     $('#tx-history').append(`
+//     <li>
+//         <div class="histroy_detail">
+//             <div class="top_section">
+//                 <p class="date" id="tx-date"><span class="time" id="tx-time">${now}</span></p>
+//             </div>
+//             <p class="banks_application" id="tx-status">${status}</p>
+//         </div>
+//     </li>`)
+// }
+
+
+
 
 // Prints Network to Front-End (Header) and reacts dynamically to changes
 function printNetwork () {

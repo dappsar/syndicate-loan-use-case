@@ -563,7 +563,13 @@ getDateInFormat = (format, timestamp) => {
         today = dd + ' ' + month + ' ' + yyyy;
         return today;
     }
-
+    else if (format == 'time') {
+       var hh = today.getHours();
+       var min = today.getMinutes();
+       today = dd + '/' + mm + '/' + yyyy;
+       today = `${hh}:${min}`
+       return today; 
+    }
     else {
        var dd = today.getDate();
        var yyyy = today.getFullYear();

@@ -97,12 +97,14 @@ function filter(word) {
 
 //If the user clicks on any item, set the title of the button as the text of the item
 $('[id^="menuItem"]').on("click", ".user-dropdown-item", function() {
-  $('[id^="dropdown_users"]').text($(this)[0].value);
+  // $('[id^="dropdown_users"]').text($(this)[0].value);
   $('[id^="dropdown_users"]').dropdown("toggle");
   $("#input_add_user").val($(this)[0].title);
   $("#input_add_user")
     .closest("div")
     .addClass("input_float_lbl");
 });
+
+
 
 buildDropDown(names);

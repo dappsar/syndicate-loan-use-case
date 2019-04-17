@@ -243,14 +243,14 @@
 
                             <!-- ---- ---- [A] ---- ---- -->
                             <div id="pane-A" class="card tab-pane fade active show" role="tabpanel" aria-labelledby="tab-A">
-                                <div class="card-header" role="tab" id="heading-A">
+                                <!-- <div class="card-header" role="tab" id="heading-A">
                                     <h5 class="mb-0">
-                                        <!-- Note: `data-parent` removed from here -->
+                                        
                                         <a data-toggle="collapse" href="#collapse-A" aria-expanded="true"
                                             aria-controls="collapse-A">
                                         </a>
                                     </h5>
-                                </div>
+                                </div> -->
 
                                 <!-- Note: New place of `data-parent` -->
                                 <div id="collapse-A" class="collapse show" data-parent="#content" role="tabpanel"
@@ -307,14 +307,14 @@
 
                              <!-- ---- ---- [B] ---- ---- -->
                             <div id="pane-B" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-B">
-                                <div class="card-header" role="tab" id="heading-B">
+                                <!-- <div class="card-header" role="tab" id="heading-B">
                                     <h5 class="mb-0">
                                         <a class="collapsed" data-toggle="collapse" href="#collapse-B"
                                             aria-expanded="false" aria-controls="collapse-B">
                                             Involved Parties
                                         </a>
                                     </h5>
-                                </div>
+                                </div> -->
                                 <div id="collapse-B" class="collapse" data-parent="#content" role="tabpanel"
                                     aria-labelledby="heading-B">
                                     <div class="loan_detail">
@@ -356,14 +356,14 @@
                             </div>
                              <!-- ---- ---- [C] ---- ---- -->
                             <div id="pane-C" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-C">
-                                <div class="card-header" role="tab" id="heading-C">
+                                <!-- <div class="card-header" role="tab" id="heading-C">
                                     <h5 class="mb-0">
                                         <a class="collapsed" data-toggle="collapse" href="#collapse-C"
                                             aria-expanded="false" aria-controls="collapse-C">
                                             Object Details
                                         </a>
                                     </h5>
-                                </div>
+                                </div> -->
                                 <div id="collapse-C" class="collapse" role="tabpanel" data-parent="#content"
                                     aria-labelledby="heading-C">
                                     <div class="loan_detail">
@@ -408,14 +408,14 @@
 
                             <div id="pane-D" class="card tab-pane fade" role="tabpanel"
                                 aria-labelledby="tab-D">
-                                <div class="card-header" role="tab" id="heading-D">
+                               <!--  <div class="card-header" role="tab" id="heading-D">
                                     <h5 class="mb-0">
                                         <a class="collapsed" data-toggle="collapse" href="#collapse-D"
                                             aria-expanded="false" aria-controls="collapse-D">
                                             Loan Details
-                                        </a>
+                                        </a> 
                                     </h5>
-                                </div>
+                                </div>--> 
                                 <div id="collapse-D" class="collapse" role="tabpanel" data-parent="#content"
                                     aria-labelledby="heading-D">
                                     <div class="loan_detail">
@@ -467,14 +467,14 @@
 
                              <!-- ---- ---- [E] ---- ---- -->
                             <div id="pane-E" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-E">
-                                <div class="card-header" role="tab" id="heading-E">
+                                <!-- <div class="card-header" role="tab" id="heading-E">
                                     <h5 class="mb-0">
                                         <a class="collapsed" data-toggle="collapse" href="#collapse-E"
                                             aria-expanded="false" aria-controls="collapse-E">
                                             Documents
-                                        </a>
+                                        </a> 
                                     </h5>
-                                </div>
+                                </div> -->
                                 <div id="collapse-E" class="collapse" role="tabpanel" data-parent="#content"
                                     aria-labelledby="heading-E">
                                     <div class="loan_detail">
@@ -546,14 +546,13 @@
                     </div>
                     <div class="History_pannel">
                         <h3>Transaction Status </h3>
-                        <ul id="tx_current">
-
-                            <li class="d-none">
+                        <ul id="tx_current" class="d-none">
+                            <li>
                                 <div class="histroy_detail">
                                     <div class="top_section">
-                                        <p class="date" id="tx-date"><span class="time" id="tx-time"></span></p>
+                                        <p class="date" id="tx-date"></p>
                                     </div>
-                                    <p class="banks_application" id="tx-status">Tx Status</p>
+                                    <p id="tx_text">No current transaction</p>
                                 </div>
                             </li>
                         </ul>
@@ -716,7 +715,7 @@
                 <div class="modal-body">
 
                 <!-- User Search Dropdown -->
-                <!--
+                
                 <div class="user_dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users_2" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -730,7 +729,7 @@
                             <div id="empty_2" class="dropdown-header">No users found</div>
                         </div>
                     </div>
--->
+
                     <div class="form-label-group float-lab">
                         <input type="text" id="input_add_user" class="form-control"
                             placeholder_x="Account address of user" name="input_add_user" required>

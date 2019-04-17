@@ -85,11 +85,11 @@ function addUserToLoan() {
     _address = $('#input_add_user').val();
     console.log(_address);
 
-    txNotifyUI();
+    txNotifyUI('send', 'add');
     storeContract.methods.addUserToLoan(loanObj.id, _address)
     .send({from: userAccount})
     .on("receipt", function(receipt) {
-        $('#tx-status').text('Transaction confirmed');
+        txNotifyUI('conf', 'add');
         console.log(receipt);
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
@@ -105,11 +105,11 @@ function userRegistration(_name, _role, _account) {
     _account = $('#modal_add_userAddr').val();
     console.log(`Registering User: name=${_name}, role=${_role},  address=${_account}`);
 
-    txNotifyUI();
+    txNotifyUI('send', 'register');
     storeContract.methods.userRegistration(_name, _role, _account)
     .send({from: userAccount})
     .on("receipt", function(receipt) {
-        $('#tx-status').text('Transaction confirmed');
+        txNotifyUI('conf', 'register');
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
         logLoans();
