@@ -310,11 +310,60 @@ function printAddress(_address) {
 }
 
 // Notification currently popping up in History Panel
-function txNotifyUI() {
+function txNotifyUI(event, caller) {
     if (devMode) alert("Sending Transaction on Ropston Network...");
-    $('#tx-status').text('Sending transaction to the Blockchain Network');
-    $('#tx-date').text(getDateInFormat('full'));
-    $('#tx-status').closest('li').removeClass('d-none');
+
+        switch (caller) {
+        case 'write':
+            message = 'Creating loan...';
+        break
+        case 'update':
+            message = 'Updating loan...';
+        break
+        case 'approve':
+            message = 'Approving loan...';
+        break
+        case 'Register':
+            message = 'Registering User...';
+
+
+    if (event == 'Send') {
+        $('#tx_current').text('Sending transaction to the Blockchain Network' + message);
+        $('#tx-date').text(getDateInFormat('full'));
+        $('#tx_current').closest('li').removeClass('d-none');
+    }
+    else if (event == 'Confirmed') {
+        $('#tx_current').text('Transaction confirmed');
+    }
+}
+
+var localTxHistory = {};
+var txCounter;
+
+function txNotifyUI_2() {
+    
+    if (devMode) alert("Sending Transaction on Ropston Network...");
+    
+    let status = 'Sending transaction to the Blockchain Network';
+    let now = (getDateInFormat('full');
+
+
+    writeTxHistory();
+    $('#tx-history').html(`
+    <li>
+        <div class="histroy_detail">
+            <div class="top_section">
+                <p class="date" id="tx-date"><span class="time" id="tx-time">${now}</span></p>
+            </div>
+            <p class="banks_application" id="tx-status">${status}</p>
+        </div>
+    </li>`)
+}
+
+function writeTxHistory(elem) {
+    localTxHistory = localStorage.getItem('tx_hist');
+    localTxHistory.txCounter = elem;
+    localStorage.setItem('tx_hist', localTxHistory);
 }
 
 // Prints Network to Front-End (Header) and reacts dynamically to changes

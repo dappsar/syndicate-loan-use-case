@@ -163,7 +163,7 @@ var deleteFromSidePanel = (_id) => {
 }
 
 // Function: UI
-var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
+var addLoanToSidePanel = (_loanId, _loanName, _date, type, status) => {
 
     // Sets data-storage-key dependent on loan object type (local or from smart contract)
     // date is either the current or from smart contract storage
@@ -179,6 +179,10 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
         loanIdAttr = 'id_'+_loanId;
         date = getDateInFormat('full');
         bc_info = ' | locally stored';
+    }
+
+    if (status == "approved") {
+        status = 'Loan approved';
     }
 
     $(".appplication_section ul").prepend(
