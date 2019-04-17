@@ -211,7 +211,7 @@ async function updateLoanOnChain() {
     storeContract.methods.updateLoan(activeLoan.id, _name, _dataString, _loanAmount) 
     .send({from: userAccount})
     .on("receipt", function(receipt) {
-        txNotifyUI('conf', 'update');
+        txNotifyUI('conf', 'update', activeLoanId);
         console.log(receipt);
         
         // Delete locally stored loan from SessionStorage and retrieve from BC
@@ -254,7 +254,7 @@ async function writeLoan() {
         storeContract.methods.createLoan(_name, _dataString)
         .send({from: userAccount})
         .on("receipt", function(receipt) {
-            txNotifyUI('conf', 'create');
+            txNotifyUI('conf', 'create', activeLoanId);
             console.log(receipt);
             // Delete locally stored loan from SessionStorage and retrieve from BC
             sessionStorage.removeItem(activeLoanId);
@@ -284,7 +284,7 @@ async function approveLoan() {
     storeContract.methods.approveLoan(activeLoan.id, activeLoan.revisionNumber)
     .send({from: userAccount})
     .on("receipt", function(receipt) {
-        txNotifyUI('conf', 'approve')
+        txNotifyUI('conf', 'approve', activeLoanId)
         console.log(receipt);
 
         // Delete locally stored loan from SessionStorage and retrieve from BC
@@ -316,7 +316,7 @@ localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
 var txCounter;
 
 // Notification currently popping up in History Panel
-function txNotifyUI(event, caller) {
+function txNotifyUI(event, caller, _id, _userAddress) {
 
     $('#tx_current').removeClass('d-none');
     if (devMode) alert("called txNotifyUI");
@@ -348,59 +348,86 @@ function txNotifyUI(event, caller) {
         $('#tx-date').html(`
         ${date}<span class="time" id="tx-time">${time}</span>
         `)
+
+
     }
     else if (event == 'conf') {
 
         switch (caller) {
         case 'write':
-            message = 'Loan successfully created.';
+            message = '<strong>Loan successfully created.</strong>';
         break
         case 'update':
-            message = 'Loan successfully updated';
+            message = `<strong>Loan ${_id} successfully updated.</strong>`;
         break
         case 'approve':
-            message = 'Loan successfully approved';
+            message = `<strong>Loan ${_id} successfully approved.</strong>`;
         break
         case 'register':
-            message = '<strong>Registering user...</strong>';
+            message = `<strong>User ${_userAddress} was successfully registered.</strong>`;
         break
         case 'add':
-            message = '<strong>Adding user to loan...</strong>';
+            message = `<strong>User ${_userAddress} added to loan ${_id}.</strong>`;
     }
         $('#tx_text').html('Transaction confirmed. ' + message);
 
         $('#tx-date').html(`
         ${date}<span class="time" id="tx-time">${time}</span>
         `)
+
+        // Writing Tx to local storage and UI (TX History) 
+        writeTxHistory(message, date, time);   
      }
 
-
 }
 
 
-function writeTxHistory(caller, date) {
+function writeTxHistory(_message, _date, _time) {
 
+    $('#tx_info_no_tx').hide();
+
+    // If no object in Storage, define as empty array
+    if (localStorage.getItem('tx_hist') == null) var localTxHistory = [];
+
+    // Load array from storage and append current tx_object, then write to storage again
     localTxHistory = localStorage.getItem('tx_hist');
-
-    localTxHistory = [];
-    entry = {"Tx Type": caller, "Date": date};
+    entry = {message: _message, date: _date, time: _time};
     localTxHistory.push(entry);
-
     localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
+
+    $('#tx_history').append(`
+    <li>
+        <div class="histroy_detail">
+            <div class="top_section">
+                <p class="date" >${_date}<span class="time">${_time}</span></p>
+            </div>
+            <p class="banks_application">${_caller}</p>
+        </div>
+    </li>`);
+
 }
 
-// function loadTxHistory() {
+function loadTxHistory() {
     
-//     $('#tx-history').append(`
-//     <li>
-//         <div class="histroy_detail">
-//             <div class="top_section">
-//                 <p class="date" id="tx-date"><span class="time" id="tx-time">${now}</span></p>
-//             </div>
-//             <p class="banks_application" id="tx-status">${status}</p>
-//         </div>
-//     </li>`)
-// }
+    localTxHistory = JSON.parse(localStorage.getItem('tx_hist'));
+
+    for (i = 0; i < localTxHistory.length; i++) {
+        _txtype = localTxHistory[i].txtype;
+        _date = localTxHistory[i].date; 
+        _time = localTxHistory[i].time; 
+
+        $('#tx_history').append(`
+        <li>
+            <div class="histroy_detail">
+                <div class="top_section">
+                    <p class="date" id="tx-date">${_date}<span class="time" id="tx-time">${_time}</span></p>
+                </div>
+                <p class="banks_application" id="tx-status">${txtype}</p>
+            </div>
+        </li>`);
+    }
+
+}
 
 
 

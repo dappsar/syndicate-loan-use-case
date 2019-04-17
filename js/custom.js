@@ -2,7 +2,7 @@
 custom.js defines main functionality for User Interface and Browser Storage of Loans
 */
 
-var devMode = true;
+var devMode = false;
 var logMsgL1 = false;
 
 // Start-up behavior

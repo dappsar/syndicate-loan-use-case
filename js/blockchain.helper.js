@@ -89,7 +89,7 @@ function addUserToLoan() {
     storeContract.methods.addUserToLoan(loanObj.id, _address)
     .send({from: userAccount})
     .on("receipt", function(receipt) {
-        txNotifyUI('conf', 'add');
+        txNotifyUI('conf', 'add', activeLoanId, _address);
         console.log(receipt);
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
@@ -109,7 +109,7 @@ function userRegistration(_name, _role, _account) {
     storeContract.methods.userRegistration(_name, _role, _account)
     .send({from: userAccount})
     .on("receipt", function(receipt) {
-        txNotifyUI('conf', 'register');
+        txNotifyUI('conf', 'register', activeLoanId, _address);
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
         logLoans();
