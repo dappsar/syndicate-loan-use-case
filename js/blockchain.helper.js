@@ -11,9 +11,7 @@ Note: Asynchronous JS functions are required in web3.js 1.x
 // var storeAddress = "0xdbaf48282120e0fAE89a447cbb7688fB35f68e61";     // Address of SC_v0.1.8
 // var storeAddress = "0x0f203b23Cd02c9f35F3b75B58aC4d1B52e93d99A";     // Address of SC_v0.2.0
 // var storeAddress = "0xfF2b860fc1E06eF2c0f2c7C055b64f6B11c2E0cd";     // Address of SC_v0.2.3 Ropsten
-var storeAddress = "0xb68af9807d69e06f41d0a768e4a83dbf53f9bae6";     // Address of SC_v0.2.3 TestRpc
-
-
+var storeAddress = "0x1Ef2c9d38694A047295cb748cCA76624Ab5e8968";     // Address of SC_v0.2.3.5 Kovan
 
 
 // Currently active ethereum account
@@ -81,6 +79,28 @@ function getUserArrLength() {
 function getUserDataByAddr(_address) {
     return storeContract.methods.getUserDataByAddr(_address).call();
 }
+
+
+// Reject and delete loan, only registrar can call this function  [.send]
+function deleteLoan() {
+    alert('Deleting loan on smart contract');
+    var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+    if(loanObj.id.includes("id_s")) {
+        alert('The loan you are trying to delete is just a sample');
+        return;
+    }
+    txNotifyUI('send', 'add');
+    storeContract.methods.deleteLoan(loanObj.id).send({from: userAccount})
+    .on("receipt", function(receipt) {
+        $('#tx-status').text('Transaction confirmed');
+        console.log(receipt);
+        // After success, delete from UI
+        deleteFromSidePanel(activeLoanId);
+    });
+    // refreshSidePanel();
+}
+
+
 
 
 // Add user to loan (onlyRegistrar) [.send]
@@ -159,26 +179,6 @@ async function retrieveUsers() {
     }
     sessionStorage.setItem('users_bc', JSON.stringify(globalUserArray));
     fillUserArray(); // Fills array to be shown in global user list dropdown
-}
-
-
-// Reject and delete loan, only registrar can call this function  [.send]
-function deleteLoan() {
-    alert('Deleting loan on smart contract');
-    var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
-    if(loanObj.id.includes("id_s")) {
-        alert('The loan you are trying to delete is just a sample');
-        return;
-    }
-    txNotifyUI();
-    storeContract.methods.deleteLoan(loanObj.id).send({from: userAccount})
-    .on("receipt", function(receipt) {
-        $('#tx-status').text('Transaction confirmed');
-        console.log(receipt);
-        // After success, delete from UI
-        deleteFromSidePanel(activeLoanId);
-    });
-    // refreshSidePanel();
 }
 
 
