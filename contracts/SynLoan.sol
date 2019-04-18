@@ -212,6 +212,17 @@ Struct user defines key data of participants such as banks and businesses
 
         addressToUserData[_account] = u;
     }
+
+    /*
+    Function to let users change their data after it has been created
+    */
+    function editUserData(string memory name, string memory _role, address _account) public {
+
+        require(keccak256(abi.encode(_role)) == keccak256(abi.encode("lender")) || keccak256(abi.encode(_role)) == keccak256(abi.encode("borrower")), "Role must match 'lender' or 'borrower");
+        addressToUserData[msg.sender].role = _role;
+        addressToUserData[msg.sender].name = _name;
+
+    }
     
     
     /*

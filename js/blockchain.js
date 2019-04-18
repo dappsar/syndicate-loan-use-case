@@ -58,7 +58,7 @@ function isJson(str) {
     console.log('checking if JSON')
     try {
         JSON.parse(str);
-        console.log(str);
+        // console.log(str);
     } catch (e) {
         console.log('No JSON')
         return false;
@@ -327,7 +327,7 @@ function txNotifyUI(event, caller, _id, _userAddress) {
 
     if (event == 'send') {
         switch (caller) {
-        case 'write':
+        case 'create':
             message = '<strong>Creating loan...</strong>';
         break
         case 'update':
@@ -354,7 +354,7 @@ function txNotifyUI(event, caller, _id, _userAddress) {
     else if (event == 'conf') {
 
         switch (caller) {
-        case 'write':
+        case 'create':
             message = '<strong>Loan successfully created.</strong>';
         break
         case 'update':
@@ -385,7 +385,7 @@ function txNotifyUI(event, caller, _id, _userAddress) {
 function writeTxHistory(_message, _date, _time) {
 
     $('#tx_info_no_tx').hide();
-
+    console.log('writeTxHistory called')
     // If no object in Storage, define as empty array
     if (localStorage.getItem('tx_hist') == null) var localTxHistory = [];
 

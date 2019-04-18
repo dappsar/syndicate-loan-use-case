@@ -323,7 +323,6 @@ function loadLoan(htmlObject) {
         if(loanObj.dataStringObj) {
             var o = loanObj.dataStringObj;
             // console.log(o);
-            console.log(loanObj.dataStringObj.purpose);
             if (o.purpose) $('#loanPurpose').val(loanObj.dataStringObj.purpose);
             if (o.descript) $('#object_descript').val(loanObj.dataStringObj.descript);
             if (o.total_area) $('#total_area').val(loanObj.dataStringObj.total_area);
@@ -365,7 +364,7 @@ function loadParties() {
 
     // clear selected user from dropdown 
     $('.valueHolder1').empty();
-    // Check case that loan in creation has not any addresses
+    // Check case that loan in creation has got no addresses
     try {
         if (!loanObj.addresses) throw "Error: No addresses in loan object found"
 
@@ -566,6 +565,7 @@ getDateInFormat = (format, timestamp) => {
     else if (format == 'time') {
        var hh = today.getHours();
        var min = today.getMinutes();
+       if (min < 10) min = `0${min}`; //adds the zero
        today = dd + '/' + mm + '/' + yyyy;
        today = `${hh}:${min}`
        return today; 
