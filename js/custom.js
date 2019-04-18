@@ -2,7 +2,7 @@
 custom.js defines main functionality for User Interface and Browser Storage of Loans
 */
 
-var devMode = false;
+var devMode = true;
 var logMsgL1 = false;
 
 // Start-up behavior
@@ -286,7 +286,7 @@ function loadLoan(htmlObject) {
     
     activeLoanId = htmlObject.getAttribute("data-storage-key");
 
-    if (activeLoanId.includes('bc')) {
+    if (activeLoanId.includes('bc') || activeLoanId.includes('id_s')) {
         $('#writeToChain').hide();
         $('#updateToChain').show();
         $('#btn_approveLoan').show();

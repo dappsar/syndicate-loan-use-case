@@ -12,6 +12,8 @@ var addresses = [];
 
 // Fills array to be shown in global user list dropdown, called from retrieveUsers()
 function fillUserArray() {
+
+  if (devMode) console.log("fillUserArray() called");
   mapLength = Object.keys(userMap).length;
 
   if (mapLength > addresses.length) {
@@ -25,7 +27,7 @@ function fillUserArray() {
         addresses.push(key);
       }
     }
-    buildDropDown(names, addresses);
+    buildDropDown();
   } else {
     console.log("No additional users added, dropDown stays the same");
     return;
@@ -42,12 +44,12 @@ let search = document.getElementById("searchField");
 //Find every item inside the dropdown
 let items = document.getElementsByClassName("user-dropdown-item");
 
-// An idea, as [My Profile] uses the same class, which causes problems
-// items.shift();
-// items.shift();
 
-function buildDropDown(values, addresses) {
-  // to avoid duplication of items
+
+function buildDropDown() {
+  // if (devMode) console.log("buildDropDown() called");
+
+  // Avoid duplication of items in html
   $('[id^="menuItem"] .user-dropdown-item').remove();
 
   let contents = [];
@@ -107,4 +109,4 @@ $('[id^="menuItem"]').on("click", ".user-dropdown-item", function() {
 
 
 
-buildDropDown(names);
+buildDropDown();

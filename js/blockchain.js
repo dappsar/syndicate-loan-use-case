@@ -311,9 +311,6 @@ function printAddress(_address) {
 }
 
 
-var localTxHistory = [];
-localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
-var txCounter;
 
 // Notification currently popping up in History Panel
 function txNotifyUI(event, caller, _id, _userAddress) {
@@ -358,16 +355,16 @@ function txNotifyUI(event, caller, _id, _userAddress) {
             message = '<strong>Loan successfully created.</strong>';
         break
         case 'update':
-            message = `<strong>Loan ${_id} successfully updated.</strong>`;
+            message = `<strong>Loan (${_id}) successfully updated.</strong>`;
         break
         case 'approve':
-            message = `<strong>Loan ${_id} successfully approved.</strong>`;
+            message = `<strong>Loan (${_id}) successfully approved.</strong>`;
         break
         case 'register':
-            message = `<strong>User ${_userAddress} was successfully registered.</strong>`;
+            message = `<strong>User ${truncate(_userAddress, 12)} was successfully registered.</strong>`;
         break
         case 'add':
-            message = `<strong>User ${_userAddress} added to loan ${_id}.</strong>`;
+            message = `<strong>User ${truncate(_userAddress, 12)} added to loan (${_id}).</strong>`;
     }
         $('#tx_text').html('Transaction confirmed. ' + message);
 
@@ -382,18 +379,14 @@ function txNotifyUI(event, caller, _id, _userAddress) {
 }
 
 
+
+var txCounter;
+localStorage.setItem('tx_counter', txCounter);
+
+
 function writeTxHistory(_message, _date, _time) {
 
     $('#tx_info_no_tx').hide();
-    console.log('writeTxHistory called')
-    // If no object in Storage, define as empty array
-    if (localStorage.getItem('tx_hist') == null) var localTxHistory = [];
-
-    // Load array from storage and append current tx_object, then write to storage again
-    localTxHistory = localStorage.getItem('tx_hist');
-    entry = {message: _message, date: _date, time: _time};
-    localTxHistory.push(entry);
-    localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
 
     $('#tx_history').append(`
     <li>
@@ -401,9 +394,42 @@ function writeTxHistory(_message, _date, _time) {
             <div class="top_section">
                 <p class="date" >${_date}<span class="time">${_time}</span></p>
             </div>
-            <p class="banks_application">${_caller}</p>
+            <p class="banks_application">${_message}</p>
         </div>
     </li>`);
+
+
+    console.log('writeTxHistory called')
+
+    // If no object in Storage, write history object and counter
+    if (localStorage.getItem('tx_hist') == null) {
+        console.log("localStorage.getItem('tx_hist') == null");
+
+        // Init object for storage
+        var localTxHistory = {};
+        txCounter = 0;
+        localStorage.setItem('tx_counter', txCounter);
+        localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
+    }
+    else {
+        localTxHistory = JSON.parse(localStorage.getItem('tx_hist'));
+        txCounter = localStorage.getItem('tx_counter');
+        if (!txCounter || txCounter == "undefined") txCounter = 0;
+    }
+
+    // Load array from storage and append current tx_object, then write to storage again
+    // localTxHistory = localStorage.getItem('tx_hist');
+
+    txObject = {message: _message, date: _date, time: _time};
+    console.log(txObject);
+
+    localTxHistory[txCounter] = txObject;
+    localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
+
+    txCounter++;
+    localStorage.setItem('tx_counter', txCounter);
+
+
 
 }
 
@@ -416,7 +442,7 @@ function loadTxHistory() {
         _date = localTxHistory[i].date; 
         _time = localTxHistory[i].time; 
 
-        $('#tx_history').append(`
+        $('#tx_info_no_tx').insertBefore(`
         <li>
             <div class="histroy_detail">
                 <div class="top_section">

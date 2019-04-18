@@ -10,7 +10,11 @@ Note: Asynchronous JS functions are required in web3.js 1.x
 // var storeAddress = "0x188D78ebED7E6C47B17d1Ba29cb741d67BFaA9B6";     // Address of SC_v0.1.6
 // var storeAddress = "0xdbaf48282120e0fAE89a447cbb7688fB35f68e61";     // Address of SC_v0.1.8
 // var storeAddress = "0x0f203b23Cd02c9f35F3b75B58aC4d1B52e93d99A";     // Address of SC_v0.2.0
-var storeAddress = "0xfF2b860fc1E06eF2c0f2c7C055b64f6B11c2E0cd";     // Address of SC_v0.2.3
+// var storeAddress = "0xfF2b860fc1E06eF2c0f2c7C055b64f6B11c2E0cd";     // Address of SC_v0.2.3 Ropsten
+var storeAddress = "0xb68af9807d69e06f41d0a768e4a83dbf53f9bae6";     // Address of SC_v0.2.3 TestRpc
+
+
+
 
 // Currently active ethereum account
 var userAccount;
@@ -103,21 +107,20 @@ function userRegistration(_name, _role, _account) {
     _name = $('#modal_add_userName').val();
     _role = $('input[name=radios_role]:checked').val();
     _account = $('#modal_add_userAddr').val();
-    console.log(`Registering User: name=${_name}, role=${_role},  address=${_account}`);
+    if (devMode) console.log(`Registering User: name=${_name}, role=${_role},  address=${_account}`);
 
     txNotifyUI('send', 'register');
+
     storeContract.methods.userRegistration(_name, _role, _account)
     .send({from: userAccount})
     .on("receipt", function(receipt) {
         txNotifyUI('conf', 'register', activeLoanId, _address);
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
-        logLoans();
+        retrieveUsers();
     })
     .on("error", function(error) {
         console.log(error);
-        console.log(typof(error));
-        // $("tx-status").text(error);  
     });
 
 }

@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 /*
 Contract for Syndicate Loan MVP by Lition Technologie AG - www.lition.io
-version 0.2.3
+version 0.2.3.5
 creator: Marcel Jackisch
 */
 
@@ -71,9 +71,6 @@ Struct user defines key data of participants such as banks and businesses
       _;
     }
 
-
-
-            
 
     function createLoan (string memory _name, string memory _dataString) public {
 
@@ -216,7 +213,7 @@ Struct user defines key data of participants such as banks and businesses
     /*
     Function to let users change their data after it has been created
     */
-    function editUserData(string memory name, string memory _role, address _account) public {
+    function editUserData(string memory _name, string memory _role) public {
 
         require(keccak256(abi.encode(_role)) == keccak256(abi.encode("lender")) || keccak256(abi.encode(_role)) == keccak256(abi.encode("borrower")), "Role must match 'lender' or 'borrower");
         addressToUserData[msg.sender].role = _role;
