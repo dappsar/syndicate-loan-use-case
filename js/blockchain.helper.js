@@ -89,15 +89,15 @@ function deleteLoan() {
         alert('The loan you are trying to delete is just a sample');
         return;
     }
-    txNotifyUI('send', 'add');
+    txNotifyUI('send', 'delete');
     storeContract.methods.deleteLoan(loanObj.id).send({from: userAccount})
     .on("receipt", function(receipt) {
-        $('#tx-status').text('Transaction confirmed');
+        txNotifyUI('conf', 'delete', activeLoanId);
         console.log(receipt);
-        // After success, delete from UI
+        // After success, delete from UI and Storage
         deleteFromSidePanel(activeLoanId);
+        sessionStorage.removeItem(activeLoanId);
     });
-    // refreshSidePanel();
 }
 
 
@@ -143,6 +143,13 @@ function userRegistration(_name, _role, _account) {
         console.log(error);
     });
 
+}
+
+/// TO BE CONTINUED
+function updateUserData() {
+    _name = $('#modal_add_userName').val();
+    _role = $('input[name=radios_role]:checked').val();
+    if (devMode) console.log(`Updating User: name=${_name}, role=${_role}`);
 }
 
 // Retrieves userData struct from array

@@ -77,8 +77,8 @@ function txNotifyUI(event, caller, _id, _userAddress) {
 
 
 
-var txCounter;
-localStorage.setItem('tx_counter', txCounter);
+// var txCounter;
+// localStorage.setItem('tx_counter', txCounter);
 
 function writeTxHistory(_message, _date, _time) {
     if (devMode) console.log('writeTxHistory called')
@@ -97,18 +97,19 @@ function writeTxHistory(_message, _date, _time) {
 
 
     // If no object in Storage, write history object and counter
+    // Improve so that highest key number is read
     if (localStorage.getItem('tx_hist') == null) {
         console.log("localStorage.getItem('tx_hist') == null");
 
         // Init object for storage
         var localTxHistory = {};
-        txCounter = 0;
+        var txCounter = 0;
         localStorage.setItem('tx_counter', txCounter);
         localStorage.setItem('tx_hist', JSON.stringify(localTxHistory));
     }
     else {
         localTxHistory = JSON.parse(localStorage.getItem('tx_hist'));
-        txCounter = localStorage.getItem('tx_counter');
+        var txCounter = localStorage.getItem('tx_counter');
         if (!txCounter || txCounter == "undefined") txCounter = 0;
     }
 
@@ -127,24 +128,24 @@ function writeTxHistory(_message, _date, _time) {
 
 
 
-
-
 function loadTxHistory() {
-    
+    if (devMode) console.log("loadTxHistory() called ");
     localTxHistory = JSON.parse(localStorage.getItem('tx_hist'));
 
-    for (i = 0; i < localTxHistory.length; i++) {
-        _txtype = localTxHistory[i].txtype;
+    n = Object.keys(localTxHistory).length;
+    for (i = 0; i < n; i++) {
+        _message = localTxHistory[i].message;
         _date = localTxHistory[i].date; 
         _time = localTxHistory[i].time; 
 
-        $('#tx_info_no_tx').insertBefore(`
+        $('#tx_info_no_tx').hide();
+        $('#tx_history').append(`
         <li>
             <div class="histroy_detail">
                 <div class="top_section">
-                    <p class="date" id="tx-date">${_date}<span class="time" id="tx-time">${_time}</span></p>
+                    <p class="date" >${_date}<span class="time">${_time}</span></p>
                 </div>
-                <p class="banks_application" id="tx-status">${txtype}</p>
+                <p class="banks_application">${_message}</p>
             </div>
         </li>`);
     }

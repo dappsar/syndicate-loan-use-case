@@ -51,19 +51,20 @@ function startdApp() {
     storeContract = new web3.eth.Contract(storeABI, storeAddress); 
     console.log(storeContract);
     logLoans();
+    loadTxHistory();
 }
 
 
 function isJson(str) {
-    console.log('checking if JSON')
+    // console.log('checking if JSON')
     try {
         JSON.parse(str);
         // console.log(str);
     } catch (e) {
-        console.log('No JSON')
+        // console.log('No JSON')
         return false;
     }
-    console.log('is a valid JSON, returning true');
+    // console.log('is a valid JSON, returning true');
     return true;
 }
 
@@ -102,14 +103,14 @@ async function logLoans() {
                 continue;
             }
             const approvalArray = await getApprovalStatus(loanIdsByUser[i]);
-            console.log(approvalArray); 
+            // console.log(approvalArray); 
 
             const amountsArray = await getLoanAmounts(loanIdsByUser[i]);
             // console.log(amountsArray); 
 
             // a check based on comparing userAccount (address) with array could achieve the same
             const userId = await getUserToId(loanIdsByUser[i], userAccount);
-            console.log(`User ID in this loan: ${userId}`);
+            // console.log(`User ID in this loan: ${userId}`);
 
             const usersInLoanArray = (await getUsersInLoan(loanIdsByUser[i]))[0];
             // console.log(usersInLoanArray);
@@ -129,7 +130,7 @@ async function logLoans() {
 
             if (loan.dataString && isJson(loan.dataString)) {
                     dataStringObj = JSON.parse(loan.dataString);     // Store parsed, so object key-value pairs can be read  
-                    console.log(dataStringObj);          
+                    // console.log(dataStringObj);          
             }
             
 
