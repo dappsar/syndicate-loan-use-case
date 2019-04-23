@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/datepicker3.css">
 
+    <script src="js/userDropDown.js"></script>
+
     <!-- Custom js file -->
     <script src="js/custom.js"></script>
 
@@ -70,7 +72,7 @@
                 <div class="col-sm-6 no-padding">
                     <div class="signup-form">
                         <div class="signup-form-content">
-                            <form onsubmit="return validate()" action="main.html" name="formsbm">
+                            <form onsubmit="return validate()"name="formsbm">
                                 <div class="row">
                                     <div class="col-sm-6 pad-rt-4">
                                         <div class="form-label-group float-lab input_float_lbl">
@@ -107,7 +109,7 @@
                                         <span class="valueHolder1"></span>
                                     </div>
                                 </div>
-                                <button onclick="submitFormData()" title="Submit Data" type="submit" id="submit_btn" class="primary_btn">Create Account</button>
+                                <button onclick="submitFormData(); " title="Submit Data" type="button" id="submit_btn" class="primary_btn">Create Account</button>
 
                                     <p id="errMsg" style="padding: 10px;"></p>
                             </form>
@@ -121,5 +123,7 @@
 
     <!-- Datepicker js file -->
     <script src="js/bootstrap-datepicker.js"></script>
+
+
     </body>
 </html>

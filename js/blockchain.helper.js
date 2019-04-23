@@ -114,9 +114,35 @@ function addUserToLoan() {
     .on("receipt", function(receipt) {
       txNotifyUI("conf", "add", activeLoanId, _address);
       console.log(receipt);
+      deleteFromSidePanel(activeLoanId);
+      sessionStorage.removeItem(activeLoanId);
+      logLoans();
+    });
+}
+
+async function signUpRegistration(_name, _role, _account) {
+  if (devMode)
+    console.log(
+      `Registering User: name=${_name}, role=${_role},  address=${_account}`
+    );
+
+  txNotifyUI("send", "register");
+
+  await storeContract.methods
+    .userRegistration(_name, _role, _account)
+    .send({ from: userAccount })
+    .on("receipt", function(receipt) {
+      document.location.replace("main.html");
+      txNotifyUI("conf", "register", activeLoanId, _address);
+      console.log(receipt);
       sessionStorage.removeItem(activeLoanId);
       deleteFromSidePanel(activeLoanId);
       logLoans();
+      retrieveUsers();
+    })
+    .on("error", function(error) {
+      console.log(error);
+      alert("Error: The transaction was reverted by the EVM");
     });
 }
 
@@ -126,8 +152,15 @@ async function userRegistration(_name, _role, _account) {
     name: {
       presence: true
     },
-    address: {
+    role: {
       presence: true
+    },
+    address: {
+      presence: true,
+      format: {
+        pattern: "!/^(0x)?[0-9a-f]{40}$/i.test(address)",
+        message: "needs to be a valid eth address."
+      }
     }
   };
   //validate content
@@ -160,10 +193,12 @@ async function userRegistration(_name, _role, _account) {
         txNotifyUI("conf", "register", activeLoanId, _address);
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
+        logLoans();
         retrieveUsers();
       })
       .on("error", function(error) {
         console.log(error);
+        alert("Error: The transaction was reverted by the EVM");
       });
   }
 }
@@ -196,7 +231,7 @@ function retrieveUser(i) {
 async function retrieveUsers() {
   // So we can iterate through the user array on smart contract
   const arrLenght = await getUserArrLength();
-  console.log(arrLenght);
+  if (devMode) console.log("User array lenght: " + arrLenght);
 
   for (i = 0; i < arrLenght; i++) {
     // retrieve object from user array and

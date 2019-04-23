@@ -14,7 +14,7 @@ sessionStorage.clear();
 $('#approval_status').hide();
 
 // Arrays for Dropdown menus
-var select_arr = ['Lender', 'Borrower'];
+var select_arr = ['lender', 'borrower'];
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -35,15 +35,20 @@ $("body").on("click", ".appplication_section ul li", function () {
     $('#form-wrapper').removeClass('d-none');
     $('#select-info').hide();     
     $('#approval_status').show();
+
 });
+
+
+
 
 
 // Object Literal Factory Function
 // Function: DataStorage / Logic  
-const createLoan = (name, id, purpose, state, registeringParty, date, addresses, approvalStatus, loanAmounts) => {
+const createLoan = (name, id, revisionNumber, purpose, state, registeringParty, date, addresses, approvalStatus, loanAmounts) => {
     return {
         name,
         id,
+        revisionNumber,
         purpose,
         state,              // e.g. in Review
         registeringParty,
@@ -59,13 +64,13 @@ var userMap = {};
 // Create and store sample loans for users to show
 // Function: Logic
 function createSampleLoans() {
-    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', 
-    '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1/23/2019',
+    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 1, 'Aquisition of apartment complex', 'review', 
+    '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1549154800',
      ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xe972A893147F7C74176091da2d4848E6F6A9A076', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], 
      [true, true , false], [500000, 200000 , 700000]);
-    id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff', '2/21/2019',
+    id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 5, 'Loan for internal renovations', 'review', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff', '1549314800',
      ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xca35b7d915458ef540ade6068dfe2f44e8fa733c'], [false, false], [700000, 3500000]);
-    id_s3 = createLoan('Exhibition Center East', 'id_s3', 'Building the foundations', 'review', '0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '3/2/2019',
+    id_s3 = createLoan('Exhibition Center East', 'id_s3', 2, 'Building the foundations', 'review', '0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '1549194800',
      ['0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '0x14723a09acff6d2a60dcdf7aa4aff308fddc160c'], [false, true], [300000, 2500000]);
     sessionStorage.setItem(`id_s1`, JSON.stringify(id_s1));
     sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
@@ -160,6 +165,9 @@ const updateLoanInBrowser = () => {
 // Function: UI
 var deleteFromSidePanel = (_id) => {
     $(`li[data-storage-key="${_id}"`).remove();
+
+    $('#form-wrapper').addClass('d-none');
+    $('#select-info').show();     
 }
 
 // Function: UI
@@ -265,6 +273,7 @@ Function: UI + Logic (sets activeLoanId)
 function loadLoan(htmlObject) {
     // if (devMode) alert(`loadLoan() called`);
 
+    // Hide or show fields depending on the current loan state
     $('#tab-A').trigger('click');
 
     $('#writeToChain').show();
@@ -296,12 +305,20 @@ function loadLoan(htmlObject) {
     
     activeLoanId = htmlObject.getAttribute("data-storage-key");
 
-    if (activeLoanId.includes('bc') || activeLoanId.includes('id_s')) {
+    if (activeLoanId.includes('bc')) {
         $('#writeToChain').hide();
         $('#updateToChain').show();
         $('#btn_approveLoan').show();
 
-        // Making tabs accessible for local loans
+        // Making tabs accessible for loans after loading from bc
+        $('#tab-B, #tab-C, #tab-D, #tab-E').show();
+    }
+    else if (activeLoanId.includes('id_s')) {
+        $('#writeToChain').hide();
+        $('#updateToChain').hide();
+        $('#btn_approveLoan').hide();
+
+        // Making tabs accessible for sample loans
         $('#tab-B, #tab-C, #tab-D, #tab-E').show();
     }
 
@@ -357,6 +374,18 @@ function loadLoan(htmlObject) {
 
         // Loads parties (users in loan) with approval status
         loadParties();
+
+        // Evaluation of loan amounts
+        calculateTotalAmount();
+        
+        $('[id^="amount"]').change(function() {
+            calculateTotalAmount();
+        }).keydown(function() {
+            calculateTotalAmount();
+        }).keyup(function() {
+            calculateTotalAmount();
+        });
+
     }
     else {
         alert(`Error: Loan (${activeLoanId}) not found in your browser storage`);
@@ -464,7 +493,7 @@ function loadUserDetail (address) {
 
 
 
-function createDropdown() {
+function createSignUpDropdown() {
     var drop = $('#signUpDropDown');
     var i;
     var htmlString = '<div class="dropContainer">';
@@ -475,14 +504,29 @@ function createDropdown() {
     drop.append(htmlString);
 }
 
+
 // Function: UI
 $(document).ready(function () {
 
-    createDropdown();
+    createSignUpDropdown();
     // createLoanUsersDropDown();
 
-    // Functionality for dropdown and loading user data (as of now conflicting with generic use (signup.html))
-    $('.customDropdown').on('click', function (event) {
+    // Event handler for SignUp Dropdown menu
+    $('#signUpDropDown').on('click', function (event) {
+        var container = $(this).children('div.dropContainer');
+        var target = $(event.target);
+
+        container.toggle();
+        $(this).toggleClass('select_border');
+        if (target.hasClass('dropOption')) {
+            $(this).find('span.valueHolder1').text(target.text());
+            $(this).children('span.valueHolder').addClass('float-label')
+        }
+    })
+
+
+    // Event handler for involved parties tab dropdown 
+    $('#participant_dropdown').on('click', function (event) {
         var container = $(this).children('div.dropContainer');
         var target = $(event.target);
 
@@ -495,6 +539,7 @@ $(document).ready(function () {
             $(this).children('span.valueHolder').addClass('float-label input_float_lbl');
         }
     });
+
 
     // Input floating label js
     // MJ: Function: UI
@@ -597,12 +642,37 @@ var submitFormData = () => {
 
     userObj.company = $('#companyName').val();
     userObj.address = $('#signUpAddress').val();
-    userObj.name = $('#signUpAddress').val();
     userObj.firstName = $('#firstName').val();
     userObj.lastName = $('#lastName').val();
-    
+    userObj.role = $('#signUpDropDown .valueHolder1').text();
+
     localStorage.setItem($('#signUpAddress').val(), JSON.stringify(userObj));
+    signUpRegistration(userObj.company, userObj.role, userObj.address);
+
 }
+
+
+
+// Function: UI. Summing up loan amounts in html form
+function calculateTotalAmount() {
+    
+    let sum = 0;
+    // Set field value equal zero
+    $('#total_value').val(sum);  
+
+    // Retrieve array with all the loan amount input fields 
+    loanInputs = $('[id^="amount"]');
+
+    // Parsing text field values and summing up
+
+    for (i = 0; i < loanInputs.length; i++)  {
+        sum = parseFloat(sum) + parseFloat(loanInputs[i].value);
+    
+    }
+    $('#total_value').val(sum);
+    $('#total_value').closest('div').addClass('input_float_lbl');
+}
+
 
 // // MJ: Signup page: Consider complete rewrite soon
 // var submitFormData = () => {
@@ -635,11 +705,6 @@ var submitFormData = () => {
 // }
 
 
-// Load amount calculation
-calculateTotalAmount = () => {    
-    let total = (parseFloat(document.getElementById("loanAmount").value?document.getElementById("loanAmount").value:0) + parseFloat(document.getElementById("bank1").value?document.getElementById("bank1").value:0) + parseFloat(document.getElementById("bank2").value?document.getElementById("bank2").value:0))
-    document.getElementById("Total_value").textContent = total + ' €';      //bind calculated value to UI
-}
 
 
 // custom file upload js 

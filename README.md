@@ -1,29 +1,26 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Welcome to the Syndicate Loan dApp built for the Lition Blockchain Infrastructure.
+Currently, the dApp is in an early MVP-stage, version 0.2. 
 
-### What is this repository for? ###
+### Tech Stack ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Vanilla JavaScript (ES6) with bootstrap and jQuery
+* some other minor JS libraries
+* web3.js 1.0.0-beta37
+* Solidity written contracts deployed on Kovan Testnet
 
-### How do I get set up? ###
+### Functionality of smart contract ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Create loans
+* Update loans
+* Delete loans
+* Add users to loan
+* Register users (with their respective name)
+* Approve loans and reset approvals for revisions
 
-### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
+### Contact ###
+Please get in touch with us via our Telegram group: https://t.me/LitionEnergy
+or send an email to marcel.jackisch@liton.de
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact

@@ -219,6 +219,14 @@ Struct user defines key data of participants such as banks and businesses
         require(keccak256(abi.encode(_role)) == keccak256(abi.encode("lender")) || keccak256(abi.encode(_role)) == keccak256(abi.encode("borrower")), "Role must match 'lender' or 'borrower");
         addressToUserData[msg.sender].role = _role;
         addressToUserData[msg.sender].name = _name;
+        // Array update necessary
+        uint memory index;
+        userData memory u;
+        for (uint i = 0; i < users.length; i++) {
+            if (users[i].address == msg.sender) {
+                index = i;
+            }
+        }
 
     }
 
