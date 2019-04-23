@@ -35,7 +35,6 @@ function getArrLength() {
 
 // Retrieves an array of all the loans the user (registrar) has created
 function getLoansByUser(address) {
-  console.log(`getLoansByUser(${address}) called`);
   return storeContract.methods.getLoansByUser(address).call();
 }
 
@@ -46,7 +45,6 @@ function getApprovalStatus(loanId) {
 
 // Retrieves loan amount array
 function getLoanAmounts(loanId) {
-  console.log(`getLoanAmounts(${loanId}) called`);
   return storeContract.methods.getLoanAmounts(loanId).call();
 }
 
@@ -93,7 +91,6 @@ function deleteLoan() {
     .send({ from: userAccount })
     .on("receipt", function(receipt) {
       txNotifyUI("conf", "delete", activeLoanId);
-      console.log(receipt);
       // After success, delete from UI and Storage
       deleteFromSidePanel(activeLoanId);
       sessionStorage.removeItem(activeLoanId);
@@ -105,7 +102,6 @@ function deleteLoan() {
 function addUserToLoan() {
   var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
   _address = $("#input_add_user").val();
-  console.log(_address);
 
   txNotifyUI("send", "add");
   storeContract.methods
@@ -113,7 +109,6 @@ function addUserToLoan() {
     .send({ from: userAccount })
     .on("receipt", function(receipt) {
       txNotifyUI("conf", "add", activeLoanId, _address);
-      console.log(receipt);
       deleteFromSidePanel(activeLoanId);
       sessionStorage.removeItem(activeLoanId);
       logLoans();
@@ -134,14 +129,12 @@ async function signUpRegistration(_name, _role, _account) {
     .on("receipt", function(receipt) {
       document.location.replace("main.html");
       txNotifyUI("conf", "register", activeLoanId, _address);
-      console.log(receipt);
       sessionStorage.removeItem(activeLoanId);
       deleteFromSidePanel(activeLoanId);
       logLoans();
       retrieveUsers();
     })
     .on("error", function(error) {
-      console.log(error);
       alert("Error: The transaction was reverted by the EVM");
     });
 }
@@ -175,7 +168,6 @@ async function userRegistration(_name, _role, _account) {
     $("#registerUser").modal("hide");
 
     //get user input
-    console.log(form, values, errors);
     _name = values["name"];
     _role = values["role"];
     _account = values["address"];
@@ -197,7 +189,6 @@ async function userRegistration(_name, _role, _account) {
         retrieveUsers();
       })
       .on("error", function(error) {
-        console.log(error);
         alert("Error: The transaction was reverted by the EVM");
       });
   }
