@@ -79,10 +79,12 @@ function getUserDataByAddr(_address) {
 
 // Reject and delete loan, only registrar can call this function  [.send]
 function deleteLoan() {
-  alert("Deleting loan on smart contract");
+  if (devMode) console.log("Deleting loan on smart contract");
   var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
   if (loanObj.id.includes("id_s")) {
     alert("The loan you are trying to delete is just a sample");
+    deleteFromSidePanel(activeLoanId);
+    sessionStorage.removeItem(activeLoanId);
     return;
   }
   txNotifyUI("send", "delete");
@@ -135,7 +137,7 @@ async function signUpRegistration(_name, _role, _account) {
       retrieveUsers();
     })
     .on("error", function(error) {
-      alert("Error: The transaction was reverted by the EVM");
+      alert("Error: The transaction failed was aborted or rejected");
     });
 }
 

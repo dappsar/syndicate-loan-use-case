@@ -2,14 +2,6 @@
 var names = [];
 var addresses = [];
 
-// function fillUserArray() {
-//     for (i = 0; i < globalUserArray.length; i++) {
-//         names.push(globalUserArray[i].name);
-//         addresses.push(globalUserArray[i].addresses);
-//     }
-//     buildDropDown(names,addr);
-// }
-
 // Fills array to be shown in global user list dropdown, called from retrieveUsers()
 function fillUserArray() {
 
@@ -69,8 +61,12 @@ function buildDropDown() {
   $('[id^="empty"]').hide();
 }
 
-//Capture the event when user types into the search box
-window.addEventListener("input", function() {
+// Capture the event when user types into the search box
+$('#searchField')
+.keydown(function() {
+  filter(search.value.trim().toLowerCase());
+})
+.keyup(function() {
   filter(search.value.trim().toLowerCase());
 });
 
@@ -106,7 +102,5 @@ $('[id^="menuItem"]').on("click", ".user-dropdown-item", function() {
     .closest("div")
     .addClass("input_float_lbl");
 });
-
-
 
 buildDropDown();
