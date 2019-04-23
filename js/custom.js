@@ -234,8 +234,21 @@ var deleteFromSidePanel = _id => {
   $("#select-info").show();
 };
 
+
+// Function: Logic 
+// Checks if approval status array in object has min of 3 users and if all are true
+function returnApprovalStatus(_loanId_key) {
+    loanObj = JSON.parse(sessionStorage.getItem(_loanId_key));
+    if (loanObj.length > 2 && loanObj.approvalStatus.every(Boolean) == true) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 // Function: UI
-var addLoanToSidePanel = (_loanId, _loanName, _date, type, status) => {
+var addLoanToSidePanel = (_loanId, _loanName, _date, type) => {
   // Sets data-storage-key dependent on loan object type (local or from smart contract)
   // date is either the current or from smart contract storage
 
@@ -243,22 +256,27 @@ var addLoanToSidePanel = (_loanId, _loanName, _date, type, status) => {
   if (type == "bc") {
     loanIdAttr = "bc_" + _loanId;
     date = getDateInFormat(undefined, _date);
-    bc_info = " | from blockchain";
+    bc_info = "from blockchain";
   } else {
     loanIdAttr = "id_" + _loanId;
     date = getDateInFormat("full");
-    bc_info = " | locally stored";
+    bc_info = "locally stored";
   }
 
-  if (status == "approved") {
-    status = "Loan approved";
+  console.log("addLoanToSidePanel()" + activeLoanId);
+  if (returnApprovalStatus(loanIdAttr) == true) {
+    reviewStatus = "Loan Approved";
   }
+  else {
+    reviewStatus = "In review";
+  }
+
 
   $(".appplication_section ul").prepend(
     `<li data-storage-key="${loanIdAttr}">
             <div class="lists"><h4>${_loanName}</h4>
                 <div class="status">
-                <p>Waiting for review${bc_info}</p>
+                <p>${reviewStatus} | ${bc_info}</p>
 
                 </div>
                 <span class="date">${date}</span>
