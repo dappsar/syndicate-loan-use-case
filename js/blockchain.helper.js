@@ -151,7 +151,7 @@ async function userRegistration(_name, _role, _account) {
     address: {
       presence: true,
       format: {
-        pattern: "!/^(0x)?[0-9a-f]{40}$/i.test(address)",
+        pattern: "^(0x)?[0-9a-f]{40}$",
         message: "needs to be a valid eth address."
       }
     }
