@@ -247,6 +247,16 @@ function returnActiveLoan() {
     return activeLoan;
 }
 
+function refreshUI() {
+    sessionKeys = Object.keys(sessionStorage);
+    if (devMode) console.log("refreshUI called");
+    // Basic check to see if active loan still exists
+    if (!sessionKeys.includes(activeLoanId)) {
+        $('#form-wrapper').addClass('d-none');
+        $('#select-info').show();   
+    }
+}
+
 
 /*
 Loads loan and writes data into html form

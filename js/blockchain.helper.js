@@ -97,6 +97,7 @@ function deleteLoan() {
         // After success, delete from UI and Storage
         deleteFromSidePanel(activeLoanId);
         sessionStorage.removeItem(activeLoanId);
+        refreshUI();
     });
 }
 
