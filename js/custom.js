@@ -40,10 +40,11 @@ $("body").on("click", ".appplication_section ul li", function () {
 
 // Object Literal Factory Function
 // Function: DataStorage / Logic  
-const createLoan = (name, id, purpose, state, registeringParty, date, addresses, approvalStatus, loanAmounts) => {
+const createLoan = (name, id, revisionNumber, purpose, state, registeringParty, date, addresses, approvalStatus, loanAmounts) => {
     return {
         name,
         id,
+        revisionNumber,
         purpose,
         state,              // e.g. in Review
         registeringParty,
@@ -59,13 +60,13 @@ var userMap = {};
 // Create and store sample loans for users to show
 // Function: Logic
 function createSampleLoans() {
-    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 'Aquisition of apartment complex', 'review', 
-    '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1/23/2019',
+    id_s1 = createLoan('Housing Development Leipartstr', 'id_s1', 1, 'Aquisition of apartment complex', 'review', 
+    '0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '1549154800',
      ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xe972A893147F7C74176091da2d4848E6F6A9A076', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff'], 
      [true, true , false], [500000, 200000 , 700000]);
-    id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 'Loan for internal renovations', 'review', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff', '2/21/2019',
+    id_s2 = createLoan('Office Complex Alexanderplatz', 'id_s2', 5, 'Loan for internal renovations', 'review', '0xD8FE537661DBa027F9aCCB7671cB9227d29f90ff', '1549314800',
      ['0x31f9b7a755f5b2B41d26E6F841fc532C1230Ecf7', '0xca35b7d915458ef540ade6068dfe2f44e8fa733c'], [false, false], [700000, 3500000]);
-    id_s3 = createLoan('Exhibition Center East', 'id_s3', 'Building the foundations', 'review', '0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '3/2/2019',
+    id_s3 = createLoan('Exhibition Center East', 'id_s3', 2, 'Building the foundations', 'review', '0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '1549194800',
      ['0x6Da8869C9E119374Db0D92862870b47Bf27f673f', '0x14723a09acff6d2a60dcdf7aa4aff308fddc160c'], [false, true], [300000, 2500000]);
     sessionStorage.setItem(`id_s1`, JSON.stringify(id_s1));
     sessionStorage.setItem(`id_s2`, JSON.stringify(id_s2));
@@ -296,12 +297,20 @@ function loadLoan(htmlObject) {
     
     activeLoanId = htmlObject.getAttribute("data-storage-key");
 
-    if (activeLoanId.includes('bc') || activeLoanId.includes('id_s')) {
+    if (activeLoanId.includes('bc')) {
         $('#writeToChain').hide();
         $('#updateToChain').show();
         $('#btn_approveLoan').show();
 
-        // Making tabs accessible for local loans
+        // Making tabs accessible for loans after loading from bc
+        $('#tab-B, #tab-C, #tab-D, #tab-E').show();
+    }
+    else if (activeLoanId.includes('id_s')) {
+        $('#writeToChain').hide();
+        $('#updateToChain').hide();
+        $('#btn_approveLoan').hide();
+
+        // Making tabs accessible for sample loans
         $('#tab-B, #tab-C, #tab-D, #tab-E').show();
     }
 
@@ -604,6 +613,24 @@ var submitFormData = () => {
     localStorage.setItem($('#signUpAddress').val(), JSON.stringify(userObj));
 }
 
+
+
+// Function: UI. Summing up loan amounts in html form
+calculateTotalAmount = () => {    
+
+    loanInputs = $('[id^="amount"]');
+    let sum = 0;
+    for (i = 0; i < loanInputs.length; i++)  {
+        sum = parseFloat(sum) + parseFloat(loanInputs[i].value);
+        console.log(sum);
+    
+    }
+    $('#total_value').val(sum);
+    $('#total_value').closest('div').addClass('input_float_lbl');
+
+}
+
+
 // // MJ: Signup page: Consider complete rewrite soon
 // var submitFormData = () => {
 
@@ -635,11 +662,6 @@ var submitFormData = () => {
 // }
 
 
-// Load amount calculation
-calculateTotalAmount = () => {    
-    let total = (parseFloat(document.getElementById("loanAmount").value?document.getElementById("loanAmount").value:0) + parseFloat(document.getElementById("bank1").value?document.getElementById("bank1").value:0) + parseFloat(document.getElementById("bank2").value?document.getElementById("bank2").value:0))
-    document.getElementById("Total_value").textContent = total + ' €';      //bind calculated value to UI
-}
 
 
 // custom file upload js 
