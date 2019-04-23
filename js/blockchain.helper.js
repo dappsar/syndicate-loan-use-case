@@ -1,7 +1,7 @@
-/* 
+/*
 Code by Marcel Jackisch / marcel.jackisch@lition.de
 Written with web3.js 1.x library
-Note: Asynchronous JS functions are required in web3.js 1.x 
+Note: Asynchronous JS functions are required in web3.js 1.x
  */
 
 // var storeAddress = "0x8035f4d86371629445e6570C67a8510EC53b666f";     // Address of SC_v0.1
@@ -11,179 +11,208 @@ Note: Asynchronous JS functions are required in web3.js 1.x
 // var storeAddress = "0xdbaf48282120e0fAE89a447cbb7688fB35f68e61";     // Address of SC_v0.1.8
 // var storeAddress = "0x0f203b23Cd02c9f35F3b75B58aC4d1B52e93d99A";     // Address of SC_v0.2.0
 // var storeAddress = "0xfF2b860fc1E06eF2c0f2c7C055b64f6B11c2E0cd";     // Address of SC_v0.2.3 Ropsten
-var storeAddress = "0x1Ef2c9d38694A047295cb748cCA76624Ab5e8968";     // Address of SC_v0.2.3.5 Kovan
-
+var storeAddress = "0x1Ef2c9d38694A047295cb748cCA76624Ab5e8968"; // Address of SC_v0.2.3.5 Kovan
 
 // Currently active ethereum account
 var userAccount;
 // Array storing all users registered on contract
 var globalUserArray = [];
 
-// Loads loan (struct) from array 
+// Loads loan (struct) from array
 function retrieveLoan(id) {
-    return storeContract.methods.loans(id).call();
+  return storeContract.methods.loans(id).call();
 }
 
 // Retrieves mapping of a loan to the address of its registrar (mapping (uint => address))
 function retrieveLoanToRegistrar(loanId) {
-    return storeContract.methods.loanToRegistrar(loanId).call();
+  return storeContract.methods.loanToRegistrar(loanId).call();
 }
 
 // Retrieves the length of the loans array
 function getArrLength() {
-    return storeContract.methods.getArrLength().call();
+  return storeContract.methods.getArrLength().call();
 }
 
 // Retrieves an array of all the loans the user (registrar) has created
 function getLoansByUser(address) {
-    console.log(`getLoansByUser(${address}) called`);
-    return storeContract.methods.getLoansByUser(address).call(); 
+  console.log(`getLoansByUser(${address}) called`);
+  return storeContract.methods.getLoansByUser(address).call();
 }
 
 // Retrieves approval status array
-function getApprovalStatus(loanId)  {
-    return storeContract.methods.getApprovalStatus(loanId).call(); 
+function getApprovalStatus(loanId) {
+  return storeContract.methods.getApprovalStatus(loanId).call();
 }
 
 // Retrieves loan amount array
-function getLoanAmounts(loanId)  {
-    console.log(`getLoanAmounts(${loanId}) called`);
-    return storeContract.methods.getLoanAmounts(loanId).call(); 
+function getLoanAmounts(loanId) {
+  console.log(`getLoanAmounts(${loanId}) called`);
+  return storeContract.methods.getLoanAmounts(loanId).call();
 }
 
 // Retrieves loan from array at position (id)
 function retrieveLoan(id) {
-    return storeContract.methods.loans(id).call();
+  return storeContract.methods.loans(id).call();
 }
 
 function retrieveUserData(_address) {
-    return storeContract.methods.addressToUserData(_address).call();
+  return storeContract.methods.addressToUserData(_address).call();
 }
 
 // Retrieves userId in a loan
 function getUserToId(loanId, address) {
-    return storeContract.methods.getUserToId(loanId, address).call(); 
+  return storeContract.methods.getUserToId(loanId, address).call();
 }
 
 // returns address array and number of all users
 function getUsersInLoan(loanId) {
-    return storeContract.methods.getUsersInLoan(loanId).call();
+  return storeContract.methods.getUsersInLoan(loanId).call();
 }
 
 // Retrieves the length of the user array
 function getUserArrLength() {
-    return storeContract.methods.getUserArrLength().call();
+  return storeContract.methods.getUserArrLength().call();
 }
 
 // Retrieves the corresponding userData struct object
 function getUserDataByAddr(_address) {
-    return storeContract.methods.getUserDataByAddr(_address).call();
+  return storeContract.methods.getUserDataByAddr(_address).call();
 }
-
 
 // Reject and delete loan, only registrar can call this function  [.send]
 function deleteLoan() {
-    alert('Deleting loan on smart contract');
-    var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
-    if(loanObj.id.includes("id_s")) {
-        alert('The loan you are trying to delete is just a sample');
-        return;
-    }
-    txNotifyUI('send', 'delete');
-    storeContract.methods.deleteLoan(loanObj.id).send({from: userAccount})
+  alert("Deleting loan on smart contract");
+  var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+  if (loanObj.id.includes("id_s")) {
+    alert("The loan you are trying to delete is just a sample");
+    return;
+  }
+  txNotifyUI("send", "delete");
+  storeContract.methods
+    .deleteLoan(loanObj.id)
+    .send({ from: userAccount })
     .on("receipt", function(receipt) {
-        txNotifyUI('conf', 'delete', activeLoanId);
-        console.log(receipt);
-        // After success, delete from UI and Storage
-        deleteFromSidePanel(activeLoanId);
-        sessionStorage.removeItem(activeLoanId);
-        refreshUI();
+      txNotifyUI("conf", "delete", activeLoanId);
+      console.log(receipt);
+      // After success, delete from UI and Storage
+      deleteFromSidePanel(activeLoanId);
+      sessionStorage.removeItem(activeLoanId);
+      refreshUI();
     });
 }
-
-
-
 
 // Add user to loan (onlyRegistrar) [.send]
 function addUserToLoan() {
-    var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
-    _address = $('#input_add_user').val();
-    console.log(_address);
+  var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
+  _address = $("#input_add_user").val();
+  console.log(_address);
 
-    txNotifyUI('send', 'add');
-    storeContract.methods.addUserToLoan(loanObj.id, _address)
-    .send({from: userAccount})
+  txNotifyUI("send", "add");
+  storeContract.methods
+    .addUserToLoan(loanObj.id, _address)
+    .send({ from: userAccount })
     .on("receipt", function(receipt) {
-        txNotifyUI('conf', 'add', activeLoanId, _address);
-        console.log(receipt);
-        deleteFromSidePanel(activeLoanId);
-        sessionStorage.removeItem(activeLoanId);
-        logLoans();
+      txNotifyUI("conf", "add", activeLoanId, _address);
+      console.log(receipt);
+      deleteFromSidePanel(activeLoanId);
+      sessionStorage.removeItem(activeLoanId);
+      logLoans();
     });
 }
-
 
 async function signUpRegistration(_name, _role, _account) {
-    if (devMode) console.log(`Registering User: name=${_name}, role=${_role},  address=${_account}`);
+  if (devMode)
+    console.log(
+      `Registering User: name=${_name}, role=${_role},  address=${_account}`
+    );
 
-    txNotifyUI('send', 'register');
+  txNotifyUI("send", "register");
 
-    await storeContract.methods.userRegistration(_name, _role, _account)
-    .send({from: userAccount})
+  await storeContract.methods
+    .userRegistration(_name, _role, _account)
+    .send({ from: userAccount })
     .on("receipt", function(receipt) {
-        document.location.replace('main.html');
-        txNotifyUI('conf', 'register', activeLoanId, _address);
-        console.log(receipt);
-        sessionStorage.removeItem(activeLoanId);
-        deleteFromSidePanel(activeLoanId);
-        logLoans();
-        retrieveUsers();
+      document.location.replace("main.html");
+      txNotifyUI("conf", "register", activeLoanId, _address);
+      console.log(receipt);
+      sessionStorage.removeItem(activeLoanId);
+      deleteFromSidePanel(activeLoanId);
+      logLoans();
+      retrieveUsers();
     })
     .on("error", function(error) {
-        console.log(error);
-        alert("Error: The transaction was reverted by the EVM");
+      console.log(error);
+      alert("Error: The transaction was reverted by the EVM");
     });
-
 }
 
-
 // Registration of a new user account. Can be executed by _anyone_ (public)   [.send]
-function userRegistration(_name, _role, _account) {
+async function userRegistration(_name, _role, _account) {
+  var constraints = {
+    name: {
+      presence: true
+    },
+    role: {
+      presence: true
+    },
+    address: {
+      presence: true,
+      format: {
+        pattern: "!/^(0x)?[0-9a-f]{40}$/i.test(address)",
+        message: "needs to be a valid eth address."
+      }
+    }
+  };
+  //validate content
+  var form = $("#registerUser");
+  var values = await validate.collectFormValues(form);
+  var errors = validate(values, constraints);
 
-    _name = $('#modal_add_userName').val();
-    _role = $('input[name=radios_role]:checked').val();
-    _account = $('#modal_add_userAddr').val();
-    if (devMode) console.log(`Registering User: name=${_name}, role=${_role},  address=${_account}`);
+  showErrors(form[0], errors);
 
-    txNotifyUI('send', 'register');
+  if (!errors) {
+    //hide modal
+    $("#registerUser").modal("hide");
 
-    storeContract.methods.userRegistration(_name, _role, _account)
-    .send({from: userAccount})
-    .on("receipt", function(receipt) {
-        txNotifyUI('conf', 'register', activeLoanId, _address);
-        console.log(receipt);
+    //get user input
+    console.log(form, values, errors);
+    _name = values["name"];
+    _role = values["role"];
+    _account = values["address"];
+    if (devMode)
+      console.log(
+        `Registering User: name=${_name}, role=${_role},  address=${_account}`
+      );
+
+    txNotifyUI("send", "register");
+
+    storeContract.methods
+      .userRegistration(_name, _role, _account)
+      .send({ from: userAccount })
+      .on("receipt", function(receipt) {
+        txNotifyUI("conf", "register", activeLoanId, _address);
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
         logLoans();
         retrieveUsers();
-    })
-    .on("error", function(error) {
+      })
+      .on("error", function(error) {
         console.log(error);
         alert("Error: The transaction was reverted by the EVM");
-    });
-
+      });
+  }
 }
 
 /// TO BE CONTINUED
 function updateUserData() {
-    _name = $('#modal_add_userName').val();
-    _role = $('input[name=radios_role]:checked').val();
-    if (devMode) console.log(`Updating User: name=${_name}, role=${_role}`);
+  _name = $("#modal_add_userName").val();
+  _role = $("input[name=radios_role]:checked").val();
+  if (devMode) console.log(`Updating User: name=${_name}, role=${_role}`);
 }
 
 // Retrieves userData struct from array
 function retrieveUser(i) {
-    return storeContract.methods.users(i).call();
+  return storeContract.methods.users(i).call();
 }
 
 // // Store the data of each user under his own key (NECESSARY?)
@@ -200,21 +229,18 @@ function retrieveUser(i) {
 
 // Store all user account objects in array (globalUserArray),  in sessionStorage and in mapping(userMap)
 async function retrieveUsers() {
-    // So we can iterate through the user array on smart contract
-    const arrLenght = await getUserArrLength();
-    if (devMode) console.log("User array lenght: " + arrLenght);
+  // So we can iterate through the user array on smart contract
+  const arrLenght = await getUserArrLength();
+  if (devMode) console.log("User array lenght: " + arrLenght);
 
-    for (i = 0; i < arrLenght; i++) {
-        // retrieve object from user array and 
-        const currUser = await retrieveUser(i);
-        globalUserArray.push(currUser);
-        // console.log(`logging users[${i}] object: ${currUser.name}`);
-        userMap[currUser.account] = {name: currUser.name, role: currUser.role};
-        // console.log(userMap[currUser.account]);
-
-    }
-    sessionStorage.setItem('users_bc', JSON.stringify(globalUserArray));
-    fillUserArray(); // Fills array to be shown in global user list dropdown
+  for (i = 0; i < arrLenght; i++) {
+    // retrieve object from user array and
+    const currUser = await retrieveUser(i);
+    globalUserArray.push(currUser);
+    // console.log(`logging users[${i}] object: ${currUser.name}`);
+    userMap[currUser.account] = { name: currUser.name, role: currUser.role };
+    // console.log(userMap[currUser.account]);
+  }
+  sessionStorage.setItem("users_bc", JSON.stringify(globalUserArray));
+  fillUserArray(); // Fills array to be shown in global user list dropdown
 }
-
-

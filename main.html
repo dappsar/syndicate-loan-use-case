@@ -26,6 +26,7 @@
     <!-- JS Load Overlay -->
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.12.0/validate.min.js"></script>
 
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
@@ -40,6 +41,8 @@
     <script src="js/blockchain.js"></script>
     <script src="js/blockchain.helper.js"></script>
     <script src="js/blockchainUI.js"></script>
+    <script src="js/errorHandling.js"></script>
+
 
     <!-- Contract ABI js -->
     <script language="javascript" type="text/javascript" src="js\contractABI.js"></script>
@@ -246,7 +249,7 @@
                             <div id="pane-A" class="card tab-pane fade active show" role="tabpanel" aria-labelledby="tab-A">
                                 <!-- <div class="card-header" role="tab" id="heading-A">
                                     <h5 class="mb-0">
-                                        
+
                                         <a data-toggle="collapse" href="#collapse-A" aria-expanded="true"
                                             aria-controls="collapse-A">
                                         </a>
@@ -414,9 +417,9 @@
                                         <a class="collapsed" data-toggle="collapse" href="#collapse-D"
                                             aria-expanded="false" aria-controls="collapse-D">
                                             Loan Details
-                                        </a> 
+                                        </a>
                                     </h5>
-                                </div>--> 
+                                </div>-->
                                 <div id="collapse-D" class="collapse" role="tabpanel" data-parent="#content"
                                     aria-labelledby="heading-D">
                                     <div class="loan_detail">
@@ -478,7 +481,7 @@
                                         <a class="collapsed" data-toggle="collapse" href="#collapse-E"
                                             aria-expanded="false" aria-controls="collapse-E">
                                             Documents
-                                        </a> 
+                                        </a>
                                     </h5>
                                 </div> -->
                                 <div id="collapse-E" class="collapse" role="tabpanel" data-parent="#content"
@@ -583,7 +586,7 @@
     <!------------------------------------------------------------>
 
     <!------------- Edit user data  ------------>
-    
+
 
     <!-- Modal -->
     <form class="modal fade" id="edit_user_modal" tabindex="-1" role="dialog" aria-labelledby="edit_user_modal"
@@ -650,36 +653,35 @@
             <div class="modal-body">
 
                 <div class="form-label-group float-lab">
-                    <input type="text" id="modal_add_userName" class="form-control"
-                    name="modal_add_userName" required>
-                    <label for="modal_add_userName">Name</label>
+                    <input type="text" id="name" class="form-control"
+                    name="name">
+                    <label for="name">Name</label>
+                    <div class="messages"></div>
                 </div>
-                <div style="margin-bottom:20px;">
-                    <input type="radio" id="modal_add_userRole_lender"  name="radios_role" value="lender" required>
-                    <label for="modal_add_userRole_lender">Lender</label>
+                <div class="form-label-group" style="margin-bottom:20px;">
+                    <input type="radio" id="lender"  name="role" value="lender">
+                    <label for="lender">Lender</label>
 
 
-                    <input type="radio" id="modal_add_userRole_borrower"  name="radios_role" value="borrower" required>
-                    <label for="modal_add_userRole_borrower">Borrower</label>
+                    <input type="radio" id="borrower"  name="role" value="borrower">
+                    <label for="borrower">Borrower</label>
+                    <div class="messages"></div>
                 </div>
                 <div class="form-label-group float-lab">
-                    <input type="text" id="modal_add_userAddr" class="form-control"
-                    placeholder_x="" name="modal_add_userAddr" required>
-                    <label for="modal_add_userAddr">Address</label>
+                    <input type="text" id="address" class="form-control"
+                    placeholder_x="" name="address">
+                    <label for="address">Address</label>
+                    <div class="messages"></div>
                 </div>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
 
                 </div>
                 <div style="display:flex;align-items:center;flex-direction:column;">
                 <div class="infotext">Info: Here you can register new users on the smart contract,
                      before they register themselves. </div>
-                <div class="update_btn">
-                    <button onclick="userRegistration()" type="submit" data-dismiss="modal"
-                        class="primary_btn text-center">Register on Blockchain</button>
-                    </div>
+                  <div class="update_btn">
+                    <button onclick="userRegistration()" type="button" class="primary_btn text-center">Register on Blockchain</button>
                   </div>
+                </div>
             </div>
         </div>
     </form>
@@ -772,7 +774,7 @@
                 <div class="modal-body">
 
                 <!-- User Search Dropdown -->
-                
+
                 <div class="user_dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users_2" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
