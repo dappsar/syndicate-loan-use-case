@@ -35,7 +35,11 @@ $("body").on("click", ".appplication_section ul li", function () {
     $('#form-wrapper').removeClass('d-none');
     $('#select-info').hide();     
     $('#approval_status').show();
+
 });
+
+
+
 
 
 // Object Literal Factory Function
@@ -266,6 +270,7 @@ Function: UI + Logic (sets activeLoanId)
 function loadLoan(htmlObject) {
     // if (devMode) alert(`loadLoan() called`);
 
+    // Hide or show fields depending on the current loan state
     $('#tab-A').trigger('click');
 
     $('#writeToChain').show();
@@ -366,6 +371,18 @@ function loadLoan(htmlObject) {
 
         // Loads parties (users in loan) with approval status
         loadParties();
+
+        // Evaluation of loan amounts
+        calculateTotalAmount();
+        
+        $('[id^="amount"]').change(function() {
+            calculateTotalAmount();
+        }).keydown(function() {
+            calculateTotalAmount();
+        }).keyup(function() {
+            calculateTotalAmount();
+        });
+
     }
     else {
         alert(`Error: Loan (${activeLoanId}) not found in your browser storage`);
@@ -490,6 +507,7 @@ $(document).ready(function () {
     createDropdown();
     // createLoanUsersDropDown();
 
+
     // Functionality for dropdown and loading user data (as of now conflicting with generic use (signup.html))
     $('.customDropdown').on('click', function (event) {
         var container = $(this).children('div.dropContainer');
@@ -504,6 +522,7 @@ $(document).ready(function () {
             $(this).children('span.valueHolder').addClass('float-label input_float_lbl');
         }
     });
+
 
     // Input floating label js
     // MJ: Function: UI
@@ -616,10 +635,17 @@ var submitFormData = () => {
 
 
 // Function: UI. Summing up loan amounts in html form
-calculateTotalAmount = () => {    
-
-    loanInputs = $('[id^="amount"]');
+function calculateTotalAmount() {
+    
     let sum = 0;
+    // Set field value equal zero
+    $('#total_value').val(sum);  
+
+    // Retrieve array with all the loan amount input fields 
+    loanInputs = $('[id^="amount"]');
+
+    // Parsing text field values and summing up
+
     for (i = 0; i < loanInputs.length; i++)  {
         sum = parseFloat(sum) + parseFloat(loanInputs[i].value);
         console.log(sum);
@@ -627,7 +653,6 @@ calculateTotalAmount = () => {
     }
     $('#total_value').val(sum);
     $('#total_value').closest('div').addClass('input_float_lbl');
-
 }
 
 
