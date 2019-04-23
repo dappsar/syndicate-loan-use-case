@@ -292,6 +292,7 @@ var addItem = () => {
   const newLoan = createLoan(
     loanName,
     tempLoanId,
+    "0",
     undefined,
     "review",
     userAccount,
