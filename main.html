@@ -321,7 +321,7 @@
                                     <div class="loan_detail">
                                         <form>
                                             <div class="form-label-group">
-                                                <div class="customDropdown dd_role" >
+                                                <div class="customDropdown dd_role" id="participant_dropdown">
                                                     <span class="valueHolder" >Select Participant</span>
                                                     <span class="valueHolder1" name="part_selection"></span>
                                                     <div class="dropContainer" id="involved_dropdown"></div>
@@ -600,20 +600,20 @@
             <div class="modal-body">
 
                 <div class="form-label-group float-lab">
-                    <input type="text" id="modal_add_userName" class="form-control"
-                    name="modal_add_userName" required>
-                    <label for="modal_add_userName">Name</label>
+                    <input type="text" id="modal_add_userName2" class="form-control"
+                    name="modal_add_userName2" required>
+                    <label for="modal_add_userName2">Name</label>
                 </div>
                 <div style="margin-bottom:20px;">
-                    <input type="radio" id="modal_add_userRole_lender"  name="radios_role" value="lender" required>
-                    <label for="modal_add_userRole_lender">Lender</label>
+                    <input type="radio" id="modal_add_userRole_lender2"  name="radios_role2" value="lender" required>
+                    <label for="modal_add_userRole_lender2">Lender</label>
 
-                    <input type="radio" id="modal_add_userRole_borrower"  name="radios_role" value="borrower" required>
-                    <label for="modal_add_userRole_borrower">Borrower</label>
+                    <input type="radio" id="modal_add_userRole_borrower2"  name="radios_role2" value="borrower" required>
+                    <label for="modal_add_userRole_borrower2">Borrower</label>
                 </div>
                 <div class="form-label-group float-lab input_float_lbl">
-                    <input type="text" id="modal_add_userAddr" class="form-control bc_address"
-                    placeholder_x="" name="modal_add_userAddr" required disabled>
+                    <input type="text" id="modal_add_userAddr2" class="form-control bc_address"
+                    placeholder_x="" name="modal_add_userAddr2" required disabled>
                     <label for="modal_add_userAddr">Address</label>
                 </div>
 
@@ -670,7 +670,7 @@
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     </button>
-                    <!-- <label for="comment">Term Sheet</label> -->
+
                 </div>
                 <div style="display:flex;align-items:center;flex-direction:column;">
                 <div class="infotext">Info: Here you can register new users on the smart contract,

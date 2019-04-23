@@ -14,7 +14,7 @@ sessionStorage.clear();
 $('#approval_status').hide();
 
 // Arrays for Dropdown menus
-var select_arr = ['Lender', 'Borrower'];
+var select_arr = ['lender', 'borrower'];
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -165,6 +165,9 @@ const updateLoanInBrowser = () => {
 // Function: UI
 var deleteFromSidePanel = (_id) => {
     $(`li[data-storage-key="${_id}"`).remove();
+
+    $('#form-wrapper').addClass('d-none');
+    $('#select-info').show();     
 }
 
 // Function: UI
@@ -490,7 +493,7 @@ function loadUserDetail (address) {
 
 
 
-function createDropdown() {
+function createSignUpDropdown() {
     var drop = $('#signUpDropDown');
     var i;
     var htmlString = '<div class="dropContainer">';
@@ -501,15 +504,29 @@ function createDropdown() {
     drop.append(htmlString);
 }
 
+
 // Function: UI
 $(document).ready(function () {
 
-    createDropdown();
+    createSignUpDropdown();
     // createLoanUsersDropDown();
 
+    // Event handler for SignUp Dropdown menu
+    $('#signUpDropDown').on('click', function (event) {
+        var container = $(this).children('div.dropContainer');
+        var target = $(event.target);
 
-    // Functionality for dropdown and loading user data (as of now conflicting with generic use (signup.html))
-    $('.customDropdown').on('click', function (event) {
+        container.toggle();
+        $(this).toggleClass('select_border');
+        if (target.hasClass('dropOption')) {
+            $(this).find('span.valueHolder1').text(target.text());
+            $(this).children('span.valueHolder').addClass('float-label')
+        }
+    })
+
+
+    // Event handler for involved parties tab dropdown 
+    $('#participant_dropdown').on('click', function (event) {
         var container = $(this).children('div.dropContainer');
         var target = $(event.target);
 
@@ -625,11 +642,13 @@ var submitFormData = () => {
 
     userObj.company = $('#companyName').val();
     userObj.address = $('#signUpAddress').val();
-    userObj.name = $('#signUpAddress').val();
     userObj.firstName = $('#firstName').val();
     userObj.lastName = $('#lastName').val();
-    
+    userObj.role = $('#signUpDropDown .valueHolder1').text();
+
     localStorage.setItem($('#signUpAddress').val(), JSON.stringify(userObj));
+    signUpRegistration(userObj.company, userObj.role, userObj.address);
+
 }
 
 
@@ -648,7 +667,6 @@ function calculateTotalAmount() {
 
     for (i = 0; i < loanInputs.length; i++)  {
         sum = parseFloat(sum) + parseFloat(loanInputs[i].value);
-        console.log(sum);
     
     }
     $('#total_value').val(sum);

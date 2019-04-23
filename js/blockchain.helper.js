@@ -116,11 +116,36 @@ function addUserToLoan() {
     .on("receipt", function(receipt) {
         txNotifyUI('conf', 'add', activeLoanId, _address);
         console.log(receipt);
-        sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
+        sessionStorage.removeItem(activeLoanId);
         logLoans();
     });
 }
+
+
+async function signUpRegistration(_name, _role, _account) {
+    if (devMode) console.log(`Registering User: name=${_name}, role=${_role},  address=${_account}`);
+
+    txNotifyUI('send', 'register');
+
+    await storeContract.methods.userRegistration(_name, _role, _account)
+    .send({from: userAccount})
+    .on("receipt", function(receipt) {
+        document.location.replace('main.html');
+        txNotifyUI('conf', 'register', activeLoanId, _address);
+        console.log(receipt);
+        sessionStorage.removeItem(activeLoanId);
+        deleteFromSidePanel(activeLoanId);
+        logLoans();
+        retrieveUsers();
+    })
+    .on("error", function(error) {
+        console.log(error);
+        alert("Error: The transaction was reverted by the EVM");
+    });
+
+}
+
 
 // Registration of a new user account. Can be executed by _anyone_ (public)   [.send]
 function userRegistration(_name, _role, _account) {
@@ -136,12 +161,15 @@ function userRegistration(_name, _role, _account) {
     .send({from: userAccount})
     .on("receipt", function(receipt) {
         txNotifyUI('conf', 'register', activeLoanId, _address);
+        console.log(receipt);
         sessionStorage.removeItem(activeLoanId);
         deleteFromSidePanel(activeLoanId);
+        logLoans();
         retrieveUsers();
     })
     .on("error", function(error) {
         console.log(error);
+        alert("Error: The transaction was reverted by the EVM");
     });
 
 }
@@ -174,7 +202,7 @@ function retrieveUser(i) {
 async function retrieveUsers() {
     // So we can iterate through the user array on smart contract
     const arrLenght = await getUserArrLength();
-    console.log(arrLenght);
+    if (devMode) console.log("User array lenght: " + arrLenght);
 
     for (i = 0; i < arrLenght; i++) {
         // retrieve object from user array and 

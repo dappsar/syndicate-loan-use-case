@@ -92,7 +92,7 @@ async function logLoans() {
 
         // Looping through each loan-item of array 
         for (i = 0; i < loanIdsByUser.length; i++) {
-            console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
+            // if (devMode) console.log('Logging loans from Blockchain \n: for-loop:'+ i +' loanIdsByUser[i] '+ loanIdsByUser[i]);
             // loading the loan object from Blockchain
             const loan = await retrieveLoan(loanIdsByUser[i]);
 
