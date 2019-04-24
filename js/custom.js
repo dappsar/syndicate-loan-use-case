@@ -726,20 +726,38 @@ getDateInFormat = (format, timestamp) => {
   }
 };
 
+
 // Function: Logic
-var submitFormData = () => {
+async function submitFormData() {    
   //console.log('submitFormData() called');
-  if (devMode) alert("submitFormData() called");
-  var userObj = {};
 
-  userObj.company = $("#companyName").val();
-  userObj.address = $("#signUpAddress").val();
-  userObj.firstName = $("#firstName").val();
-  userObj.lastName = $("#lastName").val();
-  userObj.role = $("#signUpDropDown .valueHolder1").text();
+  // validate input data
+  const constraints = {
+    companyName: {
+        presence: true
+    }
+  }
+  var form = $("#signupForm");
+  var values = await validate.collectFormValues(form);
+  var errors = validate(values, constraints);
+  showErrors(form[0], errors);
+  var role = $('#signUpDropDown .valueHolder1').text();
+  if(!role) $('#signUpDropDownWrapper .messages').html(`<p class="help-block error">Role name can't be blank</p>`)
+  else $('#signUpDropDownWrapper .messages').html(``)
+  
+  if (!errors) {
+    if (devMode) alert("submitFormData() called");
+    var userObj = {};
 
-  localStorage.setItem($("#signUpAddress").val(), JSON.stringify(userObj));
-  signUpRegistration(userObj.company, userObj.role, userObj.address);
+    userObj.company = $("#companyName").val();
+    userObj.address = $("#signUpAddress").val();
+    userObj.firstName = $("#firstName").val();
+    userObj.lastName = $("#lastName").val();
+    userObj.role = $("#signUpDropDown .valueHolder1").text();
+
+    localStorage.setItem($("#signUpAddress").val(), JSON.stringify(userObj));
+    // signUpRegistration(userObj.company, userObj.role, userObj.address);
+  }
 };
 
 // Function: UI. Summing up loan amounts in html form

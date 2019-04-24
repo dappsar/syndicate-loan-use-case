@@ -21,9 +21,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
     <!-- JS Load Overlay -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
 
-
+    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.12.0/validate.min.js"></script>
 
     <!-- Custom css file -->
     <link rel="stylesheet" href="css/style.css">
@@ -43,7 +43,7 @@
     <script src="js/blockchain.js"></script>
     <script src="js/blockchain.helper.js"></script>
     <script src="js/blockchainUI.js"></script>
-
+    <script src="js/errorHandling.js"></script>
 
     <!-- Contract ABI js -->
     <script language="javascript" type="text/javascript" src="js\contractABI.js"></script>
@@ -72,7 +72,7 @@
                 <div class="col-sm-6 no-padding">
                     <div class="signup-form">
                         <div class="signup-form-content">
-                            <form onsubmit="return validate()"name="formsbm">
+                            <form name="formsbm" id="signupForm">
                                 <div class="row">
                                     <div class="col-sm-6 pad-rt-4">
                                         <div class="form-label-group float-lab input_float_lbl">
@@ -94,7 +94,8 @@
                                 <div class="form-label-group float-lab input_float_lbl">
                                     <input type="text" id="companyName" name="companyName" class="form-control"
                                         required>
-                                    <label for="companyName">Name of Institution / Company</label>
+                                    <label for="companyName">Name of Institution / Company *</label>
+                                    <div class="messages"></div>
                                     <!-- <span class="error_text">Text Error</span> -->
                                 </div>
 
@@ -103,14 +104,15 @@
                                         required>
                                     <label for="signUpAddress">Public Blockchain ID</label>
                                 </div>
-                                <div class="form-label-group">
+                                <div class="form-label-group" id="signUpDropDownWrapper">
                                     <div class="customDropdown" id="signUpDropDown">
                                         <span class="valueHolder">Role</span>
                                         <span class="valueHolder1"></span>
                                     </div>
+                                    <div class="messages"></div>
                                 </div>
                                 <div class="text-center">
-                                <button onclick="submitFormData(); " title="Submit Data" type="button" id="submit_btn" class="primary_btn"> Create Account</button>
+                                <button onclick="submitFormData();" title="Submit Data" type="button" id="submit_btn" class="primary_btn"> Create Account</button>
                                 <a href="main.html" class="d-block p-2">Skip this step</a>
                                     <p id="errMsg" style="padding: 10px;"></p>
                                 </div>

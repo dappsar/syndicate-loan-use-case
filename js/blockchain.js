@@ -172,11 +172,12 @@ async function updateLoanOnChain() {
 
   // Load active loan from JSON in Storage
   activeLoan = returnActiveLoan();
-  //console.log(activeLoan);
+//   console.log(activeLoan);
 
   // Load loan from blockchain (Necessary, only to check if differences exist)
   //console.log('Loading loan from blockchain (id/key): ' + activeLoanId);
-  const loanBc = await retrieveLoan(activeLoan.id);
+  const loanBc = await retrieveLoan(activeLoan.id)  
+  ;
 
   // Check if form fields have really been updated (implementation difficult, and probaly unnecessary)
   // Check if loan amount has changed

@@ -93,7 +93,7 @@
             <div class="row">
 
  <!------------- Left Column ------------>
-                <div class="left-column col-sm-4 no-padding" style="min-height:100%; display:block; ">
+                <div class="left-column col-sm-4 no-padding">
 
                     <!-- Left Panel: Loans (Overview) -->
 
@@ -543,7 +543,7 @@
 
  <!------------- Right Column ------------>
 
-                <div class="col-sm-12 col-md-5 no-padding">
+                <div class="col-sm-12 col-md-5 no-padding right_column">
                     <div class="approval " id="approval_status">
                         <h3>Approval Status</h3>
 
@@ -639,7 +639,7 @@
     <!------------- Register a new User  ------------>
 
     <!-- Modal -->
-    <form class="modal fade" id="registerUser" tabindex="-1" role="dialog" aria-labelledby="add_loanuser_modal"
+    <form class="modal fade" id="registerUser" tabindex="-1" role="dialog"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="dialog">
 
@@ -761,7 +761,7 @@
     <!------------- Add new User to loan modal ------------>
 
     <!-- Modal -->
-    <div class="modal fade" id="add_loanuser_modal" tabindex="-1" role="dialog"
+    <form class="modal fade" id="add_loanuser_modal" tabindex="-1" role="dialog"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="dialog">
 
@@ -774,8 +774,8 @@
                 <div class="modal-body">
 
                 <!-- User Search Dropdown -->
-
-                <div class="user_dropdown">
+                    <div style_x="display:flex;justify-content: center">
+                    <div class="user_dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_users_2" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
                             Search user by name
@@ -788,26 +788,24 @@
                             <div id="empty_2" class="dropdown-header">No users found</div>
                         </div>
                     </div>
+                </div>
 
                     <div class="form-label-group float-lab">
                         <input type="text" id="input_add_user" class="form-control"
-                            placeholder_x="Account address of user" name="input_add_user" required>
-                            <label for="input_add_user">Address</label>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            placeholder_x="Account address of user" name="address" required>
+                            <label for="address">Address</label>
+                            <div class="messages"></div>
                     </div>
                     <div class="infotext">If you are the creator (registrar) of the loan, you can add new participants (e.g. other lenders)</div>
                     <div class="update_btn">
-                        <button onclick="addUserToLoan()" type="button" data-dismiss="modal"
+                        <button onclick="addUserToLoan()" type="button" data-dismiss_x="modal"
                             class="primary_btn">Add User to Loan (on Blockchain)</button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
 
             </div>
         </div>
-    </div>
+    </form>
 
 
     <!------------- Comment Details Modal ------------>

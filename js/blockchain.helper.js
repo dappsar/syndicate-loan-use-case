@@ -101,7 +101,28 @@ function deleteLoan() {
 }
 
 // Add user to loan (onlyRegistrar) [.send]
-function addUserToLoan() {
+async function addUserToLoan() {
+  var constraints = {
+    address: {
+      presence: true,
+      format: {
+        pattern: "^(0x)?[0-9a-f]{40}$",
+        message: "needs to be a valid eth address."
+      }
+    }
+  };
+
+  //validate content
+  var form = $("#add_loanuser_modal");
+  var values = await validate.collectFormValues(form);
+  var errors = validate(values, constraints);
+
+  showErrors(form[0], errors);
+
+  if (errors) return;
+
+  $("#registerUser").modal("hide");
+  
   var loanObj = JSON.parse(sessionStorage.getItem(activeLoanId));
   _address = $("#input_add_user").val();
 
